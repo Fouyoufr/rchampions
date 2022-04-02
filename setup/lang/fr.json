@@ -1,0 +1,20 @@
+{
+    "tit-game":"Partie en cours",
+    "villain":"Méchant",
+
+    "player":"joueur",
+
+    "st-confused":"Désorienté",
+    "st-stunned":"Sonné",
+    "st-tough":"Tenace",
+    "st-retaliate":"Riposte",
+    "st-piercing":"Perçant",
+    "st-ranged":"A distance",
+
+    "pl-alter":"Alter-Égo",
+    "pl-hero":"Héros",
+
+    "vil-counters":"Autres compteurs",
+
+    "vil-mainScheme":"Manigance Principale"
+}

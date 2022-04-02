@@ -1,0 +1,41 @@
+body {padding:0px;margin:0px;height:100%;width:100%;position:absolute;}
+/* link to admin page (may content "game key") */
+div#adminBar {}
+
+/* link to usefull keyword definitions */
+button#help {display: none;}
+
+/* Link to github documentation */
+button#doc {display: none;}
+
+/* Link to github issues */
+button#bug {display: none;}
+
+/* language selection DIV */
+div.language {display: none;}
+
+/* melodice musical plugin interface */
+div.melodice {display: none;}
+
+/* for input boxes displayed at need */
+.inputDiv {}
+    .inputDiv div.title {}
+    .inputDiv p.intro {}
+    .inputDiv div.buttons {}
+    .inputDiv div.buttons button {}
+    .inputDiv div.buttons button.cancel {}
+    .inputDiv p.outro {}
+
+/* buttons for life/threat input */
+button.minus {}
+button.plus {}
+div.value {}
+
+/* Main definition of status buttons */
+div.status {}
+    div.status button.confused {}
+    div.status button.stunned {}
+    div.status button.tough {}
+    div.status button.retaliate {}
+    div.status button.piercing {}
+    div.status button.ranged {}
