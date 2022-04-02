@@ -1,0 +1,35 @@
+/* Diplay of a Villain's box */
+.villain {}
+    .villain img.picture {}
+    .villain div.name {}
+    .villain button.phase {}
+    .villain div.life {}
+        .villain div.life button.minus {}
+        .villain div.life button.plus {}
+        .villain div.life div.value {}
+    .villain div.status {}
+        .villain div.status button.confused {}
+        .villain div.status button.stunned {}
+        .villain div.status button.tough {}
+        .villain div.status button.retaliate {}
+        .villain div.status button.piercing {}
+        .villain div.status button.ranged {}
+    .villain div.mainScheme {}
+        .villain div.mainScheme div.name {}
+        .villain div.mainScheme div.threat {}
+            .villain div.mainScheme div.threat button.minus {}
+            .villain div.mainScheme div.threat button.plus {}
+            .villain div.mainScheme div.threat div.value {}
+        .villain div.mainScheme div.acceleration {}
+            .villain div.mainScheme div.acceleration button.minus {}
+            .villain div.mainScheme div.acceleration button.plus {}
+            .villain div.mainScheme div.acceleration div.value {}
+        .villain div.mainscheme div.max {}
+            .villain div.mainScheme div.max button.minus {}
+            .villain div.mainScheme div.max button.plus {}
+            .villain div.mainScheme div.max div.value {}
+    .villain div.sideSchemes {}
+        .villain div.sideSchemes button.new {}
+        .villain div.sideSheme {}
+    .villain div.counters {}
+    .villain button.mobile {}
