@@ -2,10 +2,8 @@
 .player {}
     .player img.picture {}
     .player div.name {}
-    .villain div.life {}
-    .villain div.life button.minus {}
-    .villain div.life button.plus {}
-    .villain div.life div.value {}
+    .player div.life {}
+    .player div.life div.value {background-color:lightcyan;color:black;border-color:black;}
 .player div.status {}
     .player div.status button.confused {}
     .player div.status button.stunned {}

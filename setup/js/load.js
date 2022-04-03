@@ -23,6 +23,52 @@ let theme = localStorage.getItem('rcTheme') !== null ? localStorage.getItem('rcT
     addHeadLink('stylesheet','text/css; charset=utf-8','./themes/' + theme + '/main.css');
     addHeadLink('icon','image/x-icon','./favicon.ico');
 
-// Construction générqiue de la page
+// Construction générique de la page
 if (pageTitle!== null) document.title = lang[pageTitle];
 document.documentElement.setAttribute('lang',localStorage.getItem('rcLang') !== null ? localStorage.getItem('rcLang') : 'fr');
+let minusButtons=document.getElementsByClassName('minus');
+for(let i = 0; i < minusButtons.length; i++) {
+    minusButtons[i].textContent='<';
+    minusButtons[i].onclick=function () {minusButton(this.parentNode);};
+}
+let plusButtons=document.getElementsByClassName('plus');
+for(let i = 0; i < plusButtons.length; i++) {
+    plusButtons[i].textContent='>';
+    plusButtons[i].onclick=function () {plusButton(this.parentNode);};
+}
+
+function minusButton (mbValue) {
+    if (mbValue.getElementsByClassName('value')[0].textContent > 0) {
+        mbValue.getElementsByClassName('value')[0].textContent--;
+        sendValue(mbValue);
+    }
+}
+
+function plusButton (pbValue) {
+    pbValue.getElementsByClassName('value')[0].textContent++;
+    sendValue(pbValue);
+}
+
+function sendValue(svDiv) {
+    let stringToSend='';
+    let valueToSend = svDiv.getElementsByClassName('value')[0].textContent;
+    while (svDiv.id === '' || svDiv.id === null) {
+        stringToSend = svDiv.className + ',' + stringToSend;
+        svDiv=svDiv.parentNode;}
+    stringToSend='valueToChange=' + svDiv.id + ',' + stringToSend.slice(0,-1) + '&value=' + valueToSend;
+}
+
+['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
+    let statusButtons=document.getElementsByClassName(statusName);
+    for(let i=0; i < statusButtons.length; i++) {
+        statusButtons[i].textContent=lang['st-' + statusName]
+}
+  })
+
+
+
+//stunned
+//tough
+//retaliate
+//piercing
+//ranged

@@ -6,7 +6,7 @@
     .villain div.life {}
         .villain div.life button.minus {}
         .villain div.life button.plus {}
-        .villain div.life div.value {}
+        .villain div.life div.value {background-color:darkred;}
     .villain div.status {}
         .villain div.status button.confused {}
         .villain div.status button.stunned {}
@@ -14,6 +14,7 @@
         .villain div.status button.retaliate {}
         .villain div.status button.piercing {}
         .villain div.status button.ranged {}
+    .villain div.mainScheme div.value {background-color:#f3b723;color:black;}
     .villain div.mainScheme {}
         .villain div.mainScheme div.name {}
         .villain div.mainScheme div.threat {}
