@@ -1,0 +1,20 @@
+{
+    "tit-game":"Current game",
+    "villain":"Villain",
+
+    "player":"Player",
+
+    "st-confused":"Confused",
+    "st-stunned":"Stunned",
+    "st-tough":"Tough",
+    "st-retaliate":"Retaliate",
+    "st-piercing":"Piercing",
+    "st-ranged":"Ranged",
+
+    "pl-alter":"Alter-Ego",
+    "pl-hero":"Hero",
+
+    "vil-counters":"Other counters",
+
+    "vil-mainScheme":"Main Scheme"
+}

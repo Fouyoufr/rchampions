@@ -29,6 +29,8 @@ div.melodice {display: none;}
 /* buttons for life/threat input */
 button.minus,button.plus,div.value {border-radius: 4px;border: 2px solid white;font-weight:bold;display:inline-flex;text-align:center;font-size: 12px;margin:0px;padding:0px;box-shadow: none;height:24px;line-height: 24px;box-sizing: unset;justify-content: center;}
 button.minus,button.plus {width:24px;color: white; background-color: black;cursor: pointer;font-size:18px;}
+button.minus::before{content:'<';}
+button.plus::before{content:'>';}
 div.value {font-size: 18px; font-weight: bold;color: white; background-color: black;padding:0px;margin:0px;padding-left:2px; padding-right:2px;}
 
 /* Main definition of status buttons */

@@ -1,0 +1,3570 @@
+[	
+	{
+		"id": "0","name": "Selection strings",
+		"villains":[{"id":"0","name":"Choisir le méchant","life1":"0","life2":"0","life3":"0"}],
+		"main":[{"id":"0","name":"Manigance principale","init":"0","max":"0"}],
+		"heros":[{"id":"0","name":"Choisir Héros","vie":"0"}]
+	},
+	{
+		"id": "1","name": "Base","type": "b",
+		"villains": 
+		[			
+			{"id": "1","name": "Rhino","life1": "14","life2": "15","life3": "16"},			
+			{"id": "2","name": "Klaw","life1": "12","life2": "18","life3": "27"},			
+			{"id": "3","name": "Ultron","life1": "17","life2": "22","life3": "27"}
+		],
+		"main": 
+		[			
+			{"id": "1","name": "L'Effraction!","init": "0","initX": "0","max": "7","maxX": "1"},			
+			{"id": "2","name": "Trafic Clandestin","init": "0","initX": "0","max": "6","maxX": "1"},			
+			{"id": "3","name": "Rendez-Vous Secret","init": "0","initX": "0","max": "8","maxX": "1"},			
+			{"id": "4","name": "Le Crimson Cowl","init": "0","initX": "0","max": "3","maxX": "1"},			
+			{"id": "5","name": "Assaut Sur Le Norad","init": "0","initX": "0","max": "10","maxX": "1"},			
+			{"id": "6","name": "Compte à Rebours Pour L'Enfer","init": "0","initX": "0","max": "5","maxX": "1"}
+		],
+		"heros": 
+		[			
+			{
+				"id": "5","name": "Spiderman","vie": "10",
+				"schemes": 
+				{
+					"id": "71","card": "5","name": "Cambriolage De Haut Vol",
+					"init": "3","initX": "1","crisis": "0","encounter": "0","accel": "1","ampli": "0","entrave": "0",
+					"reveal": "Chaque joueur place face cachée sur cette carte une carte prise au hasard dans sa main.",
+					"defeat": "Renvoyez dans la main de son propriétaire chaque carte face cachée qui est sur cette carte.",
+					"info": ""
+				}
+			},			
+			{
+				"id": "6","name": "Captain Marvel","vie": "12",
+				"schemes": 
+				{
+					"id": "72","card": "6","name": "Le Psycho-Magnitron",
+					"init": "3","initX": "0","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "1",
+					"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "7","name": "Miss Hulk","vie": "15",
+				"schemes": 
+				{
+					"id": "73","card": "7","name": "Défi Personnel",
+                    "init": "3","initX": "0","crisis": "1","encounter": "0","accel": "0","ampli": "0","entrave": "1",
+					"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "8","name": "Iron Man","vie": "9",
+				"schemes": 
+				{
+					"id": "74","card": "8","name": "Surcharge Imminente",
+					"init": "3","initX": "0","crisis": "0","encounter": "0","accel": "1","ampli": "0","entrave": "1",
+					"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "9","name": "Black Panter","vie": "11",
+				"schemes": 
+				{
+					"id": "75","card": "9","name": "Usurper Le Trône",
+                    "init": "3","initX": "1","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "0",
+                    "reveal": "",
+                    "defeat": "",
+                    "info": ""
+				}
+			}
+		],
+		"decks": 
+		[			
+			{
+				"id": "1","name": "Rhino",
+				"schemes": 
+				[					
+					{
+						"id": "1","card": "20","name": "Casser Et Emporter",
+						"init": "2","initX": "0","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "1",
+						"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "2","card": "21","name": "Contrôler la foule",
+						"init": "2","initX": "1","crisis": "1","encounter": "0","accel": "0","ampli": "0","entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "2","name": "Klaw",
+				"schemes": 
+				[					
+					{
+						"id": "3","card": "19","name": "Réseau de défense",
+						"init": "2","initX": "0","crisis": "1","encounter": "0","accel": "0","ampli": "0","entrave": "1",
+						"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "4","card": "20","name": "Fabrique d'armes clandestines",
+						"init": "3","initX": "0","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "1",
+						"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "5","card": "21","name": "Klaw \"l'Immortel\"",
+						"init": "3","initX": "1","crisis": "0","encounter": "0","accel": "1","ampli": "0","entrave": "0",
+						"reveal": "",
+						"defeat": "Klaw perd les 10 points de vie qui lui avaient été attribués lors de la mise en jeu de cette manigance.",
+						"info": "Klaw gagne +10 points de vie."
+					}
+				]
+			},			
+			{
+				"id": "5","name": "Légions D'Hydra",
+				"schemes": 
+				[					
+					{
+						"id": "13","card": "1","name": "Légions D'Hydra",
+						"init": "3","initX": "0","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "0",
+						"reveal": "Si Madame Hydra n'est pas en jeu, cherchez-la dans le deck Rencontre ou la pile de défausse Rencontre et mettez-la en jeu engagée avec vous. Ensuite, mélangez le deck Rencontre. Placez 2 menaces supplémentaire sur cette manigance annexe pour chaque ennemi HYDRA en jeu.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "14","card": "2","name": "Légions D'Hydra",
+						"init": "3","initX": "0","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "0",
+						"reveal": "Si Madame Hydra n'est pas en jeu, cherchez-la dans le deck Rencontre ou la pile de défausse Rencontre et mettez-la en jeu engagée avec vous. Ensuite, mélangez le deck Rencontre. Placez 2 menaces supplémentaire sur cette manigance annexe pour chaque ennemi HYDRA en jeu.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "10","name": "Le siège De L'Apocalypse",
+				"schemes": 
+				[					
+					{
+						"id": "19","card": "1","name": "Le Siège De L'Apocalypse",
+						"init": "8","initX": "0","crisis": "0","encounter": "0","accel": "1","ampli": "0","entrave": "0",
+						"reveal": "Si MODOK n'est pas en jeu, cherchez-le dans le deck Rencontre ou la pile de défausse Rencontre et mettez-le en jeu engagé avec vous. Ensuite, mélangez le deck Rencontre.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "20","card": "2","name": "Le Siège De L'Apocalypse",
+						"init": "8","initX": "0","crisis": "0","encounter": "0","accel": "1","ampli": "0","entrave": "0",
+						"reveal": "Si MODOK n'est pas en jeu, cherchez-le dans le deck Rencontre ou la pile de défausse Rencontre et mettez-le en jeu engagé avec vous. Ensuite, mélangez le deck Rencontre.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "11","name": "Civils Attaqués",
+				"schemes": 
+				{
+					"id": "21","card": "1","name": "Civils Attaqués",
+					"init": "3","initX": "0","crisis": "1","encounter": "0","accel": "0","ampli": "0","entrave": "0",
+					"reveal": "Chaque joueur choisit : soit il place 2 menaces sur cette carte, soit il inflige 3 dégâts à son héros.",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "12","name": "Les Maîtres Du Mal",
+				"schemes": 
+				{
+					"id": "22","card": "1","name": "Les Maîtres Du Mal",
+					"init": "3","initX": "1","crisis": "0","encounter": "0","accel": "1","ampli": "0","entrave": "0",
+					"reveal": "Défaussez des cartes du deck Rencontre jusqu'à ce qu'un sbire MAITRES DU MAL soit défaussé. Mettez en jeu ce sbire, engagé avec le premier joueur.",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "13","name": "Alerte à La Bombe",
+				"schemes": 
+				{
+					"id": "23","card": "1","name": "Alerte à La Bombe",
+                    "init": "2","initX": "0","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "1",
+					"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "14","name": "Ultron",
+				"schemes": 
+				[					
+					{
+						"id": "24","card": "23","name": "Fabrique de Drones",
+						"init": "4","initX": "0","crisis": "0","encounter": "0","accel": "1","ampli": "0","entrave": "0",
+						"reveal": "Chaque joueur met en jeu la carte du dessus de son deck, face cachée, engagée avec lui en tant que sbire DRONE. Placez 1 menace sur cette manigance annexe pour chaque sbire DRONE en jeu.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "25","card": "24","name": "I.A. Invasive",
+						"init": "3","initX": "1","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "0",
+						"reveal": "Chaque joueur défausse les 3 cartes du dessus de son deck.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "26","card": "25","name": "Ordre D'Ultron",
+                        "init": "2","initX": "1","crisis": "0","encounter": "1","accel": "0","ampli": "0","entrave": "0",
+						"reveal": "Le premier joueur met en jeu les 2 cartes du dessus de son deck, face cachée, engagée avec lui en tant que sbire DRONE.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			}
+		]
+	},	
+	{
+		"id": "2",
+		"name": "Convoitise Galactique",
+		"type": "b",
+		"villains": 
+		[			
+			{
+				"id": "16",
+				"name": "Drang",
+				"life1": "13",
+				"life2": "14",
+				"life3": "18"
+			},			
+			{
+				"id": "17",
+				"name": "Le Collectionneur",
+				"life1": "13",
+				"life2": "14",
+				"life3": "18"
+			},			
+			{
+				"id": "18",
+				"name": "Nebula",
+				"life1": "14",
+				"life2": "17",
+				"life3": "20"
+			},			
+			{
+				"id": "19",
+				"name": "Ronan l'accusateur",
+				"life1": "14",
+				"life2": "18",
+				"life3": "25"
+			}
+		],
+		"main": 
+		[			
+			{
+				"id": "29",
+				"name": "Invasion terrestre",
+				"init": "2",
+				"initX": "1",
+				"max": "8",
+				"maxX": "1"
+			},			
+			{
+				"id": "30",
+				"name": "Protéger la planète",
+				"init": "4",
+				"initX": "1",
+				"max": "8",
+				"maxX": "1"
+			},			
+			{
+				"id": "31",
+				"name": "La grande collection",
+				"init": "4",
+				"initX": "1",
+				"max": "10",
+				"maxX": "1"
+			},			
+			{
+				"id": "32",
+				"name": "Retrouver le Milano",
+				"init": "7",
+				"initX": "1",
+				"max": "11",
+				"maxX": "1"
+			},			
+			{
+				"id": "33",
+				"name": "Perdus dans le musée",
+				"init": "11",
+				"initX": "1",
+				"max": "15",
+				"maxX": "1"
+			},			
+			{
+				"id": "34",
+				"name": "La grande évasion",
+				"init": "8",
+				"initX": "1",
+				"max": "12",
+				"maxX": "1"
+			},			
+			{
+				"id": "35",
+				"name": "L'art de la fuite",
+				"init": "2",
+				"initX": "1",
+				"max": "6",
+				"maxX": "1"
+			},			
+			{
+				"id": "36",
+				"name": "Mode Distorsion activé",
+				"init": "3",
+				"initX": "1",
+				"max": "9",
+				"maxX": "1"
+			},			
+			{
+				"id": "37",
+				"name": "Interception imminente",
+				"init": "2",
+				"initX": "1",
+				"max": "7",
+				"maxX": "1"
+			},			
+			{
+				"id": "38",
+				"name": "Je reprends ce qui m'appartient",
+				"init": "1",
+				"initX": "1",
+				"max": "10",
+				"maxX": "1"
+			}
+		],
+		"heros": 
+		[			
+			{
+				"id": "15",
+				"name": "Rocket Raccoon",
+				"vie": "9",
+				"schemes": 
+				{
+					"id": "81",
+					"card": "15",
+					"name": "Vendetta",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "1",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "16",
+				"name": "Groot",
+				"vie": "10",
+				"schemes": 
+				{
+					"id": "82",
+					"card": "16",
+					"name": "Brasier infernal",
+					"init": "3",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "REPONSE FORCEE : Après le début de la phase du méchant, infligez 2 dégâts indirects à chaque joueur."
+				}
+			}
+		],
+		"decks": 
+		[			
+			{
+				"id": "29",
+				"name": "La confrérie des Badoon",
+				"schemes": 
+				[					
+					{
+						"id": "86",
+						"card": "10",
+						"name": "Blocus",
+						"init": "2",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "2",
+						"reveal": "Placez 2[pp] menaces supplémentaires sur cette carte (déja calculé sur Remote Champions)",
+						"defeat": "",
+						"info": "Action de premier joueur : Inclinez le Milano => retirez 3 menaces de cette manigance."
+					},					
+					{
+						"id": "87",
+						"card": "11",
+						"name": "Bombardement",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": "Réponse forçée : Après avoir résolu l'étape 1 de la phae du Méchant, résolvez la capacité \"Charger\" du vaisseau Badoon.<br/>Action de premier joueur : Inclinez le Milano => retirez 3 menaces de cette manigance."
+					},					
+					{
+						"id": "88",
+						"card": "12",
+						"name": "Flotte surpuissante",
+						"init": "1",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "3",
+						"reveal": "Placez 3[pp] menaces supplémentaires sur cette carte (déja calculé sur Remote Champions)",
+						"defeat": "",
+						"info": "Action de premier joueur : Inclinez le Milano => retirez 3 menaces de cette manigance."
+					},					
+					{
+						"id": "89",
+						"card": "13",
+						"name": "Positionnement spatial",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": "Action de premier joueur : Inclinez le Milano => retirez 3 menaces de cette manigance."
+					}
+				]
+			},			
+			{
+				"id": "30",
+				"name": "Nébula",
+				"schemes": 
+				[					
+					{
+						"id": "90",
+						"card": "15",
+						"name": "Intentions meurtrières",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un attachement TECHNIQUE soit défaussé. Révélez-le.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "110",
+						"card": "16",
+						"name": "Intentions meurtrières",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un attachement TECHNIQUE soit défaussé. Révélez-le.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "31",
+				"name": "Ronan l'Accusateur",
+				"schemes": 
+				[					
+					{
+						"id": "91",
+						"card": "10",
+						"name": "Courant coupé",
+						"init": "3",
+						"initX": "1",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "92",
+						"card": "11",
+						"name": "Pris en tenaille",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "2",
+						"ampli": "0",
+						"entrave": "2",
+						"reveal": "",
+						"defeat": "",
+						"info": "Action de premier joueur : Inclinez le Milano => retirez 3 menaces de cette manigance."
+					},					
+					{
+						"id": "93",
+						"card": "13",
+						"name": "Grand tacticien",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Attachez la Pierre du Pouvoir à Ronan l'Accusateur. Si elle lui est déjà attachée, placez 1[pp] menace sur cette carte.",
+						"defeat": "",
+						"info": "La pierre du Pouvoir ne peut pas être déachée de Ronan l'Accusateur."
+					},					
+					{
+						"id": "111",
+						"card": "11",
+						"name": "Pris en tenaille",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "2",
+						"ampli": "0",
+						"entrave": "2",
+						"reveal": "",
+						"defeat": "",
+						"info": "Action de premier joueur : Inclinez le Milano => retirez 3 menaces de cette manigance."
+					}
+				]
+			},			
+			{
+				"id": "32",
+				"name": "Artefacts Galactiques",
+				"schemes": 
+				[					
+					{
+						"id": "94",
+						"card": "6",
+						"name": "Oeuf de monarque Hujahdarien",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "2",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance peut redresser son identité.",
+						"info": "Victoire 0."
+					},					
+					{
+						"id": "95",
+						"card": "7",
+						"name": "Théière magique",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "2",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance peut soigner 4 dégâts de son identité.",
+						"info": "Victoire 0."
+					},					
+					{
+						"id": "96",
+						"card": "8",
+						"name": "Pierre philosophale",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance peut piocher 2 cartes",
+						"info": ""
+					},					
+					{
+						"id": "97",
+						"card": "9",
+						"name": "Boule de cristal",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance peut jouer une carte de sa main, en diminuant son cout de 3.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "33",
+				"name": "Pirates de l'espace",
+				"schemes": 
+				{
+					"id": "98",
+					"card": "6",
+					"name": "Sonnez l'alerte",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "Chaque ennemi gagne +1 ATQ."
+				}
+			},			
+			{
+				"id": "34",
+				"name": "Contrôles du vaisseau",
+				"schemes": 
+				{
+					"id": "99",
+					"card": "3",
+					"name": "Canonnade",
+					"init": "1",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "1",
+					"entrave": "3",
+					"reveal": "",
+					"defeat": "",
+					"info": "Action de premier joueur : Inclinez le Milano => retirez 3 menaces de cette manigance."
+				}
+			},			
+			{
+				"id": "35",
+				"name": "Campagne - Défi Standard",
+				"schemes": 
+				[					
+					{
+						"id": "100",
+						"card": "0",
+						"name": "Attaque surprise des Badoon",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "3",
+						"reveal": "",
+						"defeat": "Chaque joueur peut piocher 1 carte.",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "101",
+						"card": "0",
+						"name": "Galerie des merveilles",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "3",
+						"reveal": "",
+						"defeat": "Mettez dans la collection, face visible, la carte du dessus du deck de chaque joeur.",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "102",
+						"card": "0",
+						"name": "Il n'y a aucune issue",
+						"init": "4",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "3",
+						"reveal": "",
+						"defeat": "Infligez 1 dégât à chaque joueur.",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "103",
+						"card": "0",
+						"name": "Tactiques de guérilla",
+						"init": "5",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "3",
+						"reveal": "",
+						"defeat": "Placez 2 jetons Fuite sur le vaisseau de Nebula.",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "104",
+						"card": "0",
+						"name": "Supériorité Kree",
+						"init": "6",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "3",
+						"reveal": "",
+						"defeat": "",
+						"info": "Victoire 1."
+					}
+				]
+			},			
+			{
+				"id": "36",
+				"name": "Traqueur Badoon",
+				"schemes": 
+				{
+					"id": "105",
+					"card": "5",
+					"name": "Retrouver les fugitifs",
+					"init": "2",
+					"initX": "0",
+					"crisis": "1",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "3",
+					"reveal": "",
+					"defeat": "",
+					"info": "Renfort."
+				}
+			},			
+			{
+				"id": "37",
+				"name": "Campagne - Défi Expert",
+				"schemes": 
+				[					
+					{
+						"id": "106",
+						"card": "0",
+						"name": "Supériorité Kree",
+						"init": "7",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "1",
+						"ampli": "1",
+						"entrave": "4",
+						"reveal": "",
+						"defeat": "",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "107",
+						"card": "0",
+						"name": "Tactiques de guérilla",
+						"init": "6",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "4",
+						"reveal": "",
+						"defeat": "Placez 3 jetons Fuite sur le vaisseau de Nebula.",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "108",
+						"card": "0",
+						"name": "Il n'y a aucune issue",
+						"init": "5",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "4",
+						"reveal": "",
+						"defeat": "Infligez 2 dégât à chaque joueur.",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "109",
+						"card": "0",
+						"name": "Galerie des merveilles",
+						"init": "4",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "4",
+						"reveal": "",
+						"defeat": "Chaque joueur doit mettre dans la Collection, face visible, 1 carte prise au hasard dans sa main.",
+						"info": "Victoire 1."
+					},					
+					{
+						"id": "112",
+						"card": "0",
+						"name": "Attaque surprise des Badoon",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "4",
+						"reveal": "",
+						"defeat": "Chaque joueur doit choisir et défausser 1 carte de sa main.",
+						"info": "Victoire 1."
+					}
+				]
+			}
+		]
+	},	
+	{
+		"id": "3",
+		"name": "Quicksilver",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "18",
+			"name": "Vif-Argent",
+			"vie": "9",
+			"schemes": 
+			{
+				"id": "84",
+				"card": "18",
+				"name": "Extorsion Cataclysmique",
+				"init": "2",
+				"initX": "1",
+				"crisis": "1",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "Incitation 1. (Quand cette carte est révélée; placez 1 menace sur la manigance principale.)",
+				"defeat": "",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "4",
+		"name": "Scarlet Witch",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "19",
+			"name": "La sorcière rouge",
+			"vie": "10",
+			"schemes": 
+			{
+				"id": "85",
+				"card": "19",
+				"name": "La prochaine évolution",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "Augmentez de 1 le nombre d'icônes de boost sur chaque carte Rencontre"
+			}
+		}
+	},	
+	{
+		"id": "5",
+		"name": "Wasp",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "17",
+			"name": "La guèpe",
+			"vie": "11",
+			"schemes": 
+			{
+				"id": "83",
+				"card": "17",
+				"name": "Les ordres de mère",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "En tant que coût supplémentaire pour effectuer une attaque de base, le héros qui effectue l'attaque doit dépenser 1 ressource de n'importe quel type."
+			}
+		}
+	},	
+	{
+		"id": "6",
+		"name": "L'avènement de Crâne rouge",
+		"type": "b",
+		"villains": 
+		[			
+			{
+				"id": "10",
+				"name": "Crossbones",
+				"life1": "12",
+				"life2": "14",
+				"life3": "16"
+			},			
+			{
+				"id": "11",
+				"name": "L'Homme Absorbant",
+				"life1": "14",
+				"life2": "15",
+				"life3": "16"
+			},			
+			{
+				"id": "12",
+				"name": "Taskmaster",
+				"life1": "13",
+				"life2": "16",
+				"life3": "17"
+			},			
+			{
+				"id": "13",
+				"name": "Zola",
+				"life1": "12",
+				"life2": "14",
+				"life3": "16"
+			},			
+			{
+				"id": "14",
+				"name": "Crâne Rouge",
+				"life1": "12",
+				"life2": "16",
+				"life3": "20"
+			}
+		],
+		"main": 
+		[			
+			{
+				"id": "12",
+				"name": "Attaque Sur Le Mont Athéna",
+				"init": "0",
+				"initX": "0",
+				"max": "3",
+				"maxX": "1"
+			},			
+			{
+				"id": "13",
+				"name": "La Pierre D'Infinité",
+				"init": "1",
+				"initX": "1",
+				"max": "6",
+				"maxX": "1"
+			},			
+			{
+				"id": "14",
+				"name": "La Fuite",
+				"init": "1",
+				"initX": "1",
+				"max": "5",
+				"maxX": "1"
+			},			
+			{
+				"id": "15",
+				"name": "Personne Ne Passe",
+				"init": "2",
+				"initX": "1",
+				"max": "12",
+				"maxX": "1"
+			},			
+			{
+				"id": "16",
+				"name": "Traquer les Héros",
+				"init": "1",
+				"initX": "1",
+				"max": "12",
+				"maxX": "1"
+			},			
+			{
+				"id": "17",
+				"name": "L'Île Du Dr Zola",
+				"init": "0",
+				"initX": "0",
+				"max": "6",
+				"maxX": "1"
+			},			
+			{
+				"id": "18",
+				"name": "Le Savant Fou",
+				"init": "1",
+				"initX": "1",
+				"max": "8",
+				"maxX": "1"
+			},			
+			{
+				"id": "19",
+				"name": "L'Avènement de Crâne Rouge",
+				"init": "0",
+				"initX": "0",
+				"max": "8",
+				"maxX": "1"
+			},			
+			{
+				"id": "20",
+				"name": "Nouvel Ordre Mondial D'Hydra",
+				"init": "1",
+				"initX": "1",
+				"max": "11",
+				"maxX": "1"
+			}
+		],
+		"heros": 
+		[			
+			{
+				"id": "1",
+				"name": "Hawkeye",
+				"vie": "9",
+				"schemes": 
+				{
+					"id": "9",
+					"card": "1",
+					"name": "Désignée pour Mourir",
+					"init": "5",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "1",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "Le joueur de Clint Barton cherche Mockingbird dans sa main, son deck, sa pile de défausse ou zone de jeu et la place, face visible, sous cette carte.",
+					"defeat": "Renvoyez Mockingbird dans la main de son propriétaire.",
+					"info": ""
+				}
+			},			
+			{
+				"id": "2",
+				"name": "Spider-Woman",
+				"vie": "11",
+				"schemes": 
+				{
+					"id": "10",
+					"card": "2",
+					"name": "Les Ambitions De La Vipère",
+					"init": "2",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "1",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "1",
+					"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+					"defeat": "",
+					"info": ""
+				}
+			}
+		],
+		"decks": 
+		[			
+			{
+				"id": "3",
+				"name": "CrossBones",
+				"schemes": 
+				[					
+					{
+						"id": "6",
+						"card": "17",
+						"name": "Offensive De Crossbones",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Crossbones s'active contre le joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "7",
+						"card": "18",
+						"name": "Offensive de Crossbones",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Crossbones s'active contre le joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "8",
+						"card": "19",
+						"name": "Employés Pris au Piège",
+						"init": "3",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Défaussez 1[pp] carte du dessus du deck renccontre. Placez 1 menace supplémentaire sur cette carte pour chaque icône de boost sur les cartes ainsi défaussées.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "9",
+				"name": "Patrouille D'Hydra",
+				"schemes": 
+				{
+					"id": "18",
+					"card": "6",
+					"name": "Patrouille D'Hydra",
+					"init": "2",
+					"initX": "1",
+					"crisis": "1",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "Chaque joueur cherche un sbire HYDRA dans le deck Rencontre ou la pile de défausse Rencontre et le met en jeu engagé avec lui. Mélangez le deck Rencontre.",
+					"info": ""
+				}
+			},			
+			{
+				"id": "21",
+				"name": "L'Homme Absorbant",
+				"schemes": 
+				[					
+					{
+						"id": "41",
+						"card": "23",
+						"name": "Avalanche !",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Chaque joueur doit choisir : soit dépenser une ressource ENERGIE, soit subir 2 dégâts indirects (3 dégâts indirects à la place s'il y a au moins 5 jetons Retard sur la manigance princiaple)",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "42",
+						"card": "24",
+						"name": "Avalanche !",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Chaque joueur doit choisir : soit dépenser une ressource ENERGIE, soit subir 2 dégâts indirects (3 dégâts indirects à la place s'il y a au moins 5 jetons Retard sur la manigance princiaple)",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "43",
+						"card": "25",
+						"name": "Pouvoir Super Absorbant",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": "L'homme absorbant gagne les traits GLACE; METAL; PIERRE et BOIS."
+					}
+				]
+			},			
+			{
+				"id": "22",
+				"name": "Zola",
+				"schemes": 
+				[					
+					{
+						"id": "44",
+						"card": "28",
+						"name": "Prison D'Hydra",
+						"init": "1",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Chaque joueur cherche un allié spécifique dans son deck, sa pile de défausse ou sa main et le place face cachée sous cette manigance. Placez X menaces sur cette manigance, X étant la somme des coûts des alliés situés en dessous. Chaque joueur mélange son deck.",
+						"defeat": "Retirez cette manigance de la partie et renvoyez chaque allié situé en dessous dans la main de son propriétaire.",
+						"info": ""
+					},					
+					{
+						"id": "45",
+						"card": "29",
+						"name": "Cobayes",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Le premier joueur défausse des cartes du dessus du deck Rencontre jusqu'à ce qu'il défausse un sbire. Il révèle ce sbire.",
+						"info": ""
+					},					
+					{
+						"id": "46",
+						"card": "29",
+						"name": "Cobayes",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Le premier joueur défausse des cartes du dessus du deck Rencontre jusqu'à ce qu'il défausse un sbire. Il révèle ce sbire.",
+						"info": ""
+					},					
+					{
+						"id": "47",
+						"card": "31",
+						"name": "Expériences De Zola",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": "REPONSE FORCEE : après qu'un sbire est entré en jeu, attachez-lui l'attachement TECH qui est le plus proche du dessus de la pile de défausse Rencontre."
+					}
+				]
+			},			
+			{
+				"id": "23",
+				"name": "Taskmaster",
+				"schemes": 
+				[					
+					{
+						"id": "48",
+						"card": "19",
+						"name": "Capturé Par Hydra",
+						"init": "5",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez face cachée sous cette manigance 1 allié CAPTIF pris au hasard parmi ceux mis de côté.",
+						"defeat": "Le joueur qui a déjoué cette manigance prend l'allié plaçé dessous dans sa main et retire cette manigance de la partie.",
+						"info": ""
+					},					
+					{
+						"id": "49",
+						"card": "20",
+						"name": "Capturé Par Hydra",
+						"init": "5",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez face cachée sous cette manigance 1 allié CAPTIF pris au hasard parmi ceux mis de côté.",
+						"defeat": "Le joueur qui a déjoué cette manigance prend l'allié plaçé dessous dans sa main et retire cette manigance de la partie.",
+						"info": ""
+					},					
+					{
+						"id": "50",
+						"card": "21",
+						"name": "Capturé Par Hydra",
+						"init": "5",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez face cachée sous cette manigance 1 allié CAPTIF pris au hasard parmi ceux mis de côté.",
+						"defeat": "Le joueur qui a déjoué cette manigance prend l'allié plaçé dessous dans sa main et retire cette manigance de la partie.",
+						"info": ""
+					},					
+					{
+						"id": "51",
+						"card": "22",
+						"name": "Capturé Par Hydra",
+						"init": "5",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez face cachée sous cette manigance 1 allié CAPTIF pris au hasard parmi ceux mis de côté.",
+						"defeat": "Le joueur qui a déjoué cette manigance prend l'allié plaçé dessous dans sa main et retire cette manigance de la partie.",
+						"info": ""
+					},					
+					{
+						"id": "52",
+						"card": "23",
+						"name": "Camp D'Entraînement De Taskmaster",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": "REPONSE FORCEE : après qu'un sbire est entré en jeu, donnez-lui une carte d'état Tenace."
+					}
+				]
+			},			
+			{
+				"id": "24",
+				"name": "Crâne Rouge",
+				"schemes": 
+				[					
+					{
+						"id": "53",
+						"card": "23",
+						"name": "La Maison Rouge",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": "Crâne Rouge ne peut pas subir de dégâts. Interruption : Quand un personnage contre cette manigance annexe, il peut utiliser son ATQ au lieu de son CTR."
+					},					
+					{
+						"id": "54",
+						"card": "24",
+						"name": "Le Réveil Du Dormeur",
+						"init": "0",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Mettez en jeu le dormeur, engagé avec le premier joueur. Quand le Dormeur est vaincu, retirez le Réveil du Dormeur de la partie",
+						"defeat": "",
+						"info": "Cette manigance annexe ne peut pas quitter le jeu tant que le Dormeur est en jeu."
+					},					
+					{
+						"id": "55",
+						"card": "25",
+						"name": "Camps De Prisonniers",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance cherche un allié dans son deck ou sa pile de défausse, le met en jeu et mélange son deck.",
+						"info": ""
+					},					
+					{
+						"id": "56",
+						"card": "26",
+						"name": "Réécrire Le Passé",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Chaque joueur choisit jusqu'à 3 cartes de sa pile de défausse et les mélange dans son deck.",
+						"info": ""
+					},					
+					{
+						"id": "57",
+						"card": "27",
+						"name": "Renforts D'Hydra",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance défausse un sbire non ELITE.",
+						"info": ""
+					},					
+					{
+						"id": "58",
+						"card": "28",
+						"name": "Chaos De Masse",
+						"init": "0",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Chaque joueur défausse les 5 cartes du dessus de son deck et place 1 menace sur cette manigance pour chaque type de ressource différent ainsi défaussé.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			}
+		]
+	},	
+	{
+		"id": "7",
+		"name": "Le Bouffon Vert",
+		"type": "s",
+		"villains": 
+		[			
+			{
+				"id": "4",
+				"name": "Le Bouffon Vert (EaR)",
+				"life1": "14",
+				"life2": "18",
+				"life3": "22"
+			},			
+			{
+				"id": "5",
+				"name": "Le Bouffon Vert (FM)",
+				"life1": "16",
+				"life2": "18",
+				"life3": "20"
+			}
+		],
+		"main": 
+		[			
+			{
+				"id": "7",
+				"name": "Prise De Contrôle Hostile",
+				"init": "2",
+				"initX": "1",
+				"max": "7",
+				"maxX": "1"
+			},			
+			{
+				"id": "8",
+				"name": "Acquisition D'Entreprise",
+				"init": "1",
+				"initX": "1",
+				"max": "10",
+				"maxX": "1"
+			},			
+			{
+				"id": "9",
+				"name": "Répandre Le Mutagène",
+				"init": "2",
+				"initX": "1",
+				"max": "7",
+				"maxX": "1"
+			},			
+			{
+				"id": "10",
+				"name": "Nuage Mutagène",
+				"init": "4",
+				"initX": "1",
+				"max": "11",
+				"maxX": "1"
+			}
+		],
+		"decks": 
+		[			
+			{
+				"id": "6",
+				"name": "Ingérence En Cours",
+				"schemes": 
+				{
+					"id": "15",
+					"card": "1",
+					"name": "Ingérence En Cours",
+					"init": "1",
+					"initX": "1",
+					"crisis": "1",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "Chaque joueur doit choisir : soit il dépense les ressources suivantes : SCIENCE et FORCE, soit il place 2 menaces sur cette carte.",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "7",
+				"name": "Absorption Électrique",
+				"schemes": 
+				{
+					"id": "16",
+					"card": "1",
+					"name": "Absorption Electrique",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "1",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "Défaussez 2 cartes du deck Rencontre. Pour chaque icône de boost défaussée par cet effet, chaque joueur doit choisir et défausser de sa main 1 ressource de n'importe quel type.",
+					"info": ""
+				}
+			},			
+			{
+				"id": "8",
+				"name": "Un Immense Gâchis",
+				"schemes": 
+				{
+					"id": "17",
+					"card": "1",
+					"name": "Un Immense Gâchis",
+					"init": "2",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "1",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "Placez 2 menaces supplémentaires sur cette manigance pour chaque personnage ami sonné.",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "15",
+				"name": "Entreprise à Risques",
+				"schemes": 
+				[					
+					{
+						"id": "27",
+						"card": "14",
+						"name": "Effondrement D'un Pont",
+						"init": "2",
+						"initX": "1",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "28",
+						"card": "15",
+						"name": "Production D'Oscorp",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "29",
+						"card": "16",
+						"name": "Production D'Oscorp",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "30",
+						"card": "17",
+						"name": "Pot-De-Vin",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "31",
+						"card": "18",
+						"name": "Pot-De-Vin",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "16",
+				"name": "Formule Mutagène",
+				"schemes": 
+				[					
+					{
+						"id": "32",
+						"card": "21",
+						"name": "Renforts Du Bouffon",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez 1 menace supplémentaire sur cette carte pour chaque sbire BOUFFON en jeu.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "33",
+						"card": "22",
+						"name": "Renforts Du Bouffon",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez 1 menace supplémentaire sur cette carte pour chaque sbire BOUFFON en jeu.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "34",
+						"card": "23",
+						"name": "La Nation Bouffon",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "",
+						"info": "Chaque ennemi BOUFFON (Le Bouffon Vert inclus) gagne +1 ATQ"
+					},					
+					{
+						"id": "35",
+						"card": "24",
+						"name": "Débordement",
+						"init": "1",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "2",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Dans l'odre des joueurs, chaque joueur doit défausser 2 cartes du deck Rencontre et mettre en jeu, engagé avec lui, chaque sbire BOUFFON ainsi défaussé.",
+						"info": ""
+					},					
+					{
+						"id": "36",
+						"card": "25",
+						"name": "Débordement",
+						"init": "1",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "2",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Dans l'odre des joueurs, chaque joueur doit défausser 2 cartes du deck Rencontre et mettre en jeu, engagé avec lui, chaque sbire BOUFFON ainsi défaussé.",
+						"info": ""
+					}
+				]
+			}
+		]
+	},	
+	{
+		"id": "8",
+		"name": "Les Démolisseurs",
+		"type": "s",
+		"villains": 
+		[			
+			{
+				"id": "6",
+				"name": "Le Démolisseur",
+				"life1": "14",
+				"life2": "18",
+				"life3": "0"
+			},			
+			{
+				"id": "7",
+				"name": "Le Boulet",
+				"life1": "13",
+				"life2": "16",
+				"life3": "0"
+			},			
+			{
+				"id": "8",
+				"name": "Le Compresseur",
+				"life1": "11",
+				"life2": "14",
+				"life3": "0"
+			},			
+			{
+				"id": "9",
+				"name": "Le Bulldozer",
+				"life1": "12",
+				"life2": "15",
+				"life3": "0"
+			}
+		],
+		"main": 
+		{
+			"id": "11",
+			"name": "Evasion",
+			"init": "0",
+			"initX": "0",
+			"max": "6",
+			"maxX": "1"
+		},
+		"decks": 
+		[			
+			{
+				"id": "17",
+				"name": "Le Compresseur",
+				"schemes": 
+				{
+					"id": "37",
+					"card": "3",
+					"name": "Compression !",
+					"init": "3",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "Cette carte ne peut pas quitter le jeu tant que le Compresseur est en jeu.<BR/>Compresser - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, chaque joueur défausse l'amélioration ou le soutien qu'il contrôle ayant le cout le plus élevé. Retirez toutes les menaces de cette manigance sauf 3."
+				}
+			},			
+			{
+				"id": "18",
+				"name": "Le Démolisseur",
+				"schemes": 
+				{
+					"id": "38",
+					"card": "3",
+					"name": "L'Heure Des Comptes",
+					"init": "6",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "Cette carte ne peut pas quitter le jeu tant que le Démolisseur est en jeu.<BR/>Cogneur - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, infligez 2 dégâts à chaque personnage ami. Retirez toutes les menaces de cette manigance sauf 3."
+				}
+			},			
+			{
+				"id": "19",
+				"name": "Le Bulldozer",
+				"schemes": 
+				{
+					"id": "39",
+					"card": "3",
+					"name": "Dégager La Voie",
+					"init": "4",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "Cette carte ne peut pas quitter le jeu tant que le Bulldozer est en jeu.<BR/>Charger! - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, chaque joueur doit défausser les 10 cartes du dessus de son deck.. Retirez toutes les menaces de cette manigance sauf 3."
+				}
+			},			
+			{
+				"id": "20",
+				"name": "Le Boulet",
+				"schemes": 
+				{
+					"id": "40",
+					"card": "3",
+					"name": "Envoyer Bouler",
+					"init": "5",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "Cette carte ne peut pas quitter le jeu tant que le Boulet est en jeu.<BR/>Démomition Gamma - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, sonnez chaque personnage ami. Retirez toutes les menaces de cette manigance sauf 3."
+				}
+			}
+		]
+	},	
+	{
+		"id": "9",
+		"name": "Captain America",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "3",
+			"name": "Captain America",
+			"vie": "11",
+			"schemes": 
+			{
+				"id": "11",
+				"card": "3",
+				"name": "Commando Armé",
+				"init": "3",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "1",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "Dans l'ordre des joueurs, chaque joueur défausse la carte du dessus du deck rencontre et subit 1 dégât pour chaque icône de boost défaussée par cet effet.",
+				"defeat": "",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "10",
+		"name": "Miss Marvel",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "10",
+			"name": "Miss Marvel",
+			"vie": "10",
+			"schemes": 
+			{
+				"id": "76",
+				"card": "10",
+				"name": "Génération Y",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "1",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "Défaussez une carte du dessus du deck de chaque joueur pour chaque allié et chaque soutien INDIVIDU en jeu.",
+				"defeat": "",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "11",
+		"name": "Thor",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "11",
+			"name": "Thor",
+			"vie": "14",
+			"schemes": 
+			{
+				"id": "77",
+				"card": "11",
+				"name": "Querelle Familiale",
+				"init": "2",
+				"initX": "0",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "1",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "Placez 1 menace supplémentaire sur cette carte pour chaque carte ASGARD en jeu",
+				"defeat": "",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "12",
+		"name": "Black Widow",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "4",
+			"name": "Black Widow",
+			"vie": "9",
+			"schemes": 
+			{
+				"id": "12",
+				"card": "4",
+				"name": "Tueur à Louer",
+				"init": "3",
+				"initX": "0",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "1",
+				"ampli": "0",
+				"entrave": "1",
+				"reveal": "",
+				"defeat": "",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "13",
+		"name": "Docteur Strange",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "12",
+			"name": "Docteur Strange",
+			"vie": "10",
+			"schemes": 
+			{
+				"id": "78",
+				"card": "12",
+				"name": "Ouvrir La Dimension Noire",
+				"init": "3",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "1",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "Placez face cachée sous cette manigance la carte du dessus du deck INVOCATION.",
+				"defeat": "Mélangez dans le deck INVOCATION la carte INVOCATION qui était située sous cette manigance.",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "14",
+		"name": "Hulk",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "13",
+			"name": "Hulk",
+			"vie": "18",
+			"schemes": 
+			{
+				"id": "79",
+				"card": "13",
+				"name": "Destruction Totale",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "1",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "Aucune menace ne peut être retirée de cette manigance tant que l'Abomination est en jeu."
+			}
+		}
+	},	
+	{
+		"id": "15",
+		"name": "Kang le conquérant",
+		"type": "s",
+		"villains": 
+		[			
+			{
+				"id": "15",
+				"name": "Kang",
+				"life1": "12",
+				"life2": "18",
+				"life3": "20"
+			},			
+			{
+				"id": "20",
+				"name": "Kang (Expert)",
+				"life1": "15",
+				"life2": "22",
+				"life3": "25"
+			}
+		],
+		"main": 
+		[			
+			{
+				"id": "21",
+				"name": "L'Arrivée de Kang",
+				"init": "0",
+				"initX": "0",
+				"max": "7",
+				"maxX": "1"
+			},			
+			{
+				"id": "23",
+				"name": "La Colère De Kang",
+				"init": "0",
+				"initX": "0",
+				"max": "10",
+				"maxX": "1"
+			},			
+			{
+				"id": "25",
+				"name": "Chronopolis",
+				"init": "0",
+				"initX": "0",
+				"max": "9",
+				"maxX": "0"
+			},			
+			{
+				"id": "26",
+				"name": "Destin Inéluctable",
+				"init": "1",
+				"initX": "0",
+				"max": "9",
+				"maxX": "0"
+			},			
+			{
+				"id": "27",
+				"name": "Le royaume de Rama-Tut",
+				"init": "1",
+				"initX": "0",
+				"max": "9",
+				"maxX": "0"
+			},			
+			{
+				"id": "28",
+				"name": "La guerre Présent-Futur",
+				"init": "2",
+				"initX": "0",
+				"max": "9",
+				"maxX": "0"
+			}
+		],
+		"decks": 
+		[			
+			{
+				"id": "25",
+				"name": "Kang",
+				"schemes": 
+				[					
+					{
+						"id": "59",
+						"card": "30",
+						"name": "Flux Temporel Perverti",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Chaque joueur doit soit défausser 1 carte prise au hasard dans sa main, soit placer 2 menaces sur cette carte.",
+						"defeat": "",
+						"info": "Les joueurs ne peuvent pas déclencher les capacités \"ACTION D'ALTER-EGO\" sur les cartes obligation."
+					},					
+					{
+						"id": "60",
+						"card": "31",
+						"name": "Empire De Kang",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Attribuez une carte Rencontre au joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "61",
+						"card": "32",
+						"name": "Empire De Kang",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Attribuez une carte Rencontre au joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "62",
+						"card": "33",
+						"name": "Empire De Kang",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Attribuez une carte Rencontre au joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "63",
+						"card": "34",
+						"name": "Empire De Kang",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Attribuez une carte Rencontre au joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "64",
+						"card": "35",
+						"name": "Cloués Au Sol",
+						"init": "2",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez 2 menaces sur cette carte pour chaque obligation en jeu.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "65",
+						"card": "36",
+						"name": "Dévastation",
+						"init": "4",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un sbire soit défaussé. Mettez en jeu ce sbire engagé avec le joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "66",
+						"card": "37",
+						"name": "Dévastation",
+						"init": "4",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un sbire soit défaussé. Mettez en jeu ce sbire engagé avec le joueur qui a déjoué cette manigance.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "26",
+				"name": "Le Maître Du Temps",
+				"schemes": 
+				{
+					"id": "67",
+					"card": "6",
+					"name": "Lueur Des Spères Séculaires",
+					"init": "3",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "1",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un sbire soit défaussé. Mettez en jeu ce sbire engagé avec le joueur qui a déjoué cette manigance.",
+					"info": ""
+				}
+			},			
+			{
+				"id": "27",
+				"name": "Les Anachronautes",
+				"schemes": 
+				[					
+					{
+						"id": "68",
+						"card": "6",
+						"name": "Les Anachronautes",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Mélangez dans le deck Rencontre chaque carte TEMPOREL de la pile de défausse Renconre.",
+						"info": ""
+					},					
+					{
+						"id": "69",
+						"card": "7",
+						"name": "Les Anachronautes",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Mélangez dans le deck Rencontre chaque carte TEMPOREL de la pile de défausse Renconre.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "28",
+				"name": "Temporel",
+				"schemes": 
+				{
+					"id": "70",
+					"card": "7",
+					"name": "Portail Temporel",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "1",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "Mélangez cette manigance dans le deck Rencontre au lieu de la défausser.",
+					"info": ""
+				}
+			}
+		]
+	},	
+	{
+		"id": "16",
+		"name": "Ant Man",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "14",
+			"name": "Ant-Man",
+			"vie": "12",
+			"schemes": 
+			{
+				"id": "80",
+				"card": "14",
+				"name": "Vol de technologie",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "Chaque carte TECH perd le texte imprimé dans sa boite de texte."
+			}
+		}
+	},	
+	{
+		"id": "17",
+		"name": "Star Lord",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "20",
+			"name": "Star Lord",
+			"vie": "10",
+			"schemes": 
+			{
+				"id": "113",
+				"card": "20",
+				"name": "Syndicat du crime en devenir",
+				"init": "2",
+				"initX": "0",
+				"crisis": "0",
+				"encounter": "1",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "2",
+				"reveal": "",
+				"defeat": "",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "18",
+		"name": "Drax",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "21",
+			"name": "Drax",
+			"vie": "14",
+			"schemes": 
+			{
+				"id": "114",
+				"card": "21",
+				"name": "Eliminer les faibles",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "Chaque ennemi gagne +2 ATQ."
+			}
+		}
+	},	
+	{
+		"id": "19",
+		"name": "Gamora",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "22",
+			"name": "Gamora",
+			"vie": "10",
+			"schemes": 
+			{
+				"id": "115",
+				"card": "22",
+				"name": "Rivalité entre soeurs",
+				"init": "4",
+				"initX": "0",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "Les joueurs autres que Gamora ne peuvent pas retirer de menaces de \"Rivalité entre soeurs\".<br/>REPONSE FORCEE : Après le début de la phase du méchant, attribuez 1 carte rencontre face cachée à Gamora."
+			}
+		}
+	},	
+	{
+		"id": "20",
+		"name": "Venom",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "23",
+			"name": "venom",
+			"vie": "12",
+			"schemes": 
+			{
+				"id": "116",
+				"card": "23",
+				"name": "Frénésie Klyntar",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "1",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "Les menaces sur cette manigance ne peuvent pas être retirées tant qu'il y a un ennemi SYMBIOTE en jeu."
+			}
+		}
+	},	
+	{
+		"id": "21",
+		"name": "Nebula",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "24",
+			"name": "Nebula",
+			"vie": "9",
+			"schemes": 
+			{
+				"id": "146",
+				"card": "24",
+				"name": "Instinct de Préservation",
+				"init": "2",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "Nebula perd -1 CTR, -1 ATQ et -1 DEF<br/>Gamora gagne +1 ATQ et ses attaques gagnent Perçant."
+			}
+		}
+	},	
+	{
+		"id": "22",
+		"name": "L'ombre du Titan Fou",
+		"type": "b",
+		"villains": 
+		[			
+			{
+				"id": "21",
+				"name": "Ebony Maw",
+				"life1": "14",
+				"life2": "18",
+				"life3": "23"
+			},			
+			{
+				"id": "22",
+				"name": "Proxima Midnight",
+				"life1": "9",
+				"life2": "12",
+				"life3": "15"
+			},			
+			{
+				"id": "23",
+				"name": "Corvus Glaive",
+				"life1": "8",
+				"life2": "11",
+				"life3": "14"
+			},			
+			{
+				"id": "24",
+				"name": "Thanos",
+				"life1": "16",
+				"life2": "23",
+				"life3": "28"
+			},			
+			{
+				"id": "25",
+				"name": "Loki",
+				"life1": "20",
+				"life2": "20",
+				"life3": "20"
+			},			
+			{
+				"id": "27",
+				"name": "Hela",
+				"life1": "8",
+				"life2": "9",
+				"life3": "0"
+			}
+		],
+		"main": 
+		[			
+			{
+				"id": "39",
+				"name": "Attaque sur Nulle-Part",
+				"init": "1",
+				"initX": "1",
+				"max": "6",
+				"maxX": "1"
+			},			
+			{
+				"id": "40",
+				"name": "La pierre du pouvoir",
+				"init": "1",
+				"initX": "1",
+				"max": "9",
+				"maxX": "1"
+			},			
+			{
+				"id": "41",
+				"name": "En état de siège",
+				"init": "1",
+				"initX": "1",
+				"max": "6",
+				"maxX": "1"
+			},			
+			{
+				"id": "42",
+				"name": "Les armées de Thanos",
+				"init": "1",
+				"initX": "1",
+				"max": "6",
+				"maxX": "1"
+			},			
+			{
+				"id": "43",
+				"name": "Les pierres d'Infinité",
+				"init": "0",
+				"initX": "0",
+				"max": "12",
+				"maxX": "1"
+			},			
+			{
+				"id": "44",
+				"name": "Equilibrer la balance",
+				"init": "0",
+				"initX": "0",
+				"max": "12",
+				"maxX": "1"
+			},			
+			{
+				"id": "45",
+				"name": "Le Tourment d'Odin",
+				"init": "1",
+				"initX": "1",
+				"max": "18",
+				"maxX": "1"
+			},			
+			{
+				"id": "46",
+				"name": "Longue vie au roi Loki",
+				"init": "1",
+				"initX": "1",
+				"max": "12",
+				"maxX": "1"
+			}
+		],
+		"heros": 
+		[			
+			{
+				"id": "25",
+				"name": "Adam Warlock",
+				"vie": "11",
+				"schemes": 
+				{
+					"id": "118",
+					"card": "25",
+					"name": "Eglise universelle de la vérité",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "1",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "REPONSE FORCEE : Après qu'un joueur a réinitialisé son deck, inclinez l'identité de ce joueur et sonnez-la."
+				}
+			},			
+			{
+				"id": "26",
+				"name": "Spectrum",
+				"vie": "11",
+				"schemes": 
+				{
+					"id": "117",
+					"card": "26",
+					"name": "Réacteur en fusion",
+					"init": "2",
+					"initX": "1",
+					"crisis": "1",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "Infligez 1 dégât à chaque personnage ami en jeu.",
+					"info": ""
+				}
+			}
+		],
+		"decks": 
+		[			
+			{
+				"id": "38",
+				"name": "Mâchoire d'ébène",
+				"schemes": 
+				[					
+					{
+						"id": "141",
+						"card": "21",
+						"name": "Réacteur en surchauffe",
+						"init": "3",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Chaque joueur doit choisir : soit subir 2 dégâts, soit placer 2 menaces sur cette carte.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "142",
+						"card": "22",
+						"name": "Réacteur en surchauffe",
+						"init": "3",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Chaque joueur doit choisir : soit subir 2 dégâts, soit placer 2 menaces sur cette carte.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "39",
+				"name": "Défense de la tour",
+				"schemes": 
+				[					
+					{
+						"id": "121",
+						"card": "26",
+						"name": "La ville est attaquée",
+						"init": "2",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance pioche 1 carte.",
+						"info": ""
+					},					
+					{
+						"id": "122",
+						"card": "27",
+						"name": "La ville est attaquée",
+						"init": "2",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Le joueur qui a déjoué cette manigance pioche 1 carte.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "40",
+				"name": "Thanos",
+				"schemes": 
+				[					
+					{
+						"id": "123",
+						"card": "6",
+						"name": "Sanctuaire",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Chaque joueur peut dépenser jusqu'à 3 ressources FORCE de sa main. Infligez 2 dégâts à Thanos pour chaque ressource FORCE ainsi dépensée. Ces dégâts ignorent la carte d'état Tenace.",
+						"info": "Victoire 1.<br/>Thanos ne peut pas subir de dégâts."
+					},					
+					{
+						"id": "124",
+						"card": "19",
+						"name": "Le trône du Titan",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Choisissez et défaussez une PIERRE D'INFINITE qui est en jeu.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "41",
+				"name": "Hela",
+				"schemes": 
+				[					
+					{
+						"id": "127",
+						"card": "5",
+						"name": "Gnipahellir",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Le premier joueur révèle Gjallerbru et Skruge et les met en jeu. Attribuez 1 carte Rencontre face cachée à chaque autre joueur.",
+						"info": "Victoire 3."
+					},					
+					{
+						"id": "128",
+						"card": "6",
+						"name": "Gjallerbru",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Le premier joueur révèle la forteresse de Nastrond et Nidhogg et les met en jeu. Attribuez 1 carte Rencontre face cachée à chaque autre joueur.",
+						"info": "Victoire 2."
+					},					
+					{
+						"id": "129",
+						"card": "7",
+						"name": "Forteresse de Nastrond",
+						"init": "4",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Le premier joueur détache Odin de la manigance principale et en prend le contrôle. Attribuez 1 carte rencontre face cachée à chaque joueur.",
+						"info": "Victoire 4."
+					}
+				]
+			},			
+			{
+				"id": "42",
+				"name": "Loki",
+				"schemes": 
+				[					
+					{
+						"id": "133",
+						"card": "7",
+						"name": "Ecrin des Hivers d'Antan",
+						"init": "4",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Révélez la carte du dessus du deck PIERRE D'INFINITE. Echangez Loki avec l'un des méchants Loki mis de coté pris au hasard.",
+						"info": ""
+					},					
+					{
+						"id": "134",
+						"card": "8",
+						"name": "Guerre sur Asgard",
+						"init": "6",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Révélez la carte du dessus du deck PIERRE D'INFINITE. Echangez Loki avec l'un des méchants Loki mis de coté pris au hasard.",
+						"info": ""
+					},					
+					{
+						"id": "135",
+						"card": "9",
+						"name": "Folie sur Midgard",
+						"init": "5",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Révélez la carte du dessus du deck PIERRE D'INFINITE. Echangez Loki avec l'un des méchants Loki mis de coté pris au hasard.",
+						"info": ""
+					},					
+					{
+						"id": "137",
+						"card": "10",
+						"name": "Ouvrir le Bifrost",
+						"init": "3",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "1",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Révélez la carte du dessus du deck PIERRE D'INFINITE. Echangez Loki avec l'un des méchants Loki mis de coté pris au hasard.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "43",
+				"name": "L'ordre Noir",
+				"schemes": 
+				{
+					"id": "143",
+					"card": "3",
+					"name": "L'ordre Noir",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "1",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "Tant qu'un sbire ORDRE NOIR est en jeu, aucune menace ne peut être retirée de cette manigance annexe."
+				}
+			},			
+			{
+				"id": "44",
+				"name": "Armées du Titan",
+				"schemes": 
+				[					
+					{
+						"id": "144",
+						"card": "5",
+						"name": "Vaisseau de débarquement",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un sbire soit défaussé. Mettez en jeu ce sbire engagé avec le joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "145",
+						"card": "6",
+						"name": "Vaisseau de débarquement",
+						"init": "2",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un sbire soit défaussé. Mettez en jeu ce sbire engagé avec le joueur qui a déjoué cette manigance.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "45",
+				"name": "Enfants de Thanos",
+				"schemes": 
+				[					
+					{
+						"id": "125",
+						"card": "4",
+						"name": "Tribut",
+						"init": "2",
+						"initX": "1",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Attribuez une carte de rencontre face cachée au joueur qui a déjoué cette manigance.",
+						"info": ""
+					},					
+					{
+						"id": "126",
+						"card": "5",
+						"name": "Tribut",
+						"init": "2",
+						"initX": "1",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Attribuez une carte de rencontre face cachée au joueur qui a déjoué cette manigance.",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "47",
+				"name": "Légions de Hel",
+				"schemes": 
+				[					
+					{
+						"id": "130",
+						"card": "6",
+						"name": "Légions de Hel",
+						"init": "2",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez 2 menaces supplémentaires sur cette carte pour chaque sbire MORT-VIVANT en jeu. S'il n'y a pas de sbire MORT-VIVANT en jeu, cette carte gagne renfort.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "131",
+						"card": "7",
+						"name": "Légions de Hel",
+						"init": "2",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Placez 2 menaces supplémentaires sur cette carte pour chaque sbire MORT-VIVANT en jeu. S'il n'y a pas de sbire MORT-VIVANT en jeu, cette carte gagne renfort.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "48",
+				"name": "Géants de glace",
+				"schemes": 
+				{
+					"id": "132",
+					"card": "6",
+					"name": "Tempête surnaturelle",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "Inclinez chaque allié en jeu.",
+					"defeat": "",
+					"info": "Les héros et les alliés ne peuvent pas être redressés par des effets de carte Joueur."
+				}
+			},			
+			{
+				"id": "50",
+				"name": "Basique / Campagne",
+				"schemes": 
+				[					
+					{
+						"id": "138",
+						"card": "2",
+						"name": "Brèche de sécurité",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "2",
+						"reveal": "Chaque joueur place face cachée sur cette carte une carte prise au hasard dans sa main.",
+						"defeat": "Renvoyez dans la main de son propriétaire chaque carte face cachée qui est sur cette carte.",
+						"info": "Victoire 2."
+					},					
+					{
+						"id": "139",
+						"card": "8",
+						"name": "Protocoles de Défense",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "2",
+						"reveal": "",
+						"defeat": "",
+						"info": "Victoire 2. INTERRUPTION FORCEE : Quand la phase des joueurs se termine, placez 1 jeton Crash sur cette carte. S'il y a 2 jetons Crash sur cette carte, chaque joueur ajoute à sa main 1 exemplaire de l'obligation Panne du Système. Retirez cette carte de la partie."
+					},					
+					{
+						"id": "140",
+						"card": "13",
+						"name": "Récupérer l'armure d'Odin",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "2",
+						"reveal": "",
+						"defeat": "Soignez tous les dégâts d'Odin et retournez-le sur sa face ROI",
+						"info": "Aucune menace ne peut-être retirée de cette manigance à moins que le premier joueur ne contrôle Odin. Victoire 1."
+					},					
+					{
+						"id": "159",
+						"card": "1",
+						"name": "Sécuriser l'aire d'atterrissage",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "Retournez cette carte.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "161",
+						"card": "3",
+						"name": "Sauver le resto de Shawarmas",
+						"init": "2",
+						"initX": "0",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Chaque joueur mélange 1 exemplaire de Shawarma dans son deck. Retournez cette carte.",
+						"info": ""
+					},					
+					{
+						"id": "162",
+						"card": "8",
+						"name": "Pirater l'ordinateur du Sanctuaire",
+						"init": "2",
+						"initX": "0",
+						"crisis": "1",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "0",
+						"entrave": "1",
+						"reveal": "",
+						"defeat": "Chaque joueur cherche 1 carte dans son deck ou sa pile de défausse, l'ajoute à sa main et mélange son deck. Retournez cette carte.",
+						"info": ""
+					},					
+					{
+						"id": "163",
+						"card": "13",
+						"name": "Trouver les pierres des Nornes",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Chaque joueur met en jeu, sous son Contrôle, un exemplaire de l'amélioration pierre des Nornes, face Mise en place visible. Retournez cette carte",
+						"info": "Aucune menace ne peut être retirée de cette manigance à moins qu'Hela n'ait le trait BLESSE."
+					},					
+					{
+						"id": "164",
+						"card": "19",
+						"name": "Ouvrir les cachots",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "0",
+						"ampli": "1",
+						"entrave": "0",
+						"reveal": "",
+						"defeat": "Chaque joueur choisit 1 allié CAPTIF du set Campagne et le met en jeu sous son contrôle. Retournez cette carte.",
+						"info": ""
+					}
+				]
+			}
+		]
+	},	
+	{
+		"id": "23",
+		"name": "Fan Print 1",
+		"type": "b",
+		
+		"heros": 
+		[			
+			{
+				"id": "27",
+				"name": "Miles Morales",
+				"vie": "9",
+				"schemes": 
+				{
+					"id": "120",
+					"card": "27",
+					"name": "Evil Morales",
+					"init": "2",
+					"initX": "0",
+					"crisis": "1",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "1",
+					"reveal": "Placez 1[pp] menace supplémentaire sur cette carte (déja calculé sur Remote Champions)",
+					"defeat": "",
+					"info": "Ultimatum ne peut être sonné."
+				}
+			},			
+			{
+				"id": "28",
+				"name": "Deadpool",
+				"vie": "10",
+				"schemes": 
+				{
+					"id": "119",
+					"card": "28",
+					"name": "Courtiser la mort",
+					"init": "4",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "Traitez les zones de texte imprimées des héros comme si elles étaient vierges"
+				}
+			}
+		],
+		"decks": 
+		{
+			"id": "59",
+			"name": "Fanatique Kree",
+			"schemes": 
+			{
+				"id": "160",
+				"card": "2",
+				"name": "Juge, juré et bourreau",
+				"init": "3",
+				"initX": "1",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "1",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "",
+				"defeat": "",
+				"info": "REPONSE FORCEE : Après qu'un personnage ami a été vaincu par une attaque ennemie, placez 2 menaces sur la manigance principale."
+			}
+		}
+	},	
+	{
+		"id": "24",
+		"name": "War Machine",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "29",
+			"name": "War Machine",
+			"vie": "10",
+			"schemes": 
+			{
+				"id": "147",
+				"card": "29",
+				"name": "Spectacle lumineux mortel",
+				"init": "3",
+				"initX": "0",
+				"crisis": "1",
+				"encounter": "0",
+				"accel": "0",
+				"ampli": "0",
+				"entrave": "1",
+				"reveal": "",
+				"defeat": "Infligez 1 dégât à chaque identité.",
+				"info": ""
+			}
+		}
+	},	
+	{
+		"id": "25",
+		"name": "Valkyrie",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "30",
+			"name": "Valkyrie",
+			"vie": "12",
+			"schemes": 
+			{
+				"id": "158",
+				"card": "30",
+				"name": "Puissants enchantements",
+				"init": "2",
+				"initX": "0",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "1",
+				"ampli": "0",
+				"entrave": "1",
+				"reveal": "",
+				"defeat": "",
+				"info": "Les joueurs ne peuvent pas défausser les attachements qui sont attachés à des personnages amis."
+			}
+		}
+	},	
+	{
+		"id": "26",
+		"name": "The Hood",
+		"type": "s",
+		"villains": 
+		{
+			"id": "26",
+			"name": "The Hood",
+			"life1": "14",
+			"life2": "16",
+			"life3": "18"
+		},
+		"main": 
+		[			
+			{
+				"id": "47",
+				"name": "Se faire des relations",
+				"init": "1",
+				"initX": "1",
+				"max": "5",
+				"maxX": "1"
+			},			
+			{
+				"id": "48",
+				"name": "Promesse de prospérité",
+				"init": "2",
+				"initX": "1",
+				"max": "8",
+				"maxX": "1"
+			},			
+			{
+				"id": "49",
+				"name": "Etat criminel",
+				"init": "3",
+				"initX": "1",
+				"max": "10",
+				"maxX": "1"
+			}
+		],
+		"decks": 
+		[			
+			{
+				"id": "52",
+				"name": "The Hood",
+				"schemes": 
+				{
+					"id": "148",
+					"card": "12",
+					"name": "Ambition démesurée",
+					"init": "2",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "2",
+					"reveal": "",
+					"defeat": "",
+					"info": "INTERRUPTION FORCEE : Quand la phase du Méchant commence, chaque joueur doit résoudre la capacité \"Tricherie\" de The Hood, dans l'ordre des joueurs."
+				}
+			},			
+			{
+				"id": "53",
+				"name": "Hommes-bêtes",
+				"schemes": 
+				{
+					"id": "149",
+					"card": "1",
+					"name": "Mode bestial",
+					"init": "3",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "",
+					"defeat": "",
+					"info": "INTERRUPTION FORCEE : Quand un personnage ami sonné ou désorienté est censé subir n'importe quelle quantité de dégâts, augmentez de 1 cette quantité."
+				}
+			},			
+			{
+				"id": "54",
+				"name": "Gang de Crossfire",
+				"schemes": 
+				{
+					"id": "150",
+					"card": "1",
+					"name": "En quête de sang",
+					"init": "2",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "1",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "Infligez 1 dégât au personnage ami avec le moins de points de vie restants. Si ce personnage est vaincu par cet effet, répétez cet effet.",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "55",
+				"name": "Mister Hyde",
+				"schemes": 
+				{
+					"id": "151",
+					"card": "1",
+					"name": "Etre son propre cobaye",
+					"init": "5",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "Cherchez Mister Hyde dans le deck Rencontre ou la pile de défausse Rencontre et révélez-le. (Mélangez le deck Rencontre)",
+					"defeat": "",
+					"info": "INTERRUPTION FORCEE : Quand un ennemi BRUTE est censé subir n'importe quelle quantité de dégâts, retirez autant de menaces de cette manigance à la place."
+				}
+			},			
+			{
+				"id": "56",
+				"name": "Sinistre syndicat",
+				"schemes": 
+				{
+					"id": "152",
+					"card": "1",
+					"name": "Le crime paie",
+					"init": "3",
+					"initX": "1",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "1",
+					"ampli": "0",
+					"entrave": "0",
+					"reveal": "Cherchez un sbire CRIMINEL dans le deck Rencontre et mettez-le en jeu, engagé avec vous. (Mélangez le deck Rencontre) Si aucun sbire n'est mis en jeu par cet effet, cette carte gagne renfort.",
+					"defeat": "",
+					"info": ""
+				}
+			},			
+			{
+				"id": "57",
+				"name": "Etat d'urgence",
+				"schemes": 
+				[					
+					{
+						"id": "153",
+						"card": "1",
+						"name": "Un casse audacieux",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Défaussez de votre main la carte ayant le coût le plus élevé.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "154",
+						"card": "2",
+						"name": "Désastre sur le port",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Subissez 3 dégâts indirects.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "155",
+						"card": "3",
+						"name": "Incendie au large",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Défaussez la carte que vous Contrôlez ayant le coût le moins élevé.",
+						"defeat": "",
+						"info": ""
+					},					
+					{
+						"id": "156",
+						"card": "4",
+						"name": "Course poursuite",
+						"init": "3",
+						"initX": "1",
+						"crisis": "0",
+						"encounter": "0",
+						"accel": "1",
+						"ampli": "0",
+						"entrave": "0",
+						"reveal": "Défaussez des cartes du dessus du deck Rencontre jusqu'à ce qu'un sbire soit défaussé. Mettez en jeu ce sbire engagé avec vous.",
+						"defeat": "",
+						"info": ""
+					}
+				]
+			},			
+			{
+				"id": "58",
+				"name": "Les Démolisseurs",
+				"schemes": 
+				{
+					"id": "157",
+					"card": "1",
+					"name": "Les meilleurs talents",
+					"init": "3",
+					"initX": "0",
+					"crisis": "0",
+					"encounter": "0",
+					"accel": "0",
+					"ampli": "0",
+					"entrave": "2",
+					"reveal": "",
+					"defeat": "",
+					"info": "Le méchant et chaque sbire ELITE gagnent Riposte 1."
+				}
+			}
+		]
+	},	
+	{
+		"id": "27",
+		"name": "Vision",
+		"type": "h",
+		
+		"heros": 
+		{
+			"id": "31",
+			"name": "Vision",
+			"vie": "11",
+			"schemes": 
+			{
+				"id": "165",
+				"card": "31",
+				"name": "Ultron déchaîné",
+				"init": "3",
+				"initX": "0",
+				"crisis": "0",
+				"encounter": "0",
+				"accel": "1",
+				"ampli": "0",
+				"entrave": "0",
+				"reveal": "Cherchez la carte Drones d'Ultron dans le deck Rencontre, la pile de défausse Rencontre ou parmi les cartes mises de côté et mettez-la en jeu. Mélangez le deck Rencontre. Chaque joueur met en jeu la carte du dessus de son deck, face cachée, engagée avec lui en tant que sbire DRONE.",
+				"defeat": "",
+				"info": ""
+			}
+		}
+	}
+]
