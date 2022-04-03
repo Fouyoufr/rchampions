@@ -1,9 +1,7 @@
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
-let rcConfig={};
-let lang={};
-let boxes={};
-let game={};
+let rcConfig={}, lang={}, game={};
+let boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={};
 
 //Construction fixe des éléments de la page
 let minusButtons=document.getElementsByClassName('minus');
@@ -12,7 +10,6 @@ let plusButtons=document.getElementsByClassName('plus');
 for(let i = 0; i < plusButtons.length; i++) {plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
 
 //Chargement de la config, depuis site distant si config locale absente ou datant de plus d'un jour
-
 if (localStorage.getItem('rChampionsConfig') === null) {
     console.log('config chargée à distance.');
     load('./config.json',configLoad);}
@@ -89,9 +86,16 @@ function sendValue(svDiv) {
       if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}}
 
   function boxesLoad(boxesJson) {
-      boxes=JSON.parse(boxesJson);
+      boxesFile=JSON.parse(boxesJson);
+      boxes=boxesFile.boxes;
+      villains=boxesFile.villains;
+      mainSchemes=boxesFile.mainSchemes;
+      heros=boxesFile.heros;
+      decks=boxesFile.decks;
+      sideSchemes=boxesFile.sideSchemes;
+      schemeTexts=boxesFile.schemeTexts;
 
-      if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsBoxes',JSON.stringify(boxes));}}
+      saveBoxFile();}
 
   function gameLoad(gameJson) {
       game=JSON.parse(gameJson);
@@ -111,26 +115,41 @@ function sendValue(svDiv) {
         document.head.appendChild(headLink);}
 
 function villainDisplay(villainDisp,villain) {
-    //Chercher le villain et la maingance principale dans les boites
-    for (i1=0;i1 < boxes.length;i1++) {
-        if (boxes[i1].villains !== undefined) {for (i2=0;i2 < boxes[i1].villains.length;i2++) {if (boxes[i1].villains[i2].id === villain.id) {foundVillain=boxes[i1].villains[i2];}}}
-        if (boxes[i1].main !== undefined) {for (i2=0;i2 < boxes[i1].main.length;i2++) {if (boxes[i1].main[i2].id === villain.main.id) {foundMain=boxes[i1].main[i2];}}}}
-    if (foundVillain !== undefined) {
-        villainDisp.getElementsByTagName('img')[0].src='./images/villains/' + foundVillain.id + '.png';
-        villainDisp.getElementsByTagName('img')[0].alt=foundVillain.name;
-        villainDisp.getElementsByClassName('name')[0].textContent=foundVillain.name;
+    if (villains[villain.id] !== undefined) {
+        //Affichage de l'état actuel du méchant
+        villainDisp.getElementsByTagName('img')[0].src='./images/villains/' + villain.id + '.png';
+        villainDisp.getElementsByTagName('img')[0].alt=villains[villain.id].name;
+        villainDisp.getElementsByClassName('name')[0].textContent=villains[villain.id].name;
         villainDisp.getElementsByClassName('phase')[0].textContent=villain.phase;
         villainDisp.getElementsByClassName('life')[0].getElementsByClassName('value')[0].textContent=villain.life;
         ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
             if (villain[statusName] !== undefined && villain[statusName] !== '0') {villainDisp.getElementsByClassName(statusName)[0].style.opacity='1';}
             else {villainDisp.getElementsByClassName(statusName)[0].style.opacity='0.5';}})
-       if (foundMain !== undefined) {
+        if (mainSchemes[villain.mainScheme.id] !== undefined) {
+            //Affichage de la manigance principale du méchant
             mainDisp=villainDisp.getElementsByClassName('mainScheme')[0];
-            mainDisp.getElementsByClassName('name')[0].textContent=foundMain.name;
-            mainDisp.getElementsByClassName('threat')[0].getElementsByClassName('value')[0].textContent=villain.main.current;
-            mainDisp.getElementsByClassName('acceleration')[0].getElementsByClassName('value')[0].textContent=villain.main.acceleration;
-            mainDisp.getElementsByClassName('max')[0].getElementsByClassName('value')[0].textContent=villain.main.max;}
+            mainDisp.getElementsByClassName('name')[0].textContent=mainSchemes[villain.mainScheme.id].name;
+            mainDisp.getElementsByClassName('threat')[0].getElementsByClassName('value')[0].textContent=villain.mainScheme.current;
+            mainDisp.getElementsByClassName('acceleration')[0].getElementsByClassName('value')[0].textContent=villain.mainScheme.acceleration;
+            mainDisp.getElementsByClassName('max')[0].getElementsByClassName('value')[0].textContent=villain.mainScheme.max;}
+            sideDisp=villainDisp.getElementsByClassName('sideSchemes')[0];
+        for (i = villain.sideSchemes.length;i > 0;i--) {
+            //Affichage des manigances annexes du méchant
+            let sideScheme = document.createElement('div');
+            sideScheme.textContent=sideSchemes[i].name;
+            sideDisp.prepend(sideScheme);
+
+        }
     }
     else {
         //Recharger la page si villain non trouvé (premier chargement des boites en local)
         location.reload();}}
+
+function playerDisplay() {
+
+}
+
+function saveBoxFile() {
+    saveBoxes='{"boxes":' + JSON.stringify(boxes) +',"villains":' + JSON.stringify(villains) + ', "mainSchemes":' + JSON.stringify(mainSchemes) + ', "heros":' + JSON.stringify(heros) + ', "decks":' + JSON.stringify(decks) + ', "sideSchemes":' + JSON.stringify(sideSchemes) + ', "schemeTexts":' + JSON.stringify(schemeTexts) + '}';
+    if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsBoxes',saveBoxes);}
+}

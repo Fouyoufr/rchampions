@@ -4,17 +4,17 @@
 	[
 		{
 			"id": "3","life": "17","phase": "1","nextLife": "22", "stunned": "0", "tough": "1","retaliate": "0", "piercing":"0", "ranged": "0",
-			"main":{"id": "0","current":"0","max": "0", "acceleration": "0"}}
+			"mainScheme":{"id": "0","current":"0","max": "0", "acceleration": "0"},
+			"sideSchemes": [		
+				{"id": "12","threat": "7","fromDeck": "h0"},		
+				{"id": "9","threat": "5","fromDeck": "h0"},		
+				{"id": "4","threat": "4","fromDeck": "2"}
+			],
+			"deletedScheme":"9"
+		}
 	],
 	"date": "1605371015",
 	"first": "10",
-	"deletedScheme": "9",
-	"schemes": 
-	[		
-		{"id": "12","threat": "7","fromDeck": "h0"},		
-		{"id": "9","threat": "5","fromDeck": "h0"},		
-		{"id": "4","threat": "4","fromDeck": "2"}
-	],
 	"players": 
 	[		
 		{"name": "Alexandre","order": "1","life": "0","alterHero": "s","confused": "1","stunned": "1","tough": "1","hero": "0"},		
@@ -22,5 +22,5 @@
 		{"name": "The best","order": "3","life": "4","alterHero": "AE","confused": "0","stunned": "0","tough": "1","hero": "0"},		
 		{"name": "pierre","order": "4","life": "7","alterHero": "SH","confused": "0","stunned": "0","tough": "0","hero": "0"}
 	],
-	"deck": ["1","2","3","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28"]
+	"deck": ["1","2","3","5","6","7","8"]
 }
