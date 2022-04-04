@@ -1,47 +1,45 @@
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
-let rcConfig={}, lang={}, game={};
-let boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={};
-
-//Construction fixe des éléments de la page
-let minusButtons=document.getElementsByClassName('minus');
-for(let i = 0; i < minusButtons.length; i++) {minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
-let plusButtons=document.getElementsByClassName('plus');
-for(let i = 0; i < plusButtons.length; i++) {plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
+let rcConfig={}, lang={}, game={},
+boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},
+loaded={"config":false,"lang":false,"boxes":false};
+addHeadLink('icon','image/x-icon','favicon.ico');
 
 //Chargement de la config, depuis site distant si config locale absente ou datant de plus d'un jour
 if (localStorage.getItem('rChampionsConfig') === null) {
     console.log('config chargée à distance.');
     load('./config.json',configLoad);}
 else {configLoad(localStorage.getItem('rChampionsConfig'));}
+
+//Mise en place des chaines de caractères "lang"
+let intervalLang = setInterval(function() {
+    if (loaded.config !== false) {
+        clearInterval(intervalLang);
+        if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {
+            console.log('langues chargées à distance.');
+            load('./lang/' + rcConfig.lang + '/strings.json',langLoad);}
+        else {langLoad(localStorage.getItem('rChampionsLangStrings'));}
+    }},100);
+
+//Récupération du contenu des boites.
+let intervalBox = setInterval(function() {
+    if (loaded.config !== false) {
+        clearInterval(intervalBox);
+        if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {
+            console.log('Contenu des boites récupéré à distance.');
+            load('./lang/' + rcConfig.lang + '/boxes.json',boxesLoad);}
+        else {boxesLoad(localStorage.getItem('rChampionsBoxes'));}
+    }},100);
+
+if (gameKey !== undefined) {
+    //Récupération des informations de la partie en cours.
+    load ('./games/' + gameKey + '.json',mainLoad);}
+
 function configLoad(configJson) {
     rcConfig=JSON.parse(configJson);
-    //Insertion des skins dans l'en-tête
     if (rcConfig.skin === undefined) {rcConfig.skin = rcConfig.defaultSkin;}
-    ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
-    addHeadLink('icon','image/x-icon','./favicon.ico');
-
-    //Mise en place des chaines de caractères "lang"
     if (rcConfig.lang === undefined) {rcConfig.lang = rcConfig.defaultLang;}
-    if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {
-        console.log('langues chargées à distance.');
-        load('./lang/' + rcConfig.lang + '/strings.json',langLoad);}
-    else {langLoad(localStorage.getItem('rChampionsLangStrings'));}
-
-    //Récupération du contenu des boites.
-    if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {
-        console.log('Contenu des boites récupéré à distance.');
-        load('./lang/' + rcConfig.lang + '/boxes.json',boxesLoad);}
-    else {boxesLoad(localStorage.getItem('rChampionsBoxes'));}
-
-    if (gameKey !== undefined) {
-        //Récupération des informations de la partie en cours.
-        load ('./games/' + gameKey + '.json',gameLoad);}
-
-    console.log(rcConfig);
-
-    
-
+    loaded.config=true;
     //stockage de la configuration en local.
     rcConfig.refreshDate=refreshToday;
     localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));}
@@ -68,8 +66,7 @@ function sendValue(svDiv) {
     let request = new XMLHttpRequest();
     request.open('GET', fileLoad);
     request.onreadystatechange = function() {
-        if (request.readyState ===4) {functionLoad(request.responseText)}
-    }
+        if (request.readyState ===4) {functionLoad(request.responseText)}}
     request.send();}
 
   function langLoad(langJson) {
@@ -81,8 +78,7 @@ function sendValue(svDiv) {
         let statusButtons=document.getElementsByClassName(statusName);
         for(let i=0; i < statusButtons.length; i++) {statusButtons[i].textContent=lang['st-' + statusName]}});
 
-    
-
+      loaded.lang=true;
       if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}}
 
   function boxesLoad(boxesJson) {
@@ -94,16 +90,31 @@ function sendValue(svDiv) {
       decks=boxesFile.decks;
       sideSchemes=boxesFile.sideSchemes;
       schemeTexts=boxesFile.schemeTexts;
+      loaded.boxes=true;
 
       saveBoxFile();}
 
-  function gameLoad(gameJson) {
+  function mainLoad(gameJson) {
       game=JSON.parse(gameJson);
-      //masquer les méchants non utilisés dans la partie et afficher le(s) autre(s)
-      for (let i=game.villains.length; i < 4; i++) {document.getElementById('villain' + (i+1)).style.display='none';};
-      for (let i=0; i < game.villains.length; i++) {villainDisplay(document.getElementById('villain' + (i+1)),game.villains[i]);};
+      //Attente d'avoir récupéré les éléments nécessaires avant de construire la page.
+      var interval = setInterval(function() {
+          if (loaded.config === false || loaded.lang === false || loaded.boxes === false){
+          //Do Something While Waiting / Spinner Gif etc.
+          }else{
+              clearInterval(interval);}
+              //Insertion des skins dans l'en-tête
+              ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
+              //Construction fixe des éléments de la page
+              let minusButtons=document.getElementsByClassName('minus');
+              for(let i = 0; i < minusButtons.length; i++) {minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
+              let plusButtons=document.getElementsByClassName('plus');
+              for(let i = 0; i < plusButtons.length; i++) {plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
+              //masquer les méchants non utilisés dans la partie et afficher le(s) autre(s)
+              for (let i=game.villains.length; i < 4; i++) {document.getElementById('villain' + (i+1)).style.display='none';};
+              for (let i=0; i < game.villains.length; i++) {villainDisplay(document.getElementById('villain' + (i+1)),game.villains[i]);};
+              document.getElementById('loading').style.display='none';
 
-
+      },100);
   }
 
   function addHeadLink(rel,type,href) {
@@ -141,9 +152,7 @@ function villainDisplay(villainDisp,villain) {
 
         }
     }
-    else {
-        //Recharger la page si villain non trouvé (premier chargement des boites en local)
-        location.reload();}}
+}
 
 function playerDisplay() {
 
