@@ -16,24 +16,22 @@ if (localStorage.getItem('rChampionsConfig') === null) {
     load('./config.json',configLoad);}
 else {configLoad(localStorage.getItem('rChampionsConfig'));}
 
-//Mise en place des chaines de caractères "lang"
-let intervalLang = setInterval(function() {
-    if (loaded.config !== false) {
-        clearInterval(intervalLang);
-        if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {
-            console.log('langues chargées à distance.');
-            load('./lang/' + rcConfig.lang + '/strings.json',langLoad);}
-        else {langLoad(localStorage.getItem('rChampionsLangStrings'));}
+//Mise en place des chaines de caractères "lang" (si config chargée).
+let intervalLang = setInterval(function() {if (loaded.config !== false) {
+    clearInterval(intervalLang);
+    if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {
+        console.log('langues chargées à distance.');
+        load('./lang/' + rcConfig.lang + '/strings.json',langLoad);}
+    else {langLoad(localStorage.getItem('rChampionsLangStrings'));}
     }},100);
 
-//Récupération du contenu des boites.
-let intervalBox = setInterval(function() {
-    if (loaded.config !== false) {
-        clearInterval(intervalBox);
-        if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {
-            console.log('Contenu des boites récupéré à distance.');
-            load('./lang/' + rcConfig.lang + '/boxes.json',boxesLoad);}
-        else {boxesLoad(localStorage.getItem('rChampionsBoxes'));}
+//Récupération du contenu des boites (si langues chargées).
+let intervalBox = setInterval(function() {if (loaded.lang !== false) {
+    clearInterval(intervalBox);
+    if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {
+        console.log('Contenu des boites récupéré à distance.');
+        load('./lang/' + rcConfig.lang + '/boxes.json',boxesLoad);}
+    else {boxesLoad(localStorage.getItem('rChampionsBoxes'));}
     }},100);
 
 if (gameKey !== undefined) {
@@ -41,23 +39,73 @@ if (gameKey !== undefined) {
     load ('./games/' + gameKey + '.json',mainLoad);}
 
 function configLoad(configJson) {
+    //Gestion de la configration locale du site.
     rcConfig=JSON.parse(configJson);
     if (rcConfig.skin === undefined) {rcConfig.skin = rcConfig.defaultSkin;}
     if (rcConfig.lang === undefined) {rcConfig.lang = rcConfig.defaultLang;}
     loaded.config=true;
-    //stockage de la configuration en local.
+    //(re)stockage de la configuration en local.
     rcConfig.refreshDate=refreshToday;
     localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));}
 
+function langLoad(langJson) {
+    //Mise en place des chaines de caractère de la langue sur la page.
+    lang=JSON.parse(langJson);
+    if (pageTitle!== null) document.title = lang[pageTitle];
+    document.documentElement.setAttribute('lang',rcConfig.lang);
+    ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
+        let statusButtons=document.getElementsByClassName(statusName);
+        for(let i=0; i < statusButtons.length; i++) {statusButtons[i].textContent=lang['st-' + statusName]}});
+  
+    loaded.lang=true;
+    if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}}
+
+function boxesLoad(boxesJson) {
+    //Mise en place des tableaux de contenu.
+    boxesFile=JSON.parse(boxesJson);
+    boxes=boxesFile.boxes;
+    villains=boxesFile.villains;
+    mainSchemes=boxesFile.mainSchemes;
+    heros=boxesFile.heros;
+    decks=boxesFile.decks;
+    sideSchemes=boxesFile.sideSchemes;
+    schemeTexts=boxesFile.schemeTexts;
+    loaded.boxes=true;
+    //Sauvegarde du contenu en local
+    saveBoxes='{"boxes":' + JSON.stringify(boxes) +',"villains":' + JSON.stringify(villains) + ', "mainSchemes":' + JSON.stringify(mainSchemes) + ', "heros":' + JSON.stringify(heros) + ', "decks":' + JSON.stringify(decks) + ', "sideSchemes":' + JSON.stringify(sideSchemes) + ', "schemeTexts":' + JSON.stringify(schemeTexts) + '}';
+    if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsBoxes',saveBoxes);}}
+
+function mainLoad(gameJson) {
+    //Chargement principal de la page de jeu
+    game=JSON.parse(gameJson);
+    //Attente d'avoir récupéré les éléments nécessaires avant de construire la page...
+    var interval = setInterval(function() {if (loaded.lang !== false && loaded.boxes !== false){
+        clearInterval(interval);}
+        //Insertion des skins dans l'en-tête
+        ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
+
+        //masquer les méchants non utilisés dans la partie et afficher le(s) autre(s)
+        for (let i=game.villains.length; i < 4; i++) {document.getElementById('villain' + (i+1)).style.display='none';};
+        for (let i=0; i < game.villains.length; i++) {villainDisplay(document.getElementById('villain' + (i+1)),game.villains[i]);};
+        document.getElementById('loading').style.display='none';
+
+        //Construction des boutons de changement de valeur
+        let minusButtons=document.getElementsByClassName('minus');
+        for(let i = 0; i < minusButtons.length; i++) {minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
+        let plusButtons=document.getElementsByClassName('plus');
+        for(let i = 0; i < plusButtons.length; i++) {plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
+  
+        },100);
+    }
+    
+//Gestion des modifications des valeurs chiffrées/compteurs.
 function minusButton (mbValue) {
     if (mbValue.getElementsByClassName('value')[0].textContent > 0) {
         mbValue.getElementsByClassName('value')[0].textContent--;
         sendValue(mbValue);}}
-
 function plusButton (pbValue) {
     pbValue.getElementsByClassName('value')[0].textContent++;
     sendValue(pbValue);}
-
 function sendValue(svDiv) {
     let stringToSend='';
     let valueToSend = svDiv.getElementsByClassName('value')[0].textContent;
@@ -74,61 +122,13 @@ function sendValue(svDiv) {
         if (request.readyState ===4) {functionLoad(request.responseText)}}
     request.send();}
 
-  function langLoad(langJson) {
-      //Mise en place des chaines de caractère de la langue sur la page.
-      lang=JSON.parse(langJson);
-      if (pageTitle!== null) document.title = lang[pageTitle];
-      document.documentElement.setAttribute('lang',rcConfig.lang);
-      ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
-        let statusButtons=document.getElementsByClassName(statusName);
-        for(let i=0; i < statusButtons.length; i++) {statusButtons[i].textContent=lang['st-' + statusName]}});
-
-      loaded.lang=true;
-      if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}}
-
-  function boxesLoad(boxesJson) {
-      boxesFile=JSON.parse(boxesJson);
-      boxes=boxesFile.boxes;
-      villains=boxesFile.villains;
-      mainSchemes=boxesFile.mainSchemes;
-      heros=boxesFile.heros;
-      decks=boxesFile.decks;
-      sideSchemes=boxesFile.sideSchemes;
-      schemeTexts=boxesFile.schemeTexts;
-      loaded.boxes=true;
-
-      saveBoxFile();}
-
-  function mainLoad(gameJson) {
-      game=JSON.parse(gameJson);
-      //Attente d'avoir récupéré les éléments nécessaires avant de construire la page.
-      var interval = setInterval(function() {
-          if (loaded.config === false || loaded.lang === false || loaded.boxes === false){
-          //Do Something While Waiting / Spinner Gif etc.
-          }else{
-              clearInterval(interval);}
-              //Insertion des skins dans l'en-tête
-              ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
-              //Construction fixe des éléments de la page
-              let minusButtons=document.getElementsByClassName('minus');
-              for(let i = 0; i < minusButtons.length; i++) {minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
-              let plusButtons=document.getElementsByClassName('plus');
-              for(let i = 0; i < plusButtons.length; i++) {plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
-              //masquer les méchants non utilisés dans la partie et afficher le(s) autre(s)
-              for (let i=game.villains.length; i < 4; i++) {document.getElementById('villain' + (i+1)).style.display='none';};
-              for (let i=0; i < game.villains.length; i++) {villainDisplay(document.getElementById('villain' + (i+1)),game.villains[i]);};
-              document.getElementById('loading').style.display='none';
-
-      },100);
-  }
-
-  function addHeadLink(rel,type,href) {
+function addHeadLink(rel,type,href) {
     //Ajout des liens en tête de document (styles et favicon).
-        let headLink = document.createElement('link');
-        headLink.rel = rel;
-        headLink.type = type;
-        headLink.href = href;
-        document.head.appendChild(headLink);}
+    let headLink = document.createElement('link');
+    headLink.rel = rel;
+    headLink.type = type;
+    headLink.href = href;
+    document.head.appendChild(headLink);}
 
 function villainDisplay(villainDisp,villain) {
     if (villains[villain.id] !== undefined) {
@@ -148,22 +148,54 @@ function villainDisplay(villainDisp,villain) {
             mainDisp.getElementsByClassName('threat')[0].getElementsByClassName('value')[0].textContent=villain.mainScheme.current;
             mainDisp.getElementsByClassName('acceleration')[0].getElementsByClassName('value')[0].textContent=villain.mainScheme.acceleration;
             mainDisp.getElementsByClassName('max')[0].getElementsByClassName('value')[0].textContent=villain.mainScheme.max;}
-            sideDisp=villainDisp.getElementsByClassName('sideSchemes')[0];
-        for (i = villain.sideSchemes.length;i > 0;i--) {
-            //Affichage des manigances annexes du méchant
-            let sideScheme = document.createElement('div');
-            sideScheme.textContent=sideSchemes[i].name;
-            sideDisp.prepend(sideScheme);
-
-        }
+        //Affichage des manigances annexes du méchant
+        sideDisp=villainDisp.getElementsByClassName('sideSchemes')[0];
+        for (i = villain.sideSchemes.length;i > 0;i--) {sideSchemeDisplay(villain.sideSchemes[i-1]);}
     }
 }
 
-function playerDisplay() {
+function sideSchemeDisplay (villainSC) {
+    let sideScheme = document.createElement('div');
+    sideScheme.id='sideScheme' + villainSC.id;
+    sideScheme.className='sideScheme';
+    //Affichages du compteur de menace de la manigance annexe
+    let sideSchemeThreat = document.createElement('div');
+    sideSchemeThreat.className='threat';
+    let sideSchemeMinus = document.createElement('button');
+    sideSchemeMinus.className='minus';
+    sideSchemeThreat.append(sideSchemeMinus);
+    let sideSchemeValue = document.createElement('div');
+    sideSchemeValue.className='value';
+    sideSchemeValue.textContent=villainSC.threat;
+    sideSchemeThreat.append(sideSchemeValue);
+    let sideSchemePlus = document.createElement('button');
+    sideSchemePlus.className='plus';
+    sideSchemeThreat.append(sideSchemePlus);
+    sideScheme.append(sideSchemeThreat);
+    //Affichage du nom de la manigance annexe
+    let sideSchemeName = document.createElement('div');
+    sideSchemeName.className='name';
+    sideSchemeName.textContent=sideSchemes[villainSC.id].name
+    sideScheme.append(sideSchemeName);
+    //Affichage des informations complémentairs sur la manigance annexe
 
-}
+    //Affichages des informations (crisis,encounter,acceleration,amplification) sur la manigance annexe
+    ['crisis','encounter','acceleration','amplification'].forEach((sideSchemeIconId) => {
+        if (sideSchemes[villainSC.id][sideSchemeIconId] !== undefined) {
+            let sideSchemeIcon = document.createElement('img');
+            sideSchemeIcon.alt=sideSchemeIconId;
+            sideSchemeIcon.src='./images/'+sideSchemeIconId+'.png';
+            sideSchemeIcon.className='icon';
+            sideScheme.append(sideSchemeIcon);}})
+    //Affichage des informations complémentaires sur la manigance annexe.
+    let sideSchemeInfo='';
+    if (sideSchemes[villainSC.id].info !== undefined) {sideSchemeInfo+='info: '+schemeTexts[sideSchemes[villainSC.id].info];}
+    if (sideSchemes[villainSC.id].reveal !== undefined) {sideSchemeInfo+='reveal: '+schemeTexts[sideSchemes[villainSC.id].revel];}
+    if (sideSchemes[villainSC.id].defeat !== undefined) {sideSchemeInfo+='defeat: '+schemeTexts[sideSchemes[villainSC.id].defeat];}
 
-function saveBoxFile() {
-    saveBoxes='{"boxes":' + JSON.stringify(boxes) +',"villains":' + JSON.stringify(villains) + ', "mainSchemes":' + JSON.stringify(mainSchemes) + ', "heros":' + JSON.stringify(heros) + ', "decks":' + JSON.stringify(decks) + ', "sideSchemes":' + JSON.stringify(sideSchemes) + ', "schemeTexts":' + JSON.stringify(schemeTexts) + '}';
-    if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsBoxes',saveBoxes);}
+
+
+
+    sideDisp.prepend(sideScheme);
+
 }

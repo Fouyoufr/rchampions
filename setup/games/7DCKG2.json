@@ -6,9 +6,9 @@
 			"id": "3","life": "17","phase": "1","nextLife": "22", "stunned": "0", "tough": "1","retaliate": "0", "piercing":"0", "ranged": "0",
 			"mainScheme":{"id": "0","current":"0","max": "0", "acceleration": "0"},
 			"sideSchemes": [		
-				{"id": "12","threat": "7","fromDeck": "h0"},		
-				{"id": "9","threat": "5","fromDeck": "h0"},		
-				{"id": "4","threat": "4","fromDeck": "2"}
+				{"id": "1","threat": "7"},		
+				{"id": "2","threat": "5"},		
+				{"id": "3","threat": "4"}
 			],
 			"deletedScheme":"9"
 		}

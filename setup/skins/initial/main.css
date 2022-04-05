@@ -31,14 +31,15 @@ button.minus,button.plus,div.value {border-radius: 4px;border: 2px solid white;f
 button.minus,button.plus {width:24px;color: white; background-color: black;cursor: pointer;font-size:18px;}
 button.minus::before{content:'<';}
 button.plus::before{content:'>';}
+button.minus:hover, button.plus:hover {background-color:white;border-color:black;color:black;}
 div.value {font-size: 18px; font-weight: bold;color: white; background-color: black;padding:0px;margin:0px;padding-left:2px; padding-right:2px;}
 
 /* Main definition of status buttons */
 div.status {}
 div.status button {cursor:pointer;}
-    div.status button.confused {}
-    div.status button.stunned {}
-    div.status button.tough {}
+    div.status button.confused {background-color:#e5d2e5;}
+    div.status button.stunned {background-color:#afcd53;}
+    div.status button.tough {background-color:#feb848;}
     div.status button.retaliate {}
     div.status button.piercing {}
     div.status button.ranged {}
