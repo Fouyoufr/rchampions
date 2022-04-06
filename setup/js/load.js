@@ -146,7 +146,7 @@ function villainDisplay(villainDisp,villain) {
         //Affichage de l'état actuel du méchant
         villainDisp.getElementsByClassName('picture')[0].style.backgroundImage="url('./images/villains/" + villain.id + ".png')";
         villainDisp.getElementsByClassName('picture')[0].title=lang.BUTTONvillain;
-        villainDisp.getElementsByClassName('picture')[0].onclick=function () {popupDisplay(lang.BUTTONvillain,'intro','content',cancelButton(),'outro');};
+        villainDisp.getElementsByClassName('picture')[0].onclick=function () {initChangeVillain(villainDisp.id)};
         villainDisp.getElementsByClassName('name')[0].textContent=villains[villain.id].name;
         villainDisp.getElementsByClassName('phase')[0].textContent=villain.phase;
         villainDisp.getElementsByClassName('phase')[0].title=lang.BUTTONphase;
@@ -273,7 +273,7 @@ function popupDisplay(title,intro,content,buttons,outro) {
     popup.getElementsByClassName('intro')[0].textContent=intro;
     popup.getElementsByClassName('content')[0].innerHTML=content;
     popup.getElementsByClassName('buttons')[0].innerHTML='';
-    popup.getElementsByClassName('buttons')[0].append(buttons);
+    popup.getElementsByClassName('buttons')[0].innerHTML=buttons;
     popup.getElementsByClassName('outro')[0].textContent=outro;}
 
 function cancelButton() {
@@ -281,3 +281,14 @@ function cancelButton() {
     cancelBtn.title=lang.BUTTONcancel;
     cancelBtn.innerHTML=lang.BUTTONcancel;
     return cancelBtn;}
+
+function initChangeVillain(villainDiv) {
+    //Popup de confirmation de changement du méchant de la partie en cours.
+    villainId=villainDiv.charAt(villainDiv.length - 1)-1;
+    villain2change=villains[game.villains[villainId].id].name;
+    outro = (game.villains[villainId].phase != '1') ? 'La partie sera réinitialisée à la phase 1.' : '';
+    let changeVillainButtons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    popupDisplay(lang.BUTTONvillain,
+        'Attention : en changeant le méchant '+ villain2change +', la progression actuelle sera perdue et toutes les éventuelles manigances annexes seront supprimées de la partie.',
+        'Choisir le nouveau méchant parmi les suivants...',changeVillainButtons,outro);
+}

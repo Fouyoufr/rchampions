@@ -19,9 +19,9 @@
     "BUTTONmobile" : "Ouvrir la version Smartphone",
     "BUTTONaddScheme" : "Ajouter une manigance annexe",
     "BUTTONphase" : "Passer à la phase suivante",
-    "BUTTONadd" : "Add",
-    "BUTTONcancel" : "Cancel",
-    "BUTTONconfirm" : "Confirm",
-    "BUTTONclose" : "close",
+    "BUTTONadd" : "Ajouter",
+    "BUTTONcancel" : "Annuler",
+    "BUTTONconfirm" : "Confirmer",
+    "BUTTONclose" : "Fermer",
     "BUTTONvillain" : "Choisir un nouveau Méchant"
 }
