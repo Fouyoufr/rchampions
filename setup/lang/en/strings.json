@@ -1,20 +1,27 @@
 {
-    "tit-game":"Current game",
-    "villain":"Villain",
+    "TITgame":"Current game",
 
-    "player":"Player",
+    "STconfused":"Confused",
+    "STstunned":"Stunned",
+    "STtough":"Tough",
+    "STRetaliate":"Retaliate",
+    "STpiercing":"Piercing",
+    "STranged":"Ranged",
 
-    "st-confused":"Confused",
-    "st-stunned":"Stunned",
-    "st-tough":"Tough",
-    "st-retaliate":"Retaliate",
-    "st-piercing":"Piercing",
-    "st-ranged":"Ranged",
+    "PLalter":"Alter-Ego",
+    "PLhero":"Hero",
 
-    "pl-alter":"Alter-Ego",
-    "pl-hero":"Hero",
-
-    "vil-counters":"Other counters",
-
-    "vil-mainScheme":"Main Scheme"
+    "MENUsettings":"Settings",
+    "MENUmelodice":"Music (MeloDice)",
+    "MENUadmin":"rChampions Administration",
+    "BUTTONminus" : "Decrement",
+    "BUTTONplus" : "increment",
+    "BUTTONmobile" : "Open Smartphone display",
+    "BUTTONaddScheme" : "Add a new side scheme",
+    "BUTTONphase" : "Advance to next phase",
+    "BUTTONadd" : "Add",
+    "BUTTONcancel" : "Cancel",
+    "BUTTONconfirm" : "Confirm",
+    "BUTTONclose" : "close",
+    "BUTTONvillain" : "Choose a new Villain"
 }

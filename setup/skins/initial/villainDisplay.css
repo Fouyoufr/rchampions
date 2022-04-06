@@ -2,9 +2,9 @@
 #villains {text-align:center;}
 .villain {font-variant: small-caps; text-transform: capitalize;display:inline-block;margin-right: 5px;margin-left: 5px;}
 .villain div.villain-frame {background:radial-gradient(black,gray);border-radius: 4px;margin-bottom: 2px;position: relative;}
-    .villain img.picture {border:solid 1px black;position:absolute;left:3px;top:3px;}
+    .villain button.picture {border:solid 1px black;position:absolute;left:3px;top:3px;background-image:none;width:40px;height:40px;}
     .villain div.name {display:box;font-weight:bolder;font-size:larger;color:white;margin-bottom: 3px;}
-    .villain button.phase {position:absolute;font-style: italic;font-size:medium;font-weight: bolder;right:3px;top:3px;background-color:black;color:white;border: solid 1px white;cursor: pointer;;}
+    .villain button.phase {position:absolute;font-style: italic;font-size:medium;font-weight: bolder;right:3px;top:3px;background-color:black;color:white;border: solid 1px white;cursor: pointer;;padding-top:1px;padding-bottom:1px;padding-right:3px;padding-left:3px;}
     .villain div.life {display:box;margin-bottom: 5px;}
         .villain div.life div.value {background-color:darkred;}
     .villain div.status button {font-weight: bolder;}

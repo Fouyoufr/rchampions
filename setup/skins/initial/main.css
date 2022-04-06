@@ -18,14 +18,21 @@ div.language {display: none;}
 /* melodice musical plugin interface */
 div.melodice {display: none;}
 
-/* for input boxes displayed at need */
-.inputDiv {}
-    .inputDiv div.title {}
-    .inputDiv p.intro {}
-    .inputDiv div.buttons {}
-    .inputDiv div.buttons button {}
-    .inputDiv div.buttons button.cancel {}
-    .inputDiv p.outro {}
+/* popup boxes styling */
+div#popup .background {position:fixed;Width: 50%;max-height: 50%;margin-top: 25%;margin-left: 25%;border: thick double darkolivegreen;border-top:none;}
+div#popup .title {width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
+div#popup .titleIn {}
+div#popup .close {width:26px;height:26px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
+div#popup .close::before {content: 'X';}
+div#popup .close:hover {background-color:crimson;}
+div#popup .inside {background-color:honeydew;overflow-y:auto;padding:10px;padding-top:5px;padding-bottom:2px;}
+div#popup  p {padding:0px;margin:0px;}
+div#popup button {padding:2px; background-color: grey; border: solid 1px black; color:white;font-size:medium;font-weight:normal;display:inline-flex;}
+div#popup button:hover {background-color:lightgrey; border-color:grey;}
+div#popup .intro {}
+div#popup .content {}
+div#popup .buttons {width:100%;text-align:center;}
+div#popup .outro {}
 
 /* buttons for life/threat input */
 button.minus,button.plus,div.value {border-radius: 4px;border: 2px solid white;font-weight:bold;display:inline-flex;font-size: 12px;height:24px;line-height: 24px;}
@@ -38,18 +45,18 @@ button.mobile {display:block;height:12px;width:20px;background-image: url(./smar
 button.mobile:hover {height:18px;width:30px;}
 
 /* Main definition of status buttons */
-div.status {}
-div.status button {cursor:pointer;}
-    div.status button.confused {background-color:#e5d2e5;}
-    div.status button.stunned {background-color:#afcd53;}
-    div.status button.tough {background-color:#feb848;}
-    div.status button.retaliate {}
-    div.status button.piercing {}
-    div.status button.ranged {}
+div.status button {cursor:pointer;color:black;border: solid 1px black;}
+div.status button.off {opacity: 0.5;color:grey;border-color: grey;}
+div.status button.confused {background-color:#e5d2e5;padding:2px;}
+div.status button.stunned {background-color:#afcd53;padding:2px;}
+div.status button.tough {background-color:#feb848;padding:2px;}
+div.status button.retaliate {}
+div.status button.piercing {}
+div.status button.ranged {}
 
 /*Gestion des menus */
-div.settingsMenu,div.adminMenu,div.melodiceMenu {position:fixed;;right:0px;width:30px;height:30px;background-size: contain;cursor:pointer;}
-div.settingsMenu {top:2px;background-image: url(./settings.png);}
-div.melodiceMenu {top:calc(50% - 15px);background-image: url(./melodice.png);}
-div.adminMenu {bottom:2px;background-image: url(./admin.png);}
-div.settingsMenu:hover,div.adminMenu:hover,div.melodiceMenu:hover {width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}
+button.settingsMenu,button.adminMenu,button.melodiceMenu {position:fixed;;right:0px;width:30px;height:30px;cursor:pointer;background-color: transparent;}
+button.settingsMenu {top:2px;background-image: url(./settings.png);}
+button.melodiceMenu {top:calc(50% - 15px);background-image: url(./melodice.png);background-color:rgba(255, 255, 255, 0.5)}
+button.adminMenu {bottom:2px;background-image: url(./admin.png);}
+button.settingsMenu:hover,button.adminMenu:hover,button.melodiceMenu:hover {width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}

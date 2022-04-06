@@ -1,20 +1,27 @@
 {
-    "tit-game":"Partie en cours",
-    "villain":"Méchant",
+    "TITgame":"Partie en cours",
 
-    "player":"joueur",
+    "STconfused":"Désorienté",
+    "STstunned":"Sonné",
+    "STtough":"Tenace",
+    "STretaliate":"Riposte",
+    "STpiercing":"Perçant",
+    "STranged":"A distance",
 
-    "st-confused":"Désorienté",
-    "st-stunned":"Sonné",
-    "st-tough":"Tenace",
-    "st-retaliate":"Riposte",
-    "st-piercing":"Perçant",
-    "st-ranged":"A distance",
+    "PLalter":"Alter-Égo",
+    "PLhero":"Héros",
 
-    "pl-alter":"Alter-Égo",
-    "pl-hero":"Héros",
-
-    "vil-counters":"Autres compteurs",
-
-    "vil-mainScheme":"Manigance Principale",
+    "MENUsettings":"Paramètres",
+    "MENUmelodice":"Musique (MeloDice)",
+    "MENUadmin":"Administration de rChampions",
+    "BUTTONminus" : "Décrémenter",
+    "BUTTONplus" : "incrémenter",
+    "BUTTONmobile" : "Ouvrir la version Smartphone",
+    "BUTTONaddScheme" : "Ajouter une manigance annexe",
+    "BUTTONphase" : "Passer à la phase suivante",
+    "BUTTONadd" : "Add",
+    "BUTTONcancel" : "Cancel",
+    "BUTTONconfirm" : "Confirm",
+    "BUTTONclose" : "close",
+    "BUTTONvillain" : "Choisir un nouveau Méchant"
 }

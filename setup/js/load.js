@@ -2,12 +2,12 @@
 const refreshToday = Math.round((new Date()).getTime()/86400000);
 let rcConfig={}, lang={}, game={},
 boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},
-loaded={"config":false,"lang":false,"boxes":false};
+loaded={"config":false,"lang":false,"boxes":false},
+popupDiv=document.createElement('div');
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 if (document.getElementById('loading')) {
-    document.getElementById('loading').innerHTML='<svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><path fill="#fff" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite"/></path><path fill="#fff" d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="-360 50 50" repeatCount="indefinite" /></path><path fill="#fff" d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite" /></path></svg>'
-}
+    document.getElementById('loading').innerHTML='<svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><path fill="#fff" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite"/></path><path fill="#fff" d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="-360 50 50" repeatCount="indefinite" /></path><path fill="#fff" d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite" /></path></svg>';}
 
 
 //Chargement de la config, depuis site distant si config locale absente ou datant de plus d'un jour
@@ -38,7 +38,6 @@ if (gameKey !== undefined) {
     //Récupération des informations de la partie en cours.
     load ('./games/' + gameKey + '.json',mainLoad);}
 
-addMenu();
 
 function configLoad(configJson) {
     //Gestion de la configration locale du site.
@@ -57,7 +56,11 @@ function langLoad(langJson) {
     document.documentElement.setAttribute('lang',rcConfig.lang);
     ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
         let statusButtons=document.getElementsByClassName(statusName);
-        for(let i=0; i < statusButtons.length; i++) {statusButtons[i].textContent=lang['st-' + statusName]}});
+        for(let i=0; i < statusButtons.length; i++) {
+            statusButtons[i].title=lang['ST' + statusName];
+            statusButtons[i].textContent=lang['ST' + statusName]}});
+    let mobileButtons=document.getElementsByClassName('mobile');
+    for (let i=0; i< mobileButtons.length; i++) {mobileButtons[i].title=lang.BUTTONmobile;}
   
     loaded.lang=true;
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}}
@@ -81,7 +84,7 @@ function mainLoad(gameJson) {
     //Chargement principal de la page de jeu
     game=JSON.parse(gameJson);
     //Attente d'avoir récupéré les éléments nécessaires avant de construire la page...
-    var interval = setInterval(function() {if (loaded.lang !== false && loaded.boxes !== false){
+      var interval = setInterval(function() {if (loaded.lang === true && loaded.boxes === true){
         clearInterval(interval);}
         //Insertion des skins dans l'en-tête
         ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
@@ -93,9 +96,15 @@ function mainLoad(gameJson) {
 
         //Construction des boutons de changement de valeur
         let minusButtons=document.getElementsByClassName('minus');
-        for(let i = 0; i < minusButtons.length; i++) {minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
+        for(let i = 0; i < minusButtons.length; i++) {
+            minusButtons[i].title=lang.BUTTONminus;
+            minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
         let plusButtons=document.getElementsByClassName('plus');
-        for(let i = 0; i < plusButtons.length; i++) {plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
+        for(let i = 0; i < plusButtons.length; i++) {
+            plusButtons[i].title=lang.BUTTONplus;
+            plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
+        addMenu();
+        addPopup();
   
         },100);
     }
@@ -135,14 +144,15 @@ function addHeadLink(rel,type,href) {
 function villainDisplay(villainDisp,villain) {
     if (villains[villain.id] !== undefined) {
         //Affichage de l'état actuel du méchant
-        villainDisp.getElementsByTagName('img')[0].src='./images/villains/' + villain.id + '.png';
-        villainDisp.getElementsByTagName('img')[0].alt=villains[villain.id].name;
+        villainDisp.getElementsByClassName('picture')[0].style.backgroundImage="url('./images/villains/" + villain.id + ".png')";
+        villainDisp.getElementsByClassName('picture')[0].title=lang.BUTTONvillain;
+        villainDisp.getElementsByClassName('picture')[0].onclick=function () {popupDisplay(lang.BUTTONvillain,'intro','content',cancelButton(),'outro');};
         villainDisp.getElementsByClassName('name')[0].textContent=villains[villain.id].name;
         villainDisp.getElementsByClassName('phase')[0].textContent=villain.phase;
+        villainDisp.getElementsByClassName('phase')[0].title=lang.BUTTONphase;
         villainDisp.getElementsByClassName('life')[0].getElementsByClassName('value')[0].textContent=villain.life;
         ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
-            if (villain[statusName] !== undefined && villain[statusName] !== '0') {villainDisp.getElementsByClassName(statusName)[0].style.opacity='1';}
-            else {villainDisp.getElementsByClassName(statusName)[0].style.opacity='0.5';}})
+            if (villain[statusName] === undefined || villain[statusName] !== '0') villainDisp.getElementsByClassName(statusName)[0].classList.add('off'); else villainDisp.getElementsByClassName(statusName)[0].classList.remove('off');})
         if (mainSchemes[villain.mainScheme.id] !== undefined) {
             //Affichage de la manigance principale du méchant
             mainDisp=villainDisp.getElementsByClassName('mainScheme')[0];
@@ -153,6 +163,9 @@ function villainDisplay(villainDisp,villain) {
         //Affichage des manigances annexes du méchant
         sideDisp=villainDisp.getElementsByClassName('sideSchemes')[0];
         for (i = villain.sideSchemes.length;i > 0;i--) {sideSchemeDisplay(villain.sideSchemes[i-1]);}
+        //Gestion du bouton d'ajout de nouvelle phase
+        sideDisp.getElementsByClassName('new')[0].title=lang.BUTTONaddScheme
+
     }
 }
 
@@ -179,8 +192,6 @@ function sideSchemeDisplay (villainSC) {
     sideSchemeName.className='name';
     sideSchemeName.textContent=sideSchemes[villainSC.id].name
     sideScheme.append(sideSchemeName);
-    //Affichage des informations complémentairs sur la manigance annexe
-
     //Affichages des informations (crisis,encounter,acceleration,amplification) sur la manigance annexe
     ['crisis','encounter','acceleration','amplification'].forEach((sideSchemeIconId) => {
         if (sideSchemes[villainSC.id][sideSchemeIconId] !== undefined) {
@@ -203,15 +214,70 @@ function sideSchemeDisplay (villainSC) {
 }
 
 function addMenu() {
-    settingsMenu=document.createElement('div');
+    settingsMenu=document.createElement('button');
     settingsMenu.className='settingsMenu';
+    settingsMenu.title=lang.MENUsettings;
     document.getElementsByTagName('body')[0].append(settingsMenu);
 
-    melodiceMenu=document.createElement('div');
+    melodiceMenu=document.createElement('button');
     melodiceMenu.className='melodiceMenu';
+    melodiceMenu.title=lang.MENUmelodice;
     document.getElementsByTagName('body')[0].append(melodiceMenu);
 
-    adminMenu=document.createElement('div');
+    adminMenu=document.createElement('button');
     adminMenu.className='adminMenu';
+    adminMenu.title=lang.MENUadmin;
     document.getElementsByTagName('body')[0].append(adminMenu);
+
 }
+
+function addPopup() {
+    //Ajout du div pour les popup (masque les intéractions à l'écran et présente une fenêtre générique)
+    popupDiv.id='popup';
+    popupBack=document.createElement('div');
+    popupBack.className='background';
+    popupTitle=document.createElement('div');
+    popupTitle.className='title';
+    popupTitleIn=document.createElement('div');
+    popupTitleIn.className='titleIn';
+    popupTitle.append(popupTitleIn);
+    popupClose=document.createElement('button');
+    popupClose.className='close';
+    popupClose.title=lang.BUTTONclose;
+    popupClose.onclick=function () {document.getElementById('popup').style.display='none';}
+    popupTitle.append(popupClose);
+    popupBack.append(popupTitle);
+    popupIn=document.createElement('div');
+    popupIn.className='inside';
+    popupIntro=document.createElement('p');
+    popupIntro.className='intro';
+    popupIn.append(popupIntro);
+    popupContent=document.createElement('div');
+    popupContent.className='content';
+    popupIn.append(popupContent);
+    popupButtons=document.createElement('div');
+    popupButtons.className='buttons';
+    popupIn.append(popupButtons);
+    popupOutro=document.createElement('p');
+    popupOutro.className='outro';
+    popupIn.append(popupOutro);
+    popupBack.append(popupIn);
+    popupDiv.append(popupBack);
+    document.getElementsByTagName('body')[0].append(popupDiv);}
+
+function popupDisplay(title,intro,content,buttons,outro) {
+    //Affichage d'une popup
+    popup=document.getElementById('popup');
+    popup.style.display='block';
+    popup.getElementsByClassName('titleIn')[0].textContent=title;
+    popup.getElementsByClassName('intro')[0].textContent=intro;
+    popup.getElementsByClassName('content')[0].innerHTML=content;
+    popup.getElementsByClassName('buttons')[0].innerHTML='';
+    popup.getElementsByClassName('buttons')[0].append(buttons);
+    popup.getElementsByClassName('outro')[0].textContent=outro;}
+
+function cancelButton() {
+    cancelBtn=document.createElement('button');
+    cancelBtn.title=lang.BUTTONcancel;
+    cancelBtn.innerHTML=lang.BUTTONcancel;
+    return cancelBtn;}
