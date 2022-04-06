@@ -227,7 +227,13 @@ function addMenu() {
     adminMenu=document.createElement('button');
     adminMenu.className='adminMenu';
     adminMenu.title=lang.MENUadmin;
+    adminMenu.onclick=adminPopup;
     document.getElementsByTagName('body')[0].append(adminMenu);
+
+    gamekey=document.createElement('div');
+    gamekey.id='gameKey';
+    gamekey.innerHTML=gameKey;
+    document.getElementsByTagName('body')[0].append(gamekey);
 
 }
 
@@ -270,25 +276,28 @@ function popupDisplay(title,intro,content,buttons,outro) {
     popup=document.getElementById('popup');
     popup.style.display='block';
     popup.getElementsByClassName('titleIn')[0].textContent=title;
-    popup.getElementsByClassName('intro')[0].textContent=intro;
+    popup.getElementsByClassName('intro')[0].innerHTML=intro;
     popup.getElementsByClassName('content')[0].innerHTML=content;
     popup.getElementsByClassName('buttons')[0].innerHTML='';
     popup.getElementsByClassName('buttons')[0].innerHTML=buttons;
-    popup.getElementsByClassName('outro')[0].textContent=outro;}
-
-function cancelButton() {
-    cancelBtn=document.createElement('button');
-    cancelBtn.title=lang.BUTTONcancel;
-    cancelBtn.innerHTML=lang.BUTTONcancel;
-    return cancelBtn;}
+    popup.getElementsByClassName('outro')[0].innerHTML=outro;}
 
 function initChangeVillain(villainDiv) {
     //Popup de confirmation de changement du méchant de la partie en cours.
-    villainId=villainDiv.charAt(villainDiv.length - 1)-1;
-    villain2change=villains[game.villains[villainId].id].name;
-    outro = (game.villains[villainId].phase != '1') ? 'La partie sera réinitialisée à la phase 1.' : '';
+    let villainId=villainDiv.charAt(villainDiv.length - 1)-1;
+    let outro = (game.villains[villainId].phase != '1') ? lang.POPUPvillainOutro : '';
+    let intro = lang.POPUPvillainIntro1 + villains[game.villains[villainId].id].name + '\'.<br/>' + lang.POPUPvillainIntro2;
+    intro += (game.villains[villainId].sideSchemes.length > 0) ? lang.POPUPvillaintIntro3 : '.';
     let changeVillainButtons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
-    popupDisplay(lang.BUTTONvillain,
-        'Attention : en changeant le méchant '+ villain2change +', la progression actuelle sera perdue et toutes les éventuelles manigances annexes seront supprimées de la partie.',
-        'Choisir le nouveau méchant parmi les suivants...',changeVillainButtons,outro);
-}
+    let villainSelect='';
+    for (let i in villains) if (i != 0) {
+        villainSelect +='<input type="radio" name="villainSelect" value="' + villains[i].id +'" id="villainSelect' + villains[i].id + '"';
+        if (i == game.villains[villainId].id) villainSelect += ' checked';
+        villainSelect +='><label for "villainSelect' + i + '"><img alt="' + villains[i].name + '" src="./images/villains/' + i + '.png">' + villains[i].name + '</label>';}
+    popupDisplay(lang.BUTTONvillain,intro,villainSelect,changeVillainButtons,outro);}
+
+function adminPopup() {
+    //Popup de saisie du mot de passe pour accès administratif
+    let intro=lang.POPUPAdminIntro, content= lang.popupAdminContent;
+    let buttons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    popupDisplay(lang.MENUadmin,intro,content,buttons,'');}

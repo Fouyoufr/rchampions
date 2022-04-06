@@ -23,5 +23,12 @@
     "BUTTONcancel" : "Cancel",
     "BUTTONconfirm" : "Confirm",
     "BUTTONclose" : "close",
-    "BUTTONvillain" : "Choose a new Villain"
+    "BUTTONvillain" : "Choose a new Villain",
+
+    "POPUPvillainIntro1":"You are currently playing a game against '",
+    "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",
+    "POPUPvillaintIntro3":" and all side schemes removed from the game",
+    "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
+    "POPUPAdminIntro":"You need a password to access the adminsitration page.",
+    "popupAdminContent":"Please type the administrative pssord below to gain access to rChampion administration :<br/><input type='password'>"
 }

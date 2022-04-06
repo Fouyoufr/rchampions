@@ -23,5 +23,12 @@
     "BUTTONcancel" : "Annuler",
     "BUTTONconfirm" : "Confirmer",
     "BUTTONclose" : "Fermer",
-    "BUTTONvillain" : "Choisir un nouveau Méchant"
+    "BUTTONvillain" : "Choisir un nouveau Méchant",
+
+    "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
+    "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
+    "POPUPvillaintIntro3":" et toutes les éventuelles manigances annexes seront otées.",
+    "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
+    "POPUPAdminIntro":"Cette partie du site est protégée par un mot de passe...",
+    "popupAdminContent":"Merci de saisir le mot de passe administratif de rChampions :<br/><input type='password'>"
 }
