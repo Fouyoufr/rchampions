@@ -28,4 +28,4 @@
     .villain div.sideSchemes button.new::before {content: "+";}
 
     .villain div.counters {}
-    .villain button.mobile {}
+    .villain button.mobile {position:absolute;bottom:2px;left:2px;}

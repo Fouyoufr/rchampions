@@ -38,6 +38,8 @@ if (gameKey !== undefined) {
     //Récupération des informations de la partie en cours.
     load ('./games/' + gameKey + '.json',mainLoad);}
 
+addMenu();
+
 function configLoad(configJson) {
     //Gestion de la configration locale du site.
     rcConfig=JSON.parse(configJson);
@@ -198,4 +200,18 @@ function sideSchemeDisplay (villainSC) {
 
     sideDisp.prepend(sideScheme);
 
+}
+
+function addMenu() {
+    settingsMenu=document.createElement('div');
+    settingsMenu.className='settingsMenu';
+    document.getElementsByTagName('body')[0].append(settingsMenu);
+
+    melodiceMenu=document.createElement('div');
+    melodiceMenu.className='melodiceMenu';
+    document.getElementsByTagName('body')[0].append(melodiceMenu);
+
+    adminMenu=document.createElement('div');
+    adminMenu.className='adminMenu';
+    document.getElementsByTagName('body')[0].append(adminMenu);
 }

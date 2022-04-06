@@ -1,4 +1,5 @@
-body {padding:0px;margin:0px;height:100%;width:100%;position:absolute;background:lightblue;}
+body {padding:0px;margin:0px;height:100%;width:100%;position:absolute;background-image: url(./background.png); background-size:cover;margin-right:20px;}
+button {margin:0px;padding:0px;box-shadow: none;box-sizing: unset;background-size:contain;cursor:pointer;border:none;text-align:center;justify-content: center;cursor: pointer;}
 /* link to admin page (may content "game key") */
 div#adminBar {}
 
@@ -27,12 +28,14 @@ div.melodice {display: none;}
     .inputDiv p.outro {}
 
 /* buttons for life/threat input */
-button.minus,button.plus,div.value {border-radius: 4px;border: 2px solid white;font-weight:bold;display:inline-flex;text-align:center;font-size: 12px;margin:0px;padding:0px;box-shadow: none;height:24px;line-height: 24px;box-sizing: unset;justify-content: center;}
-button.minus,button.plus {width:24px;color: white; background-color: black;cursor: pointer;font-size:18px;}
+button.minus,button.plus,div.value {border-radius: 4px;border: 2px solid white;font-weight:bold;display:inline-flex;font-size: 12px;height:24px;line-height: 24px;}
+button.minus,button.plus {width:24px;color: white; background-color: black;font-size:18px;}
 button.minus::before{content:'<';}
 button.plus::before{content:'>';}
 button.minus:hover, button.plus:hover {background-color:white;border-color:black;color:black;}
 div.value {font-size: 18px; font-weight: bold;color: white; background-color: black;padding:0px;margin:0px;padding-left:2px; padding-right:2px;}
+button.mobile {display:block;height:12px;width:20px;background-image: url(./smartphone.png);}
+button.mobile:hover {height:18px;width:30px;}
 
 /* Main definition of status buttons */
 div.status {}
@@ -43,3 +46,10 @@ div.status button {cursor:pointer;}
     div.status button.retaliate {}
     div.status button.piercing {}
     div.status button.ranged {}
+
+/*Gestion des menus */
+div.settingsMenu,div.adminMenu,div.melodiceMenu {position:fixed;;right:0px;width:30px;height:30px;background-size: contain;cursor:pointer;}
+div.settingsMenu {top:2px;background-image: url(./settings.png);}
+div.melodiceMenu {top:calc(50% - 15px);background-image: url(./melodice.png);}
+div.adminMenu {bottom:2px;background-image: url(./admin.png);}
+div.settingsMenu:hover,div.adminMenu:hover,div.melodiceMenu:hover {width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}
