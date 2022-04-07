@@ -271,7 +271,7 @@ function addPopup() {
     popupDiv.append(popupBack);
     document.getElementsByTagName('body')[0].append(popupDiv);}
 
-function popupDisplay(title,intro,content,buttons,outro) {
+function popupDisplay(title,intro,content,buttons,outro='',height='15%') {
     //Affichage d'une popup
     popup=document.getElementById('popup');
     popup.style.display='block';
@@ -280,7 +280,8 @@ function popupDisplay(title,intro,content,buttons,outro) {
     popup.getElementsByClassName('content')[0].innerHTML=content;
     popup.getElementsByClassName('buttons')[0].innerHTML='';
     popup.getElementsByClassName('buttons')[0].innerHTML=buttons;
-    popup.getElementsByClassName('outro')[0].innerHTML=outro;}
+    popup.getElementsByClassName('outro')[0].innerHTML=outro;
+    popup.getElementsByClassName('background')[0].style.height=height;}
 
 function initChangeVillain(villainDiv) {
     //Popup de confirmation de changement du méchant de la partie en cours.
@@ -288,16 +289,25 @@ function initChangeVillain(villainDiv) {
     let outro = (game.villains[villainId].phase != '1') ? lang.POPUPvillainOutro : '';
     let intro = lang.POPUPvillainIntro1 + villains[game.villains[villainId].id].name + '\'.<br/>' + lang.POPUPvillainIntro2;
     intro += (game.villains[villainId].sideSchemes.length > 0) ? lang.POPUPvillaintIntro3 : '.';
-    let changeVillainButtons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    let changeVillainButtons='<button title="' + lang.BUTTONconfirm + '" id="initChangeVillainConfirm" style="display:none;">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     let villainSelect='';
     for (let i in villains) if (i != 0) {
-        villainSelect +='<input type="radio" name="villainSelect" value="' + villains[i].id +'" id="villainSelect' + villains[i].id + '"';
+        //Affichage du formulaire de sélection des méchants :
+        villainSelect +='<div><label';
+        if (i == game.villains[villainId].id) villainSelect += ' class="on"';
+        villainSelect += '><input type="radio" id="villainselect_' + i + '" name="villainSelect" value="' + i +'"';
         if (i == game.villains[villainId].id) villainSelect += ' checked';
-        villainSelect +='><label for "villainSelect' + i + '"><img alt="' + villains[i].name + '" src="./images/villains/' + i + '.png">' + villains[i].name + '</label>';}
-    popupDisplay(lang.BUTTONvillain,intro,villainSelect,changeVillainButtons,outro);}
+        villainSelect +='><img alt="' + villains[i].name + '" src="./images/villains/' + i + '.png">' + villains[i].name + '</label></div>';}
+    popupDisplay(lang.BUTTONvillain,intro,villainSelect,changeVillainButtons,outro,'70%');
+    var radios = document.querySelectorAll('input[type=radio][name="villainSelect"]');
+    //Gestion de l'affichage du méchant sélectionné.
+    radios.forEach(radio => radio.addEventListener('change', () => {
+        document.querySelector('label.on').classList.remove('on');
+        radio.parentElement.className='on';
+        document.getElementById('initChangeVillainConfirm').style.display=radio.value == game.villains[villainId].id?'none':'block';}));}
 
 function adminPopup() {
     //Popup de saisie du mot de passe pour accès administratif
     let intro=lang.POPUPAdminIntro, content= lang.popupAdminContent;
     let buttons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
-    popupDisplay(lang.MENUadmin,intro,content,buttons,'');}
+    popupDisplay(lang.MENUadmin,intro,content,buttons);}

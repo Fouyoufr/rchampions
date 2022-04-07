@@ -1,4 +1,4 @@
-body {padding:0px;margin:0px;height:100%;width:100%;position:absolute;background-image: url(./background.png); background-size:cover;margin-right:20px;}
+body {padding:0px;margin:0px;height:100vh;width:100vw;position:absolute;background-image: url(./background.png); background-size:cover;margin-right:20px;}
 button {margin:0px;padding:0px;box-shadow: none;box-sizing: unset;background-size:contain;cursor:pointer;border:none;text-align:center;justify-content: center;cursor: pointer;}
 /* "game key" display */
 div#gameKey { writing-mode: vertical-rl; padding:5px;padding-left:2px;background-color:black;color:yellow;font-size:x-large;font-weight:bolder;transform:scale(-1);position:absolute;right:0px;bottom:20%;}
@@ -15,16 +15,13 @@ button#bug {display: none;}
 /* language selection DIV */
 div.language {display: none;}
 
-/* melodice musical plugin interface */
-div.melodice {display: none;}
-
 /* popup boxes styling */
-div#popup .background {position:fixed;Width: 50%;max-height: 50%;margin-top: 25%;margin-left: 25%;border: thick double darkolivegreen;border-top:none;}
+div#popup .background {position:fixed;Width: 50%;margin-top: 10%;margin-left: 25%;border: thick double darkolivegreen;border-top:none;overflow:hidden;}
 div#popup .title {width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
-div#popup .close {width:26px;height:26px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
+div#popup .close {width:24px;height:24px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
 div#popup .close::before {content: 'X';}
 div#popup .close:hover {background-color:crimson;}
-div#popup .inside {background-color:honeydew;overflow-y:auto;padding:10px;padding-top:5px;padding-bottom:2px;}
+div#popup .inside {height: calc(100% - 40px);background-color:honeydew;overflow-y:auto; padding:10px;padding-top:5px;padding-bottom:2px;}
 div#popup  p {padding:0px;margin:0px;}
 div#popup button {padding:2px; background-color: grey; border: solid 1px black; color:white;font-size:medium;font-weight:normal;}
 div#popup button:hover {background-color:lightgrey; border-color:grey;}

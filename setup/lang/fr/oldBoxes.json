@@ -1,7 +1,6 @@
 [	
 	{
 		"id": "0","name": "Selection strings",
-		"villains":[{"id":"0","name":"Choisir le méchant","life1":"0","life2":"0","life3":"0"}],
 		"main":[{"id":"0","name":"Manigance principale","init":"0","max":"0"}],
 		"heros":[{"id":"0","name":"Choisir Héros","vie":"0"}]
 	},
@@ -9,37 +8,6 @@
 		"id": "2",
 		"name": "Convoitise Galactique",
 		"type": "b",
-		"villains": 
-		[			
-			{
-				"id": "16",
-				"name": "Drang",
-				"life1": "13",
-				"life2": "14",
-				"life3": "18"
-			},			
-			{
-				"id": "17",
-				"name": "Le Collectionneur",
-				"life1": "13",
-				"life2": "14",
-				"life3": "18"
-			},			
-			{
-				"id": "18",
-				"name": "Nebula",
-				"life1": "14",
-				"life2": "17",
-				"life3": "20"
-			},			
-			{
-				"id": "19",
-				"name": "Ronan l'accusateur",
-				"life1": "14",
-				"life2": "18",
-				"life3": "25"
-			}
-		],
 		"main": 
 		[			
 			{
@@ -722,44 +690,6 @@
 		"id": "6",
 		"name": "L'avènement de Crâne rouge",
 		"type": "b",
-		"villains": 
-		[			
-			{
-				"id": "10",
-				"name": "Crossbones",
-				"life1": "12",
-				"life2": "14",
-				"life3": "16"
-			},			
-			{
-				"id": "11",
-				"name": "L'Homme Absorbant",
-				"life1": "14",
-				"life2": "15",
-				"life3": "16"
-			},			
-			{
-				"id": "12",
-				"name": "Taskmaster",
-				"life1": "13",
-				"life2": "16",
-				"life3": "17"
-			},			
-			{
-				"id": "13",
-				"name": "Zola",
-				"life1": "12",
-				"life2": "14",
-				"life3": "16"
-			},			
-			{
-				"id": "14",
-				"name": "Crâne Rouge",
-				"life1": "12",
-				"life2": "16",
-				"life3": "20"
-			}
-		],
 		"main": 
 		[			
 			{
@@ -1258,23 +1188,6 @@
 		"id": "7",
 		"name": "Le Bouffon Vert",
 		"type": "s",
-		"villains": 
-		[			
-			{
-				"id": "4",
-				"name": "Le Bouffon Vert (EaR)",
-				"life1": "14",
-				"life2": "18",
-				"life3": "22"
-			},			
-			{
-				"id": "5",
-				"name": "Le Bouffon Vert (FM)",
-				"life1": "16",
-				"life2": "18",
-				"life3": "20"
-			}
-		],
 		"main": 
 		[			
 			{
@@ -1542,37 +1455,6 @@
 		"id": "8",
 		"name": "Les Démolisseurs",
 		"type": "s",
-		"villains": 
-		[			
-			{
-				"id": "6",
-				"name": "Le Démolisseur",
-				"life1": "14",
-				"life2": "18",
-				"life3": "0"
-			},			
-			{
-				"id": "7",
-				"name": "Le Boulet",
-				"life1": "13",
-				"life2": "16",
-				"life3": "0"
-			},			
-			{
-				"id": "8",
-				"name": "Le Compresseur",
-				"life1": "11",
-				"life2": "14",
-				"life3": "0"
-			},			
-			{
-				"id": "9",
-				"name": "Le Bulldozer",
-				"life1": "12",
-				"life2": "15",
-				"life3": "0"
-			}
-		],
 		"main": 
 		{
 			"id": "11",
@@ -1838,23 +1720,6 @@
 		"id": "15",
 		"name": "Kang le conquérant",
 		"type": "s",
-		"villains": 
-		[			
-			{
-				"id": "15",
-				"name": "Kang",
-				"life1": "12",
-				"life2": "18",
-				"life3": "20"
-			},			
-			{
-				"id": "20",
-				"name": "Kang (Expert)",
-				"life1": "15",
-				"life2": "22",
-				"life3": "25"
-			}
-		],
 		"main": 
 		[			
 			{
@@ -2286,51 +2151,6 @@
 		"id": "22",
 		"name": "L'ombre du Titan Fou",
 		"type": "b",
-		"villains": 
-		[			
-			{
-				"id": "21",
-				"name": "Ebony Maw",
-				"life1": "14",
-				"life2": "18",
-				"life3": "23"
-			},			
-			{
-				"id": "22",
-				"name": "Proxima Midnight",
-				"life1": "9",
-				"life2": "12",
-				"life3": "15"
-			},			
-			{
-				"id": "23",
-				"name": "Corvus Glaive",
-				"life1": "8",
-				"life2": "11",
-				"life3": "14"
-			},			
-			{
-				"id": "24",
-				"name": "Thanos",
-				"life1": "16",
-				"life2": "23",
-				"life3": "28"
-			},			
-			{
-				"id": "25",
-				"name": "Loki",
-				"life1": "20",
-				"life2": "20",
-				"life3": "20"
-			},			
-			{
-				"id": "27",
-				"name": "Hela",
-				"life1": "8",
-				"life2": "9",
-				"life3": "0"
-			}
-		],
 		"main": 
 		[			
 			{
@@ -3087,14 +2907,6 @@
 		"id": "26",
 		"name": "The Hood",
 		"type": "s",
-		"villains": 
-		{
-			"id": "26",
-			"name": "The Hood",
-			"life1": "14",
-			"life2": "16",
-			"life3": "18"
-		},
 		"main": 
 		[			
 			{

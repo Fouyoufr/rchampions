@@ -27,5 +27,15 @@
     .villain div.sideSchemes button.new:hover {background-color:white;border-color:black;color:black;}
     .villain div.sideSchemes button.new::before {content: "+";}
 
-    .villain div.counters {}
     .villain button.mobile {position:absolute;bottom:2px;left:2px;}
+
+#popup .content {flex-wrap: wrap;}
+#popup .content > div {flex: 1; padding: 0.5rem;max-width:40%;}
+#popup .content input[type="radio"] {display:none;}
+#popup .content label { display:flex;align-items: center; white;border: solid 2px darkolivegreen;border-radius: 3px;padding: 2px;margin: 1rem;box-shadow: 0px 3px 10px -2px grey;font-weight:bold;position:relative;cursor: pointer;}
+#popup .content label img {border: solid 1px black;vertical-align:middle;margin-right:2px;}
+#popup .content label:hover {background:lightgray;}
+#popup .content label.on {background: black;color: white;}
+
+
+

@@ -3,27 +3,59 @@
         {"boxes":""},
         {"id":"1","name":"Base"},
         {"villains":""},
-        {"id":"","name":"","box":"","life1":"","life2":"","life3":""},
+        {"name":"","box":"","life1":"","life2":"","life3":""},
         {"mainSchemes":""},
-        {"id":"","name":"","box":"","init":"","initX":"","max":"","maxX":""},
+        {"name":"","box":"","init":"","initX":"","max":"","maxX":""},
         {"heros":""},
-        {"id":"","name":"","box":"","life":""},
+        {"name":"","box":"","life":""},
         {"decks":""},
-        {"id":"","name":"","box":""},
+        {"name":"","box":""},
         {"schemes":""},
-        {"id":"","name":"","box":"","deck":"","hero":"","card":"","init":"","initX":"","crisis":"","encounter":"","acceleration":"","amplification":"","hinder":"","reveal":"","defeat":"","info":""},
-        {"schemeTexts":""},
-        {"id":"","text":""}
+        {"name":"","box":"","deck":"","hero":"","card":"","init":"","initX":"","crisis":"","encounter":"","acceleration":"","amplification":"","hinder":"","reveal":"","defeat":"","info":""}
+
     ],
     "boxes":{
         "0":{"name":"Selection strings"},
-        "1":{"name":"Base"}
+        "1":{"name":"Base"},
+        "2":{"name":"Convoitise Galactique"},
+        "3":{"name":"L'avènement de crâne rouge"},
+        "4":{"name":"Le Bouffon Vert"},
+        "5":{"name":"Les Démolisseurs"},
+        "6":{"name":"Kang le conquérant"},
+        "7":{"name":"L'ombre du Titan Fou"},
+        "8":{"name":"The Hood"}
+
     },
     "villains":{
         "0":{"name":"Choisir le méchant","box":"0","life1":"0","life2":"0","life3":"0"},
         "1":{"name":"Rhino","box":"1","life1":"14","life2":"15","life3":"16"},
         "2":{"name":"Klaw","box":"1","life1":"12","life2":"18","life3":"27"},
-        "3":{"name":"Ultron","box":"1","life1":"17","life2":"22","life3":"27"}
+        "3":{"name":"Ultron","box":"1","life1":"17","life2":"22","life3":"27"},
+        "4":{"name":"Drang","box":"2","life1":"13","life2":"14","life3":"18"},
+        "5":{"name":"Le Collectionneur","box":"2","life1":"13","life2":"14","life3":"18"},
+        "6":{"name":"Nebula","box":"2","life1":"14","life2":"17","life3":"18"},
+        "7":{"name":"Ronan l'accusateur","box":"2","life1":"14","life2":"18","life3":"25"},
+        "8":{"name":"Crossbones","box":"3","life1":"12","life2":"14","life3":"16"},
+        "9":{"name":"L'Homme Absorbant","box":"3","life1":"14","life2":"15","life3":"16"},
+        "10":{"name":"Taskmaster","box":"3","life1":"13","life2":"16","life3":"17"},
+        "11":{"name":"Zola","box":"3","life1":"12","life2":"14","life3":"16"},
+        "12":{"name":"Crâne Rouge","box":"3","life1":"12","life2":"16","life3":"20"},
+        "13":{"name":"Le Bouffon Vert (EaR)","box":"4","life1":"14","life2":"18","life3":"22"},
+        "14":{"name":"Le Bouffon Vert (FM)","box":"4","life1":"16","life2":"18","life3":"20"},
+        "15":{"name":"Le Démolisseur","box":"5","life1":"14","life2":"18"},
+        "16":{"name":"Le Boulet","box":"5","life1":"13","life2":"16"},
+        "17":{"name":"Le Compresseur","box":"5","life1":"11","life2":"14"},
+        "18":{"name":"Le Bulldozer","box":"5","life1":"12","life2":"15"},
+        "19":{"name":"Kang","box":"6","life1":"12","life2":"18","life3":"20"},
+        "20":{"name":"Kang (expert)","box":"6","life1":"15","life2":"22","life3":"25"},
+        "21":{"name":"Ebony Maw","box":"7","life1":"14","life2":"18","life3":"23"},
+        "22":{"name":"Proxima Midnight","box":"7","life1":"9","life2":"12","life3":"15"},
+        "23":{"name":"Corvus Glaive","box":"7","life1":"8","life2":"11","life3":"14"},
+        "24":{"name":"Thanos","box":"7","life1":"16","life2":"23","life3":"28"},
+        "25":{"name":"Loki","box":"7","life1":"20","life2":"20","life3":"20"},
+        "26":{"name":"Hela","box":"7","life1":"8","life2":"9"},
+        "27":{"name":"The Hood","box":"8","life1":"14","life2":"16","life3":"18"}
+
     },
     "mainSchemes":{
         "0":{"name":"Manigance principale","box":"0","init":"0","max":"0"},
