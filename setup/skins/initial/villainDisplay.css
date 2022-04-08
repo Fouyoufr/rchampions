@@ -1,28 +1,29 @@
 /* Diplay of a Villain's box */
 #villains {text-align:center;}
-.villain {font-variant: small-caps; text-transform: capitalize;display:inline-block;margin-right: 5px;margin-left: 5px;}
-.villain div.villain-frame {background:radial-gradient(black,gray);border-radius: 4px;margin-bottom: 2px;position: relative;}
+.villain {font-variant: small-caps; text-transform: capitalize;display:inline-block;margin-right: 5px;margin-left: 5px;min-width: 320px;border-radius: 10px;}
+.villain div.villain-frame {background:radial-gradient(black,gray);border-radius: 4px;margin-bottom: 2px;position: relative;padding-bottom: 20px;}
     .villain button.picture {border:solid 1px black;position:absolute;left:3px;top:3px;background-image:none;width:40px;height:40px;}
-    .villain div.name {display:box;font-weight:bolder;font-size:larger;color:white;margin-bottom: 3px;}
+    .villain-frame > div.name {display:block;font-weight:bolder;font-size:x-large;color:white;margin-bottom: 3px;}
     .villain button.phase {position:absolute;font-style: italic;font-size:medium;font-weight: bolder;right:3px;top:3px;background-color:black;color:white;border: solid 1px white;cursor: pointer;;padding-top:1px;padding-bottom:1px;padding-right:3px;padding-left:3px;}
-    .villain div.life {display:box;margin-bottom: 5px;}
-        .villain div.life div.value {background-color:darkred;}
-    .villain div.status button {font-weight: bolder;}
-        .villain div.status button.stunned {margin-right:10px;margin-left:10px;}
-        .villain div.status button.retaliate, .villain div.status button.piercing, .villain div.status button.ranged {display:flex;position:absolute;right:35px;font-size:smaller;}
+    .villain div.life {display:block;margin-bottom: 5px;}
+        .villain div.life > div.value {background-color:darkred;}
+    .villain div.status {display:flex;flex-wrap:wrap;}
+    .villain div.status button {flex: 1 1 25%;font-weight: bolder;margin:2px;margin-left:5px;margin-right:5px;font-size: medium;}
+        .villain div.status button.retaliate, .villain div.status button.piercing, .villain div.status button.ranged {font-size:smaller;}
     .villain div.mainScheme div.value {background-color:#f3b723;color:black;}
     .villain div.mainScheme {background-color:rgba(0, 0, 0, 0.5);padding:2px;margin-bottom:2px;}
-        .villain div.mainScheme div.name {width:100%;color:#f3b723;font-size:larger;}
-        .villain div.mainScheme div.threat, .villain div.mainScheme div.acceleration, .villain div.mainScheme div.max {display:inline-flex;margin:auto;}
-        .villain div.mainScheme div.acceleration {margin-left:10px;margin-right:10px;}
+        .villain div.mainScheme > div.name {width:100%;color:#f3b723;font-size:larger;cursor:pointer;text-align: left;font-weight:bold;}
+        .villain div.mainScheme > div.threat, .villain div.mainScheme div.acceleration, .villain div.mainScheme div.max {display:inline-block;margin:auto;}
+        .villain div.mainScheme div.acceleration {margin-left:10px;margin-right:10px;background-color: darkgrey;padding:2px;padding-right:4px;padding-left:4px;border-radius: 4px;}
+        .villain #accleration-icon {margin:0px;padding:0px;height:28px;vertical-align: bottom;}
         
 
     .villain div.sideSchemes {background-color:rgba(0, 0, 0, 0.5);padding-bottom:30px;text-align:left;}
     .villain div.sideSchemes div.sideScheme {border: solid 1px white;padding:2px;margin:2px;}
-    .villain div.sideSchemes div.threat {display:inline-flex;}
-    .villain div.sideScheme div.name {display:inline-flex;color:#f3b723;margin-left:2px;margin-right:2px;font-weight:bold;font-size:large;}
+    .villain div.sideSchemes div.threat {display:inline-block;}
+    .villain div.sideScheme > div.name {display:inline-block;color:#f3b723;margin-left:2px;margin-right:2px;font-weight:bold;font-size:large;}
     .villain div.sideScheme img.icon {float:right;height:24px;}
-    .villain div.threat div.value {background-color:#f3b723;color:black;}
+    .villain div.threat > div.value {background-color:#f3b723;color:black;}
     .villain div.sideSchemes button.new {border-radius: 4px;border: 2px solid white;font-weight:bold;display:block;text-align:center;font-size:large;margin:0px;padding:0px;box-shadow: none;height:24px;line-height: 24px;box-sizing: unset;justify-content: center;width:24px;color: white; background-color: black;cursor: pointer;font-size:18px;float:left;margin-left:2px;}
     .villain div.sideSchemes button.new:hover {background-color:white;border-color:black;color:black;}
     .villain div.sideSchemes button.new::before {content: "+";}

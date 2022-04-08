@@ -3,8 +3,8 @@
     "villains" :
 	[
 		{
-			"id": "3","life": "17","phase": "1","nextLife": "22", "stunned": "0", "tough": "1","retaliate": "0", "piercing":"0", "ranged": "0",
-			"mainScheme":{"id": "0","current":"0","max": "0", "acceleration": "0"},
+			"id": "12","life": "17","phase": "1","nextLife": "22", "stunned": "0", "tough": "1","retaliate": "0", "piercing":"0", "ranged": "0",
+			"mainScheme":{"id": "3","current":"1","max": "10", "acceleration": "1"},
 			"sideSchemes": [		
 				{"id": "1","threat": "7"},		
 				{"id": "2","threat": "5"},		

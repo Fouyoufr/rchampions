@@ -24,11 +24,23 @@
     "BUTTONconfirm" : "Confirmer",
     "BUTTONclose" : "Fermer",
     "BUTTONvillain" : "Choisir un nouveau Méchant",
+    "BUTTONmain" : "Choisir la Manigance Principale",
+    "BUTTONadminRefresh":"Rechargement forçé",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
+    "POPUPvillainIntro2b":"Choisissez ci-dessous le méchant à affronter lors de cette partie.",
     "POPUPvillaintIntro3":" et toutes les éventuelles manigances annexes seront otées.",
     "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
+    
     "POPUPAdminIntro":"Cette partie du site est protégée par un mot de passe...",
-    "popupAdminContent":"Merci de saisir le mot de passe administratif de rChampions :<br/><input type='password'>"
+    "popupAdminContent":"Merci de saisir le mot de passe administratif de rChampions :<br/><input type='password'>",
+
+    "POPUPmainIntroA1":"La Manigance Princiaple actuellement en jeu est '",
+    "POPUPmainIntroA2":"', vous pouvez en changer en en sélectionnant une nouvelle ci-dessous.",
+    "POPUPmainIntroB1":"Afin de compléter votre sélection pour démarrer une partie avec le Méchant '",
+    "POPUPmainIntroB2":"', veuillez sélectionner ci-dessous la Manigance Principale à mettre en jeu.",
+    "POPUPmainIntroC":"Sélectionnez ci-dessous la Manigance Principale à mettre en jeu dans cette partie.",
+    "POPUPmainContent":"Nouvelle Manigance Principale : "
+
 }

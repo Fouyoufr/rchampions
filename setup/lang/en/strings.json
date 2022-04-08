@@ -24,11 +24,21 @@
     "BUTTONconfirm" : "Confirm",
     "BUTTONclose" : "close",
     "BUTTONvillain" : "Choose a new Villain",
+    "BUTTONmain" : "Choose Main Scheme",
+    "BUTTONadminRefresh":"Hard refresh",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",
+    "POPUPvillainIntro2b":"Please select bellow the Villain you wanna fight during this game.",
     "POPUPvillaintIntro3":" and all side schemes removed from the game",
     "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
     "POPUPAdminIntro":"You need a password to access the adminsitration page.",
-    "popupAdminContent":"Please type the administrative pssord below to gain access to rChampion administration :<br/><input type='password'>"
+    "popupAdminContent":"Please type the administrative pssord below to gain access to rChampion administration :<br/><input type='password'>",
+
+    "POPUPmainIntroA1":"Current Main Scheme is '",
+    "POPUPmainIntroA2":"', you can change it by selecting a new one bellow.",
+    "POPUPmainIntroB1":"In order to complete your setup to start a new game with the Villain '",
+    "POPUPmainIntroB2":"', please select bellow the Main Scheme to start with.",
+    "POPUPmainIntroC":"Please select bellow the Main Scheme to use for this game.",
+    "POPUPmainContent":"New Main Scheme : "
 }

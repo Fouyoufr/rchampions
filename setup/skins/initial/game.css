@@ -11,9 +11,3 @@ button#firstplayer .one {}
 button#firstplayer .two {}
 button#firstplayer .three {}
 button#firstplayer .four {}
-
-/* Dialog boxes displayed on need */
-#villainChange {display: none;}
-#playerChange {display: none;}
-#mainSchemeChange {display: none;}
-#newScheme {display: none;}
