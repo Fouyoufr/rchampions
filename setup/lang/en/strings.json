@@ -40,5 +40,11 @@
     "POPUPmainIntroB1":"In order to complete your setup to start a new game with the Villain '",
     "POPUPmainIntroB2":"', please select bellow the Main Scheme to start with.",
     "POPUPmainIntroC":"Please select bellow the Main Scheme to use for this game.",
-    "POPUPmainContent":"New Main Scheme : "
+    "POPUPmainContent":"New Main Scheme : ",
+    
+    "POPUPphaseIntro1":"Are you sure you wanna switch this game to phase ",
+    "POPUPphaseIntro2":" ?",
+    "POPUPphaseContent1":"(The villain '",
+    "POPUPphaseContent2":"' 'life wille be set to ",
+    "POPUPphaseContent3":".)"
 }

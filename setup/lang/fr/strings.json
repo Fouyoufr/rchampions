@@ -41,6 +41,12 @@
     "POPUPmainIntroB1":"Afin de compléter votre sélection pour démarrer une partie avec le Méchant '",
     "POPUPmainIntroB2":"', veuillez sélectionner ci-dessous la Manigance Principale à mettre en jeu.",
     "POPUPmainIntroC":"Sélectionnez ci-dessous la Manigance Principale à mettre en jeu dans cette partie.",
-    "POPUPmainContent":"Nouvelle Manigance Principale : "
+    "POPUPmainContent":"Nouvelle Manigance Principale : ",
+
+    "POPUPphaseIntro1":"Etes-vous sure de souhaiter passer à la phase ",
+    "POPUPphaseIntro2":" ?",
+    "POPUPphaseContent1":"(La vie du méchant '",
+    "POPUPphaseContent2":"' va passer à ",
+    "POPUPphaseContent3":".)"
 
 }
