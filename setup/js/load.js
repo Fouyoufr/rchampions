@@ -9,6 +9,21 @@ addHeadLink('icon','image/x-icon','favicon.ico');
 if (document.getElementById('loading')) {
     document.getElementById('loading').innerHTML='<svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><path fill="#fff" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite"/></path><path fill="#fff" d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="-360 50 50" repeatCount="indefinite" /></path><path fill="#fff" d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite" /></path></svg>';}
 
+//Chargement des scripts externes
+if (document.getElementById('villains')) loadScript('villains');
+if (document.getElementById('players')) loadScript('players');
+function loadScript(scriptName) {
+    loaded[scriptName + 'Script'] = false;
+    let script = document.createElement('script');
+    script.onload =function () {loaded[scriptName + 'Script'] = true;};
+    script.src = './js/' + scriptName + '.js';
+    document.getElementsByTagName('head')[0].appendChild(script);
+    //Attente que le script soit chargé...
+    let intervalScript = setInterval(function() {if (loaded[scriptName + 'Script'] === true) {
+        clearInterval(intervalScript);
+        }},100);
+
+}
 
 //Chargement de la config, depuis site distant si config locale absente ou datant de plus d'un jour
 if (localStorage.getItem('rChampionsConfig') === null) {
@@ -53,15 +68,6 @@ function langLoad(langJson) {
     //Mise en place des chaines de caractère de la langue sur la page.
     lang=JSON.parse(langJson);
     if (pageTitle!== null) document.title = lang[pageTitle];
-    document.documentElement.setAttribute('lang',rcConfig.lang);
-    ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
-        let statusButtons=document.getElementsByClassName(statusName);
-        for(let i=0; i < statusButtons.length; i++) {
-            statusButtons[i].title=lang['ST' + statusName];
-            statusButtons[i].textContent=lang['ST' + statusName]}});
-    let mobileButtons=document.getElementsByClassName('mobile');
-    for (let i=0; i< mobileButtons.length; i++) {mobileButtons[i].title=lang.BUTTONmobile;}
-  
     loaded.lang=true;
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}}
 
@@ -89,9 +95,9 @@ function mainLoad(gameJson) {
         //Insertion des skins dans l'en-tête
         ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
         if (document.getElementById('villains')) {
-            //masquer les méchants non utilisés dans la partie et afficher le(s) autre(s)
-            for (let i=game.villains.length; i < 4; i++) {document.getElementById('villain' + (i+1)).style.display='none';};
-            for (let i=0; i < game.villains.length; i++) {villainDisplay(document.getElementById('villain' + (i+1)),game.villains[i]);};}
+            //Affichage des méchants
+            villainsDiv=document.getElementById('villains');
+            for (let i=0; i < game.villains.length; i++) {villainsDiv.append(villainDisplay(i));};}
 
         if (document.getElementById('players')) {
             //masquer les joueurs non utilisés dans la partie et afficher le(s) autre(s)
@@ -99,14 +105,14 @@ function mainLoad(gameJson) {
             for (let i=0; i < game.players.length; i++) {playerDisplay(document.getElementById('player' + (i+1)),game.players[i]);};}
 
         //Construction des boutons de changement de valeur
-        let minusButtons=document.getElementsByClassName('minus');
-        for(let i = 0; i < minusButtons.length; i++) {
-            minusButtons[i].title=lang.BUTTONminus;
-            minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
-        let plusButtons=document.getElementsByClassName('plus');
-        for(let i = 0; i < plusButtons.length; i++) {
-            plusButtons[i].title=lang.BUTTONplus;
-            plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
+        //let minusButtons=document.getElementsByClassName('minus');
+        //for(let i = 0; i < minusButtons.length; i++) {
+        //    minusButtons[i].title=lang.BUTTONminus;
+        //    minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
+        //let plusButtons=document.getElementsByClassName('plus');
+        //for(let i = 0; i < plusButtons.length; i++) {
+        //    plusButtons[i].title=lang.BUTTONplus;
+        //    plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
         addMenu();
         addPopup();
 
@@ -116,20 +122,20 @@ function mainLoad(gameJson) {
     }
     
 //Gestion des modifications des valeurs chiffrées/compteurs.
-function minusButton (mbValue) {
-    if (mbValue.getElementsByClassName('value')[0].textContent > 0) {
-        mbValue.getElementsByClassName('value')[0].textContent--;
-        sendValue(mbValue);}}
-function plusButton (pbValue) {
-    pbValue.getElementsByClassName('value')[0].textContent++;
-    sendValue(pbValue);}
-function sendValue(svDiv) {
-    let stringToSend='';
-    let valueToSend = svDiv.getElementsByClassName('value')[0].textContent;
-    while (svDiv.id === '' || svDiv.id === null) {
-        stringToSend = svDiv.className + ',' + stringToSend;
-        svDiv=svDiv.parentNode;}
-    stringToSend='valueToChange=' + svDiv.id + ',' + stringToSend.slice(0,-1) + '&value=' + valueToSend;}
+//function minusButton (mbValue) {
+//    if (mbValue.getElementsByClassName('value')[0].textContent > 0) {
+//        mbValue.getElementsByClassName('value')[0].textContent--;
+//        sendValue(mbValue);}}
+//function plusButton (pbValue) {
+//    pbValue.getElementsByClassName('value')[0].textContent++;
+//    sendValue(pbValue);}
+//function sendValue(svDiv) {
+//    let stringToSend='';
+//    let valueToSend = svDiv.getElementsByClassName('value')[0].textContent;
+//    while (svDiv.id === '' || svDiv.id === null) {
+//        stringToSend = svDiv.className + ',' + stringToSend;
+//        svDiv=svDiv.parentNode;}
+//    stringToSend='valueToChange=' + svDiv.id + ',' + stringToSend.slice(0,-1) + '&value=' + valueToSend;}
 
   function load(fileLoad,functionLoad) {
       // Chargement de fichier distant (AJAX)
@@ -228,3 +234,27 @@ function adminPopup() {
     refreshButton.innerHTML='&nbsp;';
     document.getElementById('popup').getElementsByClassName('title')[0].append(refreshButton);
 }
+
+function sendReq(strReq) {
+    console.log ('Appel modif avec valeur : ' + strReq);
+}
+
+function addElement(aeType,aeClass='') {
+    //Ajout d'un élément dans le document
+    let ae = document.createElement(aeType);
+    if (aeClass != '') ae.className = aeClass;
+    return ae;
+}
+
+function buttonDisplay (bdClass,bdReq,bdTitle,bdText=''){
+    //Affichage des boutons Moins et Plus du méchant.
+    let bd = addElement('button',bdClass);
+    bd.onclick=function () {sendReq(bdReq);}
+    bd.title=bdTitle;
+    if (bdText !='') bd.textContent = bdText;
+    return bd;}
+
+function valueDisplay (vdVal) {
+    let vd = addElement('div','value');
+    vd.textContent=vdVal;
+    return vd;}

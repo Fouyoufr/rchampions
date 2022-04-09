@@ -15,7 +15,7 @@
         .villain div.mainScheme > div.name {width:100%;color:#f3b723;font-size:larger;cursor:pointer;text-align: left;font-weight:bold;}
         .villain div.mainScheme > div.threat, .villain div.mainScheme div.acceleration, .villain div.mainScheme div.max {display:inline-block;margin:auto;}
         .villain div.mainScheme div.acceleration {margin-left:10px;margin-right:10px;background-color: darkgrey;padding:2px;padding-right:4px;padding-left:4px;border-radius: 4px;}
-        .villain #accleration-icon {margin:0px;padding:0px;height:28px;vertical-align: bottom;}
+        .villain img.acceleration-icon {margin:0px;padding:0px;height:28px;vertical-align: bottom;}
         
 
     .villain div.sideSchemes {background-color:rgba(0, 0, 0, 0.5);padding-bottom:30px;text-align:left;}

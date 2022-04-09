@@ -113,7 +113,7 @@
         "36":{"name":"La guerre Présent-Futur","box":"6","init":"2","max":"9"},
         "37":{"name":"Attaque sur Nulle-Part","box":"7","init":"1","initX":"1","max":"6","maxX":"1"},
         "38":{"name":"La pierre du pouvoir","box":"7","init":"1","initX":"1","max":"9","maxX":"1"},
-        "39":{"name":"En état de sièg","box":"7","init":"1","initX":"1","max":"6","maxX":"1"},
+        "39":{"name":"En état de siège","box":"7","init":"1","initX":"1","max":"6","maxX":"1"},
         "40":{"name":"Les armées de Thanos","box":"7","init":"1","initX":"1","max":"6","maxX":"1"},
         "41":{"name":"Les pierres d'Infinité","box":"7","init":"0","max":"12","maxX":"1"},
         "42":{"name":"Equilibrer la balance","box":"7","init":"0","max":"12","maxX":"1"},
@@ -250,8 +250,20 @@
         "30":{"name":"Querelle Familiale","hero":"15","card":"11","init":"2","acceleration":"1","reveal":"21"},
         "31":{"name":"Tueur à Louer","hero":"16","card":"4","init":"3","acceleration":"1","hinder":"1"},
         "32":{"name":"Ouvrir La Dimension Noire","hero":"17","card":"12","init":"3","initX":"1","acceleration":"1","reveal":"22","defeat":"23"},
-        "33":{"name":"Destruction Totale","hero":"18","card":"13","init":"2","initX":"1","encounter":"1","info":"24"}
-        
+        "33":{"name":"Destruction Totale","hero":"18","card":"13","init":"2","initX":"1","encounter":"1","info":"24"},
+        "34":{"name":"Vol de technologie","hero":"19","card":"14","init":"2","initX":"1","info":"25"},
+        "35":{"name":"Syndicat du crime en devenir","hero":"20","card":"20","init":"2","encounter":"1","hinder":"2"},
+        "36":{"name":"Eliminer les faibles","hero":"21","card":"21","init":"2","initX":"1","info":"26"},
+        "37":{"name":"Rivalité entre soeurs","hero":"22","card":"22","init":"4","info":"27"},
+        "38":{"name":"Frénésie Klyntar","hero":"23","card":"23","init":"2","initX":"1","encounter":"1","info":"28"},
+        "39":{"name":"Instinct de Préservation","hero":"24","card":"24","init":"2","initX":"1","info":"29"},
+        "40":{"name":"Eglise universelle de la vérité","hero":"25","card":"25","init":"2","initX":"1","acceleration":"1","info":"30"},
+        "41":{"name":"Réacteur en fusion","hero":"26","card":"26","init":"2","initX":"1","crisis":"1","defeat":"31"},
+        "42":{"name":"Evil Morales","hero":"27","card":"27","init":"2","crisis":"1","hinder":"1","reveal":"3","info":"32"},
+        "43":{"name":"Courtiser la mort","hero":"28","card":"28","init":"4","info":"33"},
+        "44":{"name":"Spectacle lumineux mortel","hero":"29","card":"29","init":"3","crisis":"1","hinder":"1","defeat":"34"},
+        "45":{"name":"Puissants enchantements","hero":"30","card":"30","init":"2","acceleration":"1","hinder":"1","info":"35"},
+        "46":{"name":"Ultron déchaîné","hero":"31","card":"31","init":"3","acceleration":"1","reveal":"36"}        
     },
     "schemeTexts":{
         "0":"Les texte informatifs sur les manigances annexes.",
@@ -278,7 +290,18 @@
         "21":"Placez 1 menace supplémentaire sur cette carte pour chaque carte ASGARD en jeu",
         "22":"Placez face cachée sous cette manigance la carte du dessus du deck INVOCATION.",
         "23":"Mélangez dans le deck INVOCATION la carte INVOCATION qui était située sous cette manigance.",
-        "24":"Aucune menace ne peut être retirée de cette manigance tant que l'Abomination est en jeu."
-
+        "24":"Aucune menace ne peut être retirée de cette manigance tant que l'Abomination est en jeu.",
+        "25":"Chaque carte TECH perd le texte imprimé dans sa boite de texte.",
+        "26":"Chaque ennemi gagne +2 ATQ.",
+        "27":"Les joueurs autres que Gamora ne peuvent pas retirer de menaces de \"Rivalité entre soeurs\".<br/>REPONSE FORCEE : Après le début de la phase du méchant, attribuez 1 carte rencontre face cachée à Gamora.",
+        "28":"Les menaces sur cette manigance ne peuvent pas être retirées tant qu'il y a un ennemi SYMBIOTE en jeu.",
+        "29":"Nebula perd -1 CTR, -1 ATQ et -1 DEF<br/>Gamora gagne +1 ATQ et ses attaques gagnent Perçant.",
+        "30":"REPONSE FORCEE : Après qu'un joueur a réinitialisé son deck, inclinez l'identité de ce joueur et sonnez-la.",
+        "31":"Infligez 1 dégât à chaque personnage ami en jeu.",
+        "32":"Ultimatum ne peut être sonné.",
+        "33":"Traitez les zones de texte imprimées des héros comme si elles étaient vierges.",
+        "34":"Infligez 1 dégât à chaque identité.",
+        "35":"Les joueurs ne peuvent pas défausser les attachements qui sont attachés à des personnages amis.",
+        "36":"Cherchez la carte Drones d'Ultron dans le deck Rencontre, la pile de défausse Rencontre ou parmi les cartes mises de côté et mettez-la en jeu. Mélangez le deck Rencontre. Chaque joueur met en jeu la carte du dessus de son deck, face cachée, engagée avec lui en tant que sbire DRONE."
     }
 }
