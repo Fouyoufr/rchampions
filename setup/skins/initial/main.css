@@ -18,9 +18,9 @@ div.language {display: none;}
 /* popup boxes styling */
 div#popup .background {position:fixed;Width: 50%;margin-top: 10%;margin-left: 25%;border: thick double darkolivegreen;border-top:none;overflow:hidden;}
 div#popup .title {width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
-div#popup .close {width:24px;height:24px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
-div#popup .close::before {content: 'X';}
-div#popup .close:hover {background-color:crimson;}
+div#popup .close, div#websocketError .close {width:24px;height:24px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
+div#popup .close::before , div#websocketError .close::before {content: 'X';}
+div#popup .close:hover, div#websocketError .close:hover {background-color:crimson;}
 /* Bouton de "Hard Refresh" derrière l'icône Admin */
 div#popup .adminRefresh {width:24px;height:24px;background-color:transparent;background-image:url(./refresh.png);position:absolute;top:0px;left:0px;}
 div#popup .adminRefresh:hover {background-color:crimson;}
@@ -49,9 +49,6 @@ div.status button.off {opacity: 0.5;color:grey;border-color: grey;}
 div.status button.confused {background-color:#e5d2e5;padding:2px;}
 div.status button.stunned {background-color:#afcd53;padding:2px;}
 div.status button.tough {background-color:#feb848;padding:2px;}
-div.status button.retaliate {}
-div.status button.piercing {}
-div.status button.ranged {}
 
 /*Gestion des menus */
 button.settingsMenu,button.adminMenu,button.melodiceMenu {position:fixed;;right:0px;width:30px;height:30px;cursor:pointer;background-color: transparent;}
@@ -59,3 +56,6 @@ button.settingsMenu {top:2px;background-image: url(./settings.png);}
 button.melodiceMenu {top:calc(50% - 15px);background-image: url(./melodice.png);background-color:rgba(255, 255, 255, 0.5)}
 button.adminMenu {bottom:2px;background-image: url(./admin.png);}
 button.settingsMenu:hover,button.adminMenu:hover,button.melodiceMenu:hover {width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}
+
+/*Gestion des erreurs renvoyées en direct par le serveur */
+div#websocketError {display:inline-block;background-color:brown;padding:2px;color:yellow;font-weight:bold;position:fixed;bottom:2px;left:2px;border:2px solid red;padding-right:30px;height:20px;line-height: 20px;}

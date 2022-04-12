@@ -24,11 +24,12 @@ function villainDisplay(index) {
     let vilDLife = addElement('div','life');
     vilFrame.append(vilDLife);
     vilDLife.append(buttonDisplay('minus','{"operation":"villainLifeMinus","id":"' + index + '"}',lang.BUTTONminus));
+    if (vil.life < 10) vil.life = '0' + vil.life;
     vilDLife.append(valueDisplay(vil.life));
     vilDLife.append(buttonDisplay('plus','{"operation":"villainLifePlus","id":"' + index + '"}',lang.BUTTONplus));
     let vilDStat = addElement('div','status');
     vilFrame.append(vilDStat);
-    ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {vilDStat.append(buttonDisplay(vil[statusName] === undefined || vil[statusName] === '0'?statusName + ' off':statusName,'{"operation":"villainStatus","status":"' + statusName + '"}',lang['ST' + statusName],lang['ST' + statusName]));});
+    ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {vilDStat.append(buttonDisplay(vil[statusName] === undefined || vil[statusName] === '0'?statusName + ' off':statusName,'{"operation":"villainStatus","status":"' + statusName + '","id":"' + index + '"}',lang['ST' + statusName],lang['ST' + statusName]));});
     let vilDMob = addElement('button','mobile');
     vilDMob.title=lang.BUTTONmobile;
     vilFrame.append(vilDMob);
@@ -76,9 +77,9 @@ function sideSchemeDisplay (sideDisp,villainIndex,villainSC) {
     //Affichages du compteur de menace de la manigance annexe
     let sideSchemeThreat = document.createElement('div');
     sideSchemeThreat.className='threat';
-    sideSchemeThreat.append(buttonDisplay ('minus','{"operation":"sideSchemeMinus","villain":"'+ villainIndex + '",sideScheme":"' + villainSC.id + '"}',lang.BUTTONminus));
+    sideSchemeThreat.append(buttonDisplay ('minus','{"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC.id + '"}',lang.BUTTONminus));
     sideSchemeThreat.append(valueDisplay(villainSC.threat));
-    sideSchemeThreat.append(buttonDisplay ('plus','{"operation":"sideSchemePlus","villain":"'+ villainIndex + '",sideScheme":"' + villainSC.id + '"}',lang.BUTTONplus));
+    sideSchemeThreat.append(buttonDisplay ('plus','{"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC.id + '"}',lang.BUTTONplus));
     sideScheme.append(sideSchemeThreat);
     //Affichage du nom de la manigance annexe
     let sideSchemeName = document.createElement('div');
@@ -135,7 +136,7 @@ function initChangeVillain(villainId) {
 
 function changeVillainScheme (villainId,newVillainId=0) {
     let intro='';
-    if (newVillainId === 0)  intro = game.villains[villainId].mainScheme === undefined || game.villains[villainId].mainScheme.id == 0 ? lang.POPUPmainIntroC:lang.POPUPmainIntroA1 + mainSchemes[game.villains[villainId].mainScheme.id].name + lang.POPUPmainIntroA2;
+    if (newVillainId == 0)  intro = game.villains[villainId].mainScheme === undefined || game.villains[villainId].mainScheme.id == 0 ? lang.POPUPmainIntroC:lang.POPUPmainIntroA1 + mainSchemes[game.villains[villainId].mainScheme.id].name + lang.POPUPmainIntroA2;
     else intro = lang.POPUPmainIntroB1 + villains[newVillainId].name + lang.POPUPmainIntroB2;
     let buttons='<button title="' + lang.BUTTONconfirm + '" id="changeMain" style="display:none;">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     let orderMains=Object.entries(mainSchemes).sort((a,b) => a[1].name > b[1].name?1:-1);
@@ -159,6 +160,7 @@ function initChangePhase(villainId) {
     newLife=villain['life' + newPhase]*game.players.length;
     intro = lang.POPUPphaseIntro1 + newPhase + lang.POPUPphaseIntro2;
     content = lang.POPUPphaseContent1 + villain.name + lang.POPUPphaseContent2 + newLife + lang.POPUPphaseContent3;
-    let buttons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    let buttons='<button title="' + lang.BUTTONconfirm + '" id ="changeSchemeConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     popupDisplay(lang.BUTTONphase,intro,content,buttons);
+    document.getElementById('changeSchemeConfirm').onclick=function () {sendReq('{"operation":"changePhase","villain":"'+ villainId + '","newPhase":"' + newPhase + '","newLife":"' + newLife + '"}');document.getElementById('popup').style.display='none';}
 }
