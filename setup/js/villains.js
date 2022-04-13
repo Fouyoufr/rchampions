@@ -66,7 +66,8 @@ function villainDisplay(index) {
     let sideDispNew = addElement('button','new');
     sideDispNew.title=lang.BUTTONaddScheme;
     sideDisp.append(sideDispNew);
-    for (i=vil.sideSchemes.length;i > 0;i--) sideSchemeDisplay(sideDisp,index,vil.sideSchemes[i-1]);
+    //for (i=vil.sideSchemes.length;i > 0;i--) sideSchemeDisplay(sideDisp,index,vil.sideSchemes[i-1]);
+    Object.keys(vil.sideSchemes).forEach(key => {sideSchemeDisplay(sideDisp,index,key);})
     let vilDCounters = addElement('div','counters');
     vilD.append(vilDCounters);
     return vilD;
@@ -74,35 +75,31 @@ function villainDisplay(index) {
 
 function sideSchemeDisplay (sideDisp,villainIndex,villainSC) {
     //(le passage du div "sideSchemes -sideDisp- en paramètre est important pour faire fonctionner la fonction pendant la création")
-    let sideScheme = document.createElement('div');
-    sideScheme.id='sideScheme' + villainSC.id;
-    sideScheme.className='sideScheme';
+    let sideScheme = addElement('div','sideScheme');
+    sideScheme.id = 'villain' + villainIndex + '-sideScheme' + villainSC;
     //Affichages du compteur de menace de la manigance annexe
-    let sideSchemeThreat = document.createElement('div');
-    sideSchemeThreat.className='threat';
-    sideSchemeThreat.append(buttonDisplay ('minus','{"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC.id + '"}',lang.BUTTONminus));
-    if (villainSC.threat < 10) villainSC.threat = '0' + villainSC.threat;
-    sideSchemeThreat.append(valueDisplay(villainSC.threat));
-    sideSchemeThreat.append(buttonDisplay ('plus','{"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC.id + '"}',lang.BUTTONplus));
+    let sideSchemeThreat = addElement('div','threat');
+    sideSchemeThreat.append(buttonDisplay ('minus','{"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"}',lang.BUTTONminus));
+    if (game.villains[villainIndex].sideSchemes[villainSC].threat < 10) game.villains[villainIndex].sideSchemes[villainSC].threat = '0' + game.villains[villainIndex].sideSchemes[villainSC].threat;
+    sideSchemeThreat.append(valueDisplay(game.villains[villainIndex].sideSchemes[villainSC].threat ));
+    sideSchemeThreat.append(buttonDisplay ('plus','{"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"}',lang.BUTTONplus));
     sideScheme.append(sideSchemeThreat);
     //Affichage du nom de la manigance annexe
-    let sideSchemeName = document.createElement('div');
-    sideSchemeName.className='name';
-    sideSchemeName.textContent=sideSchemes[villainSC.id].name
+    let sideSchemeName = addElement('div','name');
+    sideSchemeName.textContent=sideSchemes[villainSC].name
     sideScheme.append(sideSchemeName);
     //Affichages des informations (crisis,encounter,acceleration,amplification) sur la manigance annexe
     ['crisis','encounter','acceleration','amplification'].forEach((sideSchemeIconId) => {
-        if (sideSchemes[villainSC.id][sideSchemeIconId] !== undefined) {
-            let sideSchemeIcon = document.createElement('img');
+        if (sideSchemes[villainSC][sideSchemeIconId] !== undefined) {
+            let sideSchemeIcon = addElement('img','icon');
             sideSchemeIcon.alt=sideSchemeIconId;
             sideSchemeIcon.src='./images/'+sideSchemeIconId+'.png';
-            sideSchemeIcon.className='icon';
             sideScheme.append(sideSchemeIcon);}})
     //Affichage des informations complémentaires sur la manigance annexe.
     let sideSchemeInfo='';
-    if (sideSchemes[villainSC.id].info !== undefined) {sideSchemeInfo+='info: '+schemeTexts[sideSchemes[villainSC.id].info];}
-    if (sideSchemes[villainSC.id].reveal !== undefined) {sideSchemeInfo+='reveal: '+schemeTexts[sideSchemes[villainSC.id].reveal];}
-    if (sideSchemes[villainSC.id].defeat !== undefined) {sideSchemeInfo+='defeat: '+schemeTexts[sideSchemes[villainSC.id].defeat];}
+    if (sideSchemes[villainSC].info !== undefined) {sideSchemeInfo+='info: '+schemeTexts[sideSchemes[villainSC].info];}
+    if (sideSchemes[villainSC].reveal !== undefined) {sideSchemeInfo+='reveal: '+schemeTexts[sideSchemes[villainSC].reveal];}
+    if (sideSchemes[villainSC].defeat !== undefined) {sideSchemeInfo+='defeat: '+schemeTexts[sideSchemes[villainSC].defeat];}
     console.log(sideSchemeInfo);
 
 

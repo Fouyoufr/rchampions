@@ -1,7 +1,7 @@
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
 let rcConfig={}, lang={}, game={},
-boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},
+boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},nullElement={},
 loaded={"config":false,"lang":false,"boxes":false},
 webSocketId='';
 popupDiv=addElement('div','');
@@ -207,6 +207,9 @@ function valueDisplay (vdVal) {
     let vd = addElement('div','value');
     vd.textContent=vdVal;
     return vd;}
+
+function isElem (element) {
+        if (typeof(element) != 'undefined' && element != null) return element; else return nullElement;}
 
     // Pour travailler sur l'import des anciennes sauvegardes :
     // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications

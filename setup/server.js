@@ -1,5 +1,6 @@
 //npm install ws
 const http = require('http'),
+https = require('https'),
 fs = require('fs'),
 url = require ('url');
 wsServer = require ('ws');
@@ -15,13 +16,11 @@ let decks=boxesFile.decks;
 let sideSchemes=boxesFile.sideSchemes;
     //let schemeTexts=boxesFile.schemeTexts;
 
+const server = http.createServer(webRequest),
+TLSserver = http.createServer(webRequest);
 
-
-const server = http.createServer(function (req, res) {
-
-    //url.pars(req.url).query contiendra la requète envoyée par le client.
-
-        if (url.parse(req.url).pathname === '/') req.url = '/index.html';
+function webRequest (req, res) {
+    if (url.parse(req.url).pathname === '/') req.url = '/index.html';
     let contentType = 'text/html';
     if (url.parse(req.url).pathname.endsWith('.json')) contentType = 'application/json';
     else if (url.parse(req.url).pathname.endsWith('.js')) contentType = 'text/javascript';
@@ -30,9 +29,7 @@ const server = http.createServer(function (req, res) {
     else if (url.parse(req.url).pathname.endsWith('.pdf')) contentType = 'application/pdf';
     else if (url.parse(req.url).pathname.endsWith('.xml')) contentType = 'application/xml';
     else if (url.parse(req.url).pathname.endsWith('.ico')) contentType = 'image/x-icon';
-
     if (contentType === 'text/html' || contentType === 'application/json') console.log('Requète reçue -> ' + req.url);
-
     fs.readFile(__dirname + url.parse(req.url).pathname,function (err, data) {
         if (err) {
             res.writeHead(500);
@@ -43,11 +40,7 @@ const server = http.createServer(function (req, res) {
             res.writeHead(200, {'Content-Type':contentType});
             //Set response content
             res.write(data);
-            res.end();
-        }
-    })
-
-});
+            res.end();}})};
 
 const wss = new wsServer.WebSocketServer({ server });
 
@@ -78,6 +71,7 @@ function wsGameSend(gameKey,data) {
         if (element.gameKey == gameKey) element.send(data);});}
 
 server.listen(80);
+TLSserver.listen(443);
 console.log('Node.js web server at port 80 is running..')
 
 function operation(message,gameKey,clientId) {
@@ -90,7 +84,7 @@ function operation(message,gameKey,clientId) {
           if (fs.existsSync(__dirname + '/games/' + gameKey + '.json')) games[gameKey]=JSON.parse(fs.readFileSync(__dirname + '/games/' + gameKey + '.json'));
           else wsclientSend(clientId,'{"error":"wss::gameKeyNotFound ' + gameKey + '"}');
         } catch(err) {
-            wsclientSend(clientId,'{"error":"' + err + '"}');}}
+            wsclientSend(clientId,'{"error":"wssError : ' + err + '"}');}}
 
     //Sélection de 'opération
     if (games[gameKey] !== undefined) switch (message.operation) {
@@ -258,7 +252,37 @@ function operation(message,gameKey,clientId) {
                 fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                 }
             break;
-       default:
+
+        case 'sideSchemeMinus' :
+            //Diminution de la menace d'une manigance secondaire
+            if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '"}');
+            else {
+                if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme] === undefined) wsclientSend(clientId,'{"error":"wss::sideSchemeNotFound ' + message.sideScheme + '"}');
+                else {
+                    if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat == 1) {
+                        wsGameSend(gameKey,'{"operation":"removeSideScheme","villain":"' + message.villain + '","id":"' + message.sideScheme + '"}');
+                        // !! SUPPRIMER LA MANIGANCE DE LA PARTIE CONCERNEE !!
+                    }
+                    else {                    
+                        games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat--;
+                        wsGameSend(gameKey,'{"operation":"sideScheme","id":"' + message.sideScheme + '","value":"' + games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat + '","villain":"' + message.villain + '"}');
+                        fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                }}}
+            break;
+
+        case 'sideSchemePlus' :
+            //Augmentation de la menace d'une manigance secondaire
+            if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '"}');
+            else {
+                if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme] === undefined) wsclientSend(clientId,'{"error":"wss::sideSchemeNotFound ' + message.sideScheme + '"}');
+                else {
+                    games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat++;
+                    wsGameSend(gameKey,'{"operation":"sideScheme","id":"' + message.sideScheme + '","value":"' + games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat + '","villain":"' + message.villain + '"}');
+                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                }}
+            break;
+        
+        default:
           wsclientSend(clientId,'{"error":"wss::operationNotFound ' + message.operation + '"}');
       }
       
