@@ -46,5 +46,17 @@
     "POPUPphaseIntro2":" ?",
     "POPUPphaseContent1":"(The villain '",
     "POPUPphaseContent2":"' 'life wille be set to ",
-    "POPUPphaseContent3":".)"
+    "POPUPphaseContent3":".)",
+
+    "ws::serverOperationNotFound":"[CLient] Operation not found",
+    "ws::connextionLost":"[Client] Server connection lost",
+    "wss::operationNotFound":"[Server] Operation not found",
+    "wss::gameKeyNotFound":"[Serveur] Game key not found",
+    "wss::villainNotFound":"[Serveur] Villain not found",
+    "wss::villainLifeNegative":"[Serveur] Villain's life can't be negative",
+    "wss::phaseNoChange":"[Server] Villain's phase can(t be changed",
+    "wss::mainNotFound":"[Server] Main Scheme not found",
+    "wss::newVillainNotFound":"[Server] New Villain not found",
+    "wss::threatNegative":"[Server] Threat can't be negative"
+
 }

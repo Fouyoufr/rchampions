@@ -34,6 +34,7 @@ function villainDisplay(index) {
     vilDMob.title=lang.BUTTONmobile;
     vilFrame.append(vilDMob);
     vilDMain = addElement('div','mainScheme');
+    if (game.villains[index].mainScheme.current >= game.villains[index].mainScheme.max) vilDMain.style.backgroundColor =  'crimson';
     vilD.append(vilDMain);
     let vilMainName = addElement('div','name');
     vilMainName.textContent=mainSchemes[vil.mainScheme.id].name;
@@ -41,6 +42,7 @@ function villainDisplay(index) {
     vilDMain.append(vilMainName);
     vilThreat = addElement('div','threat');
     vilDMain.append(vilThreat);
+    if (vil.mainScheme.current < 10) vil.mainScheme.current = '0' + vil.mainScheme.current;
     vilThreat.append(buttonDisplay('minus','{"operation":"villainMainThreatMinus","id":"' + index + '"}',lang.BUTTONminus));
     vilThreat.append(valueDisplay(vil.mainScheme.current));
     vilThreat.append(buttonDisplay('plus','{"operation":"villainMainThreatPlus","id":"' + index + '"}',lang.BUTTONplus));
@@ -54,6 +56,7 @@ function villainDisplay(index) {
     vilAccel.append(buttonDisplay('plus','{"operation":"villainMainAccelerationPlus","id":"' + index + '"}',lang.BUTTONplus));
     let vilMax = addElement('div','max');
     vilDMain.append(vilMax);
+    if (vil.mainScheme.max < 10) vil.mainScheme.max = '0' + vil.mainScheme.max;
     vilMax.append(buttonDisplay('minus','{"operation":"villainMainMaxMinus","id":"' + index + '"}',lang.BUTTONminus));
     vilMax.append(valueDisplay(vil.mainScheme.max));
     vilMax.append(buttonDisplay('plus','{"operation":"villainMainMaxPlus","id":"' + index + '"}',lang.BUTTONplus));
@@ -78,6 +81,7 @@ function sideSchemeDisplay (sideDisp,villainIndex,villainSC) {
     let sideSchemeThreat = document.createElement('div');
     sideSchemeThreat.className='threat';
     sideSchemeThreat.append(buttonDisplay ('minus','{"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC.id + '"}',lang.BUTTONminus));
+    if (villainSC.threat < 10) villainSC.threat = '0' + villainSC.threat;
     sideSchemeThreat.append(valueDisplay(villainSC.threat));
     sideSchemeThreat.append(buttonDisplay ('plus','{"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC.id + '"}',lang.BUTTONplus));
     sideScheme.append(sideSchemeThreat);
@@ -140,17 +144,20 @@ function changeVillainScheme (villainId,newVillainId=0) {
     else intro = lang.POPUPmainIntroB1 + villains[newVillainId].name + lang.POPUPmainIntroB2;
     let buttons='<button title="' + lang.BUTTONconfirm + '" id="changeMain" style="display:none;">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     let orderMains=Object.entries(mainSchemes).sort((a,b) => a[1].name > b[1].name?1:-1);
-    let content=lang.POPUPmainContent + '<select name="mainScheme" id="mainSchemeChange" onchange="document.getElementById(\'changeMain\').style.display=this.value ==  ' + game.villains[villainId].mainScheme.id + ' || this.value == 0?\'none\':\'block\';"><option';
-    if (newVillainId == 0 || game.villains[villainId].mainScheme === undefined || game.villains[villainId].mainScheme.id == 0) content += ' selected';
+    let content=lang.POPUPmainContent + '<select name="mainScheme" id="mainSchemeChange" onchange="document.getElementById(\'changeMain\').style.display=this.value == ';
+    content += newVillainId !== 0 ? '0' : game.villains[villainId].mainScheme.id;
+    content += ' || this.value == 0?\'none\':\'block\';"><option';
+    if (newVillainId === 0 || game.villains[villainId].mainScheme === undefined || game.villains[villainId].mainScheme.id == 0) content += ' selected';
     content +=' value="0">' + mainSchemes[0].name + '</option>';
     for (let i in orderMains) if (orderMains[i][0] != 0) {
         //Affichage du menu de selection des Manigances principales :
         content += '<option value="' + orderMains[i][0] + '"';
-        if (game.villains[villainId].mainScheme.id == orderMains[i][0]) content += ' selected';
-        content += '>' + orderMains[i][1].name + '</option>'
-    }
+        if (game.villains[villainId].mainScheme.id == orderMains[i][0] && newVillainId === 0) content += ' selected';
+        content += '>' + orderMains[i][1].name + '</option>'}
     content += '</select>';
-    popupDisplay(lang.BUTTONmain,intro,content,buttons);}
+    popupDisplay(lang.BUTTONmain,intro,content,buttons);
+    document.getElementById('changeMain').onclick = newVillainId ===0 ? function () {sendReq('{"operation":"changeMain","villain":"' + villainId + '","main":"' + document.getElementById('mainSchemeChange').value + '"}');document.getElementById('popup').style.display='none';} : function () {sendReq('{"operation":"changevillain","villain":"' + villainId + '","newVillain":"' + newVillainId + '","main":"' + document.getElementById('mainSchemeChange').value + '"}');document.getElementById('popup').style.display='none';}
+}
 
 function initChangePhase(villainId) {
     let villain=villains[game.villains[villainId].id];
@@ -162,5 +169,5 @@ function initChangePhase(villainId) {
     content = lang.POPUPphaseContent1 + villain.name + lang.POPUPphaseContent2 + newLife + lang.POPUPphaseContent3;
     let buttons='<button title="' + lang.BUTTONconfirm + '" id ="changeSchemeConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     popupDisplay(lang.BUTTONphase,intro,content,buttons);
-    document.getElementById('changeSchemeConfirm').onclick=function () {sendReq('{"operation":"changePhase","villain":"'+ villainId + '","newPhase":"' + newPhase + '","newLife":"' + newLife + '"}');document.getElementById('popup').style.display='none';}
+    document.getElementById('changeSchemeConfirm').onclick=function () {sendReq('{"operation":"changePhase","villain":"'+ villainId + '"}');document.getElementById('popup').style.display='none';}
 }

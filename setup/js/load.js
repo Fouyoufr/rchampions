@@ -4,7 +4,7 @@ let rcConfig={}, lang={}, game={},
 boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},
 loaded={"config":false,"lang":false,"boxes":false},
 webSocketId='';
-popupDiv=document.createElement('div');
+popupDiv=addElement('div','');
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 if (document.getElementById('loading')) {
@@ -98,23 +98,13 @@ function mainLoad(gameJson) {
         ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
         if (document.getElementById('villains')) {
             //Affichage des méchants
-            villainsDiv=document.getElementById('villains');
-            for (let i=0; i < game.villains.length; i++) {villainsDiv.append(villainDisplay(i));};}
+            for (let i=0; i < game.villains.length; i++) {document.getElementById('villains').append(villainDisplay(i));};}
 
         if (document.getElementById('players')) {
             //masquer les joueurs non utilisés dans la partie et afficher le(s) autre(s)
             for (let i=game.players.length; i < 4; i++) {document.getElementById('player' + (i+1)).style.display='none';};
             for (let i=0; i < game.players.length; i++) {playerDisplay(document.getElementById('player' + (i+1)),game.players[i]);};}
 
-        //Construction des boutons de changement de valeur
-        //let minusButtons=document.getElementsByClassName('minus');
-        //for(let i = 0; i < minusButtons.length; i++) {
-        //    minusButtons[i].title=lang.BUTTONminus;
-        //    minusButtons[i].onclick=function () {minusButton(this.parentNode);};}
-        //let plusButtons=document.getElementsByClassName('plus');
-        //for(let i = 0; i < plusButtons.length; i++) {
-        //    plusButtons[i].title=lang.BUTTONplus;
-        //    plusButtons[i].onclick=function () {plusButton(this.parentNode);};}
         addMenu();
         addPopup();
 
@@ -123,21 +113,6 @@ function mainLoad(gameJson) {
         },100);
     }
     
-//Gestion des modifications des valeurs chiffrées/compteurs.
-//function minusButton (mbValue) {
-//    if (mbValue.getElementsByClassName('value')[0].textContent > 0) {
-//        mbValue.getElementsByClassName('value')[0].textContent--;
-//        sendValue(mbValue);}}
-//function plusButton (pbValue) {
-//    pbValue.getElementsByClassName('value')[0].textContent++;
-//    sendValue(pbValue);}
-//function sendValue(svDiv) {
-//    let stringToSend='';
-//    let valueToSend = svDiv.getElementsByClassName('value')[0].textContent;
-//    while (svDiv.id === '' || svDiv.id === null) {
-//        stringToSend = svDiv.className + ',' + stringToSend;
-//        svDiv=svDiv.parentNode;}
-//    stringToSend='valueToChange=' + svDiv.id + ',' + stringToSend.slice(0,-1) + '&value=' + valueToSend;}
 
   function load(fileLoad,functionLoad) {
       // Chargement de fichier distant (AJAX)
@@ -149,65 +124,41 @@ function mainLoad(gameJson) {
 
 function addHeadLink(rel,type,href) {
     //Ajout des liens en tête de document (styles et favicon).
-    let headLink = document.createElement('link');
+    let headLink = addElement('link');
     headLink.rel = rel;
     headLink.type = type;
     headLink.href = href;
     document.head.appendChild(headLink);}
 
 function addMenu() {
-    settingsMenu=document.createElement('button');
-    settingsMenu.className='settingsMenu';
+    settingsMenu = addElement('button','settingsMenu');
     settingsMenu.title=lang.MENUsettings;
-    document.getElementsByTagName('body')[0].append(settingsMenu);
-
-    melodiceMenu=document.createElement('button');
-    melodiceMenu.className='melodiceMenu';
+    melodiceMenu = addElement('button','melodiceMenu');
     melodiceMenu.title=lang.MENUmelodice;
-    document.getElementsByTagName('body')[0].append(melodiceMenu);
-
-    adminMenu=document.createElement('button');
-    adminMenu.className='adminMenu';
+    adminMenu = addElement('button','adminMenu')
     adminMenu.title=lang.MENUadmin;
     adminMenu.onclick=adminPopup;
-    document.getElementsByTagName('body')[0].append(adminMenu);
-
-    gamekey=document.createElement('div');
-    gamekey.id='gameKey';
+    gamekey = addElement('div','gameKey');
     gamekey.innerHTML=gameKey;
-    document.getElementsByTagName('body')[0].append(gamekey);
+    document.getElementsByTagName('body')[0].append(gamekey,adminMenu,melodiceMenu,settingsMenu);
 }
 
 function addPopup() {
     //Ajout du div pour les popup (masque les intéractions à l'écran et présente une fenêtre générique)
     popupDiv.id='popup';
-    popupBack=document.createElement('div');
-    popupBack.className='background';
-    popupTitle=document.createElement('div');
-    popupTitle.className='title';
-    popupTitleIn=document.createElement('div');
-    popupTitleIn.className='titleIn';
-    popupTitle.append(popupTitleIn);
-    popupClose=document.createElement('button');
-    popupClose.className='close';
+    let popupBack = addElement('div','background');
+    let popupTitle = addElement('div','title');
+    popupTitle.append(addElement('div','titleIn'));
+    let popupClose = addElement('button','close');
     popupClose.title=lang.BUTTONclose;
     popupClose.onclick=function () {document.getElementById('popup').style.display='none';}
     popupTitle.append(popupClose);
     popupBack.append(popupTitle);
-    popupIn=document.createElement('div');
-    popupIn.className='inside';
-    popupIntro=document.createElement('p');
-    popupIntro.className='intro';
-    popupIn.append(popupIntro);
-    popupContent=document.createElement('div');
-    popupContent.className='content';
-    popupIn.append(popupContent);
-    popupButtons=document.createElement('div');
-    popupButtons.className='buttons';
-    popupIn.append(popupButtons);
-    popupOutro=document.createElement('p');
-    popupOutro.className='outro';
-    popupIn.append(popupOutro);
+    let popupIn = addElement('div','inside');
+    popupIn.append(addElement('p','intro'));
+    popupIn.append(addElement('div','content'));
+    popupIn.append(addElement('div','buttons'));
+    popupIn.append(addElement('p','outro'));
     popupBack.append(popupIn);
     popupDiv.append(popupBack);
     document.getElementsByTagName('body')[0].append(popupDiv);}
@@ -256,3 +207,6 @@ function valueDisplay (vdVal) {
     let vd = addElement('div','value');
     vd.textContent=vdVal;
     return vd;}
+
+    // Pour travailler sur l'import des anciennes sauvegardes :
+    // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications

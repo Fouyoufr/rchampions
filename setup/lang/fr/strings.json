@@ -47,6 +47,17 @@
     "POPUPphaseIntro2":" ?",
     "POPUPphaseContent1":"(La vie du méchant '",
     "POPUPphaseContent2":"' va passer à ",
-    "POPUPphaseContent3":".)"
+    "POPUPphaseContent3":".)",
+
+    "ws::serverOperationNotFound":"[CLient] Opération introuvable",
+    "ws::connextionLost":"[Client] Connexion au serveur perdue",
+    "wss::operationNotFound":"[Serveur] Opération introuvable",
+    "wss::gameKeyNotFound":"[Serveur] Clef de partie introuvable",
+    "wss::villainNotFound":"[Serveur] Méchant introuvable",
+    "wss::villainLifeNegative":"[Serveur] La vie du méchant ne peut être négative",
+    "wss::phaseNoChange":"[Serveur] La phase de jeu du Méchant ne peut être changée",
+    "wss::mainNotFound":"[Serveur] Manigance principale introuvable",
+    "wss::newVillainNotFound":"[Serveur] Nouveau Méchant introuvable",
+    "wss::threatNegative":"[Serveur] La menace ne peut être négative"
 
 }
