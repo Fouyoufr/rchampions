@@ -58,6 +58,7 @@
     "wss::phaseNoChange":"[Serveur] La phase de jeu du Méchant ne peut être changée",
     "wss::mainNotFound":"[Serveur] Manigance principale introuvable",
     "wss::newVillainNotFound":"[Serveur] Nouveau Méchant introuvable",
-    "wss::threatNegative":"[Serveur] La menace ne peut être négative"
+    "wss::threatNegative":"[Serveur] La menace ne peut être négative",
+    "wss::sideSchemeNotFound":"[Serveur] La manigance annexe est introuvable"
 
 }

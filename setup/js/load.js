@@ -140,8 +140,7 @@ function addMenu() {
     adminMenu.onclick=adminPopup;
     gamekey = addElement('div','gameKey');
     gamekey.innerHTML=gameKey;
-    document.getElementsByTagName('body')[0].append(gamekey,adminMenu,melodiceMenu,settingsMenu);
-}
+    document.getElementsByTagName('body')[0].append(gamekey,adminMenu,melodiceMenu,settingsMenu);}
 
 function addPopup() {
     //Ajout du div pour les popup (masque les intéractions à l'écran et présente une fenêtre générique)
@@ -163,7 +162,7 @@ function addPopup() {
     popupDiv.append(popupBack);
     document.getElementsByTagName('body')[0].append(popupDiv);}
 
-function popupDisplay(title,intro,content,buttons,outro='',height='15%') {
+function popupDisplay(title,intro,content,buttons,outro='',height='17%') {
     //Affichage d'une popup
     popup=document.getElementById('popup');
     popup.style.display='block';
@@ -185,31 +184,32 @@ function adminPopup() {
     refreshButton.onclick=function () {localStorage.clear();location.reload();}
     refreshButton.title=lang.BUTTONadminRefresh;
     refreshButton.innerHTML='&nbsp;';
-    document.getElementById('popup').getElementsByClassName('title')[0].append(refreshButton);
-}
+    document.getElementById('popup').getElementsByClassName('title')[0].append(refreshButton);}
 
-function addElement(aeType,aeClass='') {
+function addElement(aeType,aeClass='',aeId='') {
     //Ajout d'un élément dans le document
     let ae = document.createElement(aeType);
     if (aeClass != '') ae.className = aeClass;
-    return ae;
-}
+    if (aeId != '') ae.id=aeId;
+    return ae;}
 
-function buttonDisplay (bdClass,bdReq,bdTitle,bdText=''){
-    //Affichage des boutons Moins et Plus.
+function buttonDisplay (bdClass,bdReq,bdTitle,bdText='',bdId=''){
+    //Affichage des boutons qui envoient des requètes au serveur
     let bd = addElement('button',bdClass);
     bd.onclick=function () {sendReq(bdReq);}
     bd.title=bdTitle;
     if (bdText !='') bd.textContent = bdText;
+    if (bdId != '') bd.id = bdId;
     return bd;}
 
-function valueDisplay (vdVal) {
-    let vd = addElement('div','value');
+function valueDisplay (vdVal,id='') {
+    let vd = addElement('div','value',id);
     vd.textContent=vdVal;
     return vd;}
 
 function isElem (element) {
         if (typeof(element) != 'undefined' && element != null) return element; else return nullElement;}
 
-    // Pour travailler sur l'import des anciennes sauvegardes :
+
+        // Pour travailler sur l'import des anciennes sauvegardes :
     // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications

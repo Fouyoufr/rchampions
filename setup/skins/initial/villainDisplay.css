@@ -10,11 +10,12 @@
     .villain div.status {display:flex;flex-wrap:wrap;}
     .villain div.status button {flex: 1 1 25%;font-weight: bolder;margin:2px;margin-left:5px;margin-right:5px;font-size: medium;}
         .villain div.status button.retaliate, .villain div.status button.piercing, .villain div.status button.ranged {font-size:smaller;}
-    .villain div.mainScheme div.value {background-color:#f3b723;color:black;}
-    .villain div.mainScheme {background-color:rgba(0, 0, 0, 0.5);padding:2px;margin-bottom:2px;}
-        .villain div.mainScheme > div.name {width:100%;color:#f3b723;font-size:larger;cursor:pointer;text-align: left;font-weight:bold;}
-        .villain div.mainScheme > div.threat, .villain div.mainScheme div.acceleration, .villain div.mainScheme div.max {display:inline-block;margin:auto;}
-        .villain div.mainScheme div.acceleration {margin-left:10px;margin-right:10px;background-color: darkgrey;padding:2px;padding-right:4px;padding-left:4px;border-radius: 4px;}
+    .villain div.mainScheme div.value, .villain div.mainSchemeLost div.value {background-color:#f3b723;color:black;}
+    .villain div.mainScheme, .villain div.mainSchemeLost {background-color:rgba(0, 0, 0, 0.5);padding:2px;margin-bottom:2px;}
+    .villain div.mainSchemeLost {background-color:crimson;}
+        .villain div.mainScheme > div.name, .villain div.mainSchemeLost > div.name {width:100%;color:#f3b723;font-size:larger;cursor:pointer;text-align: left;font-weight:bold;}
+        .villain div.mainScheme > div.threat, .villain div.mainScheme div.acceleration, .villain div.mainScheme div.max, .villain div.mainSchemeLost > div.threat, .villain div.mainSchemeLost div.acceleration, .villain div.mainSchemeLost div.max {display:inline-block;margin:auto;}
+        .villain div.mainScheme div.acceleration, .villain div.mainSchemeLost div.acceleration {margin-left:10px;margin-right:10px;background-color: darkgrey;padding:2px;padding-right:4px;padding-left:4px;border-radius: 4px;}
         .villain img.acceleration-icon {margin:0px;padding:0px;height:28px;vertical-align: bottom;}
         
 
