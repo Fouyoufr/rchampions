@@ -26,6 +26,7 @@
     "BUTTONvillain" : "Choisir un nouveau Méchant",
     "BUTTONmain" : "Choisir la Manigance Principale",
     "BUTTONadminRefresh":"Rechargement forçé",
+    "BUTTONsideSchemeInfos":"Informations sur la manigance annexe",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",

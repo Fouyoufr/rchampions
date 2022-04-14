@@ -26,6 +26,7 @@
     "BUTTONvillain" : "Choose a new Villain",
     "BUTTONmain" : "Choose Main Scheme",
     "BUTTONadminRefresh":"Hard refresh",
+    "BUTTONsideSchemeInfos":"About this Side Scheme",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",

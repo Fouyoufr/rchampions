@@ -29,7 +29,8 @@ function villainDisplay(index) {
     //Ajout de la vie du méchant
     let vilDLife = addElement('div','life');
     vilFrame.append(vilDLife);
-    vilDLife.append(buttonDisplay('minus','{"operation":"villainLifeMinus","id":"' + index + '"}',lang.BUTTONminus,'',vilId + '-lifeMinus'));
+    let vilDlifeMinus = buttonDisplay('minus','{"operation":"villainLifeMinus","id":"' + index + '"}',lang.BUTTONminus,'',vilId + '-lifeMinus')
+    vilDLife.append(vilDlifeMinus);
     if (vil.life < 10) vil.life = '0' + vil.life;
     vilDLife.append(valueDisplay(vil.life,vilId + '-life'));
     vilDLife.append(buttonDisplay('plus','{"operation":"villainLifePlus","id":"' + index + '"}',lang.BUTTONplus));
@@ -43,7 +44,6 @@ function villainDisplay(index) {
     vilFrame.append(vilDMob);
     //Ajout de la manigance principale
     vilDMain = addElement('div',game.villains[index].mainScheme.current >= game.villains[index].mainScheme.max ? 'mainSchemeLost' : 'mainScheme',vilId + '-mainScheme');
-    //if (game.villains[index].mainScheme.current >= game.villains[index].mainScheme.max) vilDMain.style.backgroundColor =  'crimson';
     vilD.append(vilDMain);
     let vilMainName = addElement('div','name',vilId + '-mainName');
     vilMainName.textContent=mainSchemes[vil.mainScheme.id].name;
@@ -71,8 +71,24 @@ function villainDisplay(index) {
     vilMax.append(buttonDisplay('plus','{"operation":"villainMainMaxPlus","id":"' + index + '"}',lang.BUTTONplus));
     //Affichage des manigances annexes du méchant.
     let sideDisp = addElement('div','sideSchemes',vilId + '-sideSchemes');
-    sideDisp.append(addElement('div','sideInfos',vilId + 'sideInfos'));
-    Object.keys(vil.sideSchemes).forEach(key => {sideSchemeDisplay(sideDisp,index,key);})
+
+
+    let sideInfos = addElement('div','sideInfos',vilId + '-sideInfos');
+    let sideInfosBack = addElement('div','background');
+    sideInfos.append(sideInfosBack);
+    let sideInfosTitle = addElement('div','title');
+    let sideInfosTitleClose = addElement('button','close');
+    sideInfosTitleClose.title=lang.BUTTONclose;
+    sideInfosTitleClose.onclick = function () {document.getElementById(vilId + '-sideInfos').style.display = 'none';}
+    sideInfosTitle.append(addElement('div','titleIn'));
+    sideInfosTitle.append(sideInfosTitleClose);
+    sideInfosBack.append(sideInfosTitle);
+    sideInfosBack.append(addElement('div','inside'));
+    sideDisp.append(sideInfos);
+    Object.keys(vil.sideSchemes).forEach(key => {
+        sideSchemeDisplay(sideDisp,index,key);
+        if (sideSchemes[key].crisis !== undefined) vilDlifeMinus.className += ' minusCrisis';
+    })
     vilD.append(sideDisp);
     let sideDispNew = addElement('button','new');
     sideDispNew.title=lang.BUTTONaddScheme;
@@ -106,18 +122,25 @@ function sideSchemeDisplay (sideDisp,villainIndex,villainSC) {
             sideSchemeIcon.src='./images/'+sideSchemeIconId+'.png';
             sideScheme.append(sideSchemeIcon);}})
     //Affichage des informations complémentaires sur la manigance annexe.
-    let sideSchemeInfo='';
-    if (sideSchemes[villainSC].info !== undefined) {sideSchemeInfo+='info: '+schemeTexts[sideSchemes[villainSC].info];}
-    if (sideSchemes[villainSC].reveal !== undefined) {sideSchemeInfo+='reveal: '+schemeTexts[sideSchemes[villainSC].reveal];}
-    if (sideSchemes[villainSC].defeat !== undefined) {sideSchemeInfo+='defeat: '+schemeTexts[sideSchemes[villainSC].defeat];}
-    console.log(sideSchemeInfo);
+    if (sideSchemes[villainSC].info !== undefined || sideSchemes[villainSC].reveal !== undefined || sideSchemes[villainSC].defeat !== undefined) {
+        let sideSchemeInfosButton = addElement('button','sideSchemeInfos');
+        sideSchemeInfosButton.onclick = function () {sideSchemePopup(villainIndex,villainSC)};
+        sideSchemeInfosButton.title=lang.BUTTONsideSchemeInfos;
+        sideScheme.append(sideSchemeInfosButton);}
 
+    sideDisp.append(sideScheme);}
 
+function sideSchemePopup (villain,id) {
+    popupDiv=document.getElementById('villain' + villain + '-sideInfos');
+    popupDiv.getElementsByClassName('titleIn')[0].textContent = sideSchemes[id].name;
 
+    // A travailler : chaines LANG
+    content = sideSchemes[id].info !== undefined ? 'infos : ' + schemeTexts[sideSchemes[id].info] + '<hr/>' : '';
+    content += sideSchemes[id].reveal !== undefined ? 'Une fois révélée : ' + schemeTexts[sideSchemes[id].reveal] + '<hr/>' : '';
+    content += sideSchemes[id].defeat !== undefined ? 'Une fois déjouée : ' + schemeTexts[sideSchemes[id].defeat] + '<hr/>' : '';
 
-    sideDisp.append(sideScheme);
-
-}
+    popupDiv.getElementsByClassName('inside')[0].innerHTML = content;
+    popupDiv.style.display='block';}
 
 function initChangeVillain(villainId) {
     //Popup de confirmation de changement du méchant de la partie en cours (villainID = quel méchant 1 à 4)
@@ -183,10 +206,6 @@ function newSideScheme(villainId) {
     //Ajout d'une nouvelle manigance annexe
     let intro = 'Mise en jeu d\'une nouvelle manigance annexe pour le méchant \'' + villains[game.villains[villainId].id].name + '\'.<br/>Sélectionnez ci-dessous le deck auquel appartient la manigance puis la manigance elle-même.';
     let buttons='<button title="' + lang.BUTTONconfirm + '" id="newSideSchemeOK" style="display:none;" onclick="newSchemeSend(' + villainId + ');">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
-
-    
-
-
     let content='Deck : <select name="deck" id="deck" onchange="newSideChemeMenu(this.value);"><option selected value="0">' + decks[0].name + '</option>';
     //Sélectionner les manigances à présenter : celles des héros en jeu et celles non déjà en jeu
     newHeros={};

@@ -179,11 +179,13 @@ function operation(message,gameKey,clientId) {
                         games[gameKey].villains[message.villain].id = message.newVillain;
                         games[gameKey].villains[message.villain].phase=1;
                         games[gameKey].villains[message.villain].life = villains[message.villain].life1;
-                        games[gameKey].villains[message.villain].sideSchemes=[];
+                        games[gameKey].villains[message.villain].sideSchemes={};
                         ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
                             delete games[gameKey].villains[message.villain][statusName];
                             wsGameSend(gameKey,'{"operation":"villainStatus","id":"' + message.villain + '","status":"' + statusName+ '","value":"0"}');});
-                        wsGameSend(gameKey,'{"operation":"changeMain","villain":"' + message.villain + '","main":"' + message.main + '","current":"' + currentThreat + '","max":"' + maxThreat + '","acceleration":"0"}');
+                        wsGameSend(gameKey,'{"operation":"changeMain","villain":"' + message.villain + '","main":"' + message.main + '","current":"' + currentThreat + '"}');
+                        wsGameSend(gameKey,'{"operation":"mainThreatMax","id":"' + message.villain + '","value":"' + maxThreat + '"}');
+                        wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.villain + '","value":"0"}');
                         wsGameSend(gameKey,'{"operation":"changeVillain","villain":"' + message.villain + '","id":"' + message.newVillain + '"}');
                         wsGameSend(gameKey,'{"operation":"changePhase","villain":"' + message.villain + '","phase":"' + 1 + '"}');
                         wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.villain + '","value":"' + villains[message.villain].life1 + '"}');
@@ -304,8 +306,9 @@ function operation(message,gameKey,clientId) {
                     if (newScheme.hinder !== undefined) newSchemeThreat = newSchemeThreat + games[gameKey].players.length;
                     wsGameSend(gameKey,'{"operation":"newScheme","villain":"' + message.villain + '","id":"' + message.id + '","threat":"' + newSchemeThreat + '"}');
                     games[gameKey].villains[message.villain].sideSchemes[message.id]={"threat":newSchemeThreat};
+                    console.log(games[gameKey].villains[message.villain].sideSchemes);
                     
-                    //fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                 }}
             break;
         
