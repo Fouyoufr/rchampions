@@ -29,7 +29,7 @@ function webRequest (req, res) {
     else if (url.parse(req.url).pathname.endsWith('.pdf')) contentType = 'application/pdf';
     else if (url.parse(req.url).pathname.endsWith('.xml')) contentType = 'application/xml';
     else if (url.parse(req.url).pathname.endsWith('.ico')) contentType = 'image/x-icon';
-    if (contentType === 'text/html' || contentType === 'application/json') console.log('Requète reçue -> ' + req.url);
+    if (contentType === 'text/html' || contentType === 'application/json') console.log('HTTP GET Request -> ' + req.url);
     fs.readFile(__dirname + url.parse(req.url).pathname,function (err, data) {
         if (err) {
             res.writeHead(500);
@@ -306,8 +306,6 @@ function operation(message,gameKey,clientId) {
                     if (newScheme.hinder !== undefined) newSchemeThreat = newSchemeThreat + games[gameKey].players.length;
                     wsGameSend(gameKey,'{"operation":"newScheme","villain":"' + message.villain + '","id":"' + message.id + '","threat":"' + newSchemeThreat + '"}');
                     games[gameKey].villains[message.villain].sideSchemes[message.id]={"threat":newSchemeThreat};
-                    console.log(games[gameKey].villains[message.villain].sideSchemes);
-                    
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                 }}
             break;

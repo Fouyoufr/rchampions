@@ -50,6 +50,17 @@
     "POPUPphaseContent2":"' va passer à ",
     "POPUPphaseContent3":".)",
 
+    "POPUPschemeHeadDeck":"Deck",
+    "POPUPschemeHeadHero":"Héros",
+    "POPUPschemeInfos":"Informations",
+    "POPUPschemeReveal":"Une fois révélée",
+    "POPUPschemeDefeat":"Une fois déjouée",
+
+    "NSSIntro0":"Mise en jeu d'une nouvelle manigance annexe pour le méchant '",
+    "NSSIntro1":"'.<br/>Sélectionnez ci-dessous le deck auquel appartient la manigance, puis la manigance elle-même.",
+    "NSSDeck":"Deck : ",
+    "NSSScheme":" , manigance : ",
+
     "ws::serverOperationNotFound":"[CLient] Opération introuvable",
     "ws::connextionLost":"[Client] Connexion au serveur perdue",
     "wss::operationNotFound":"[Serveur] Opération introuvable",

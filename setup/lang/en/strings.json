@@ -49,6 +49,17 @@
     "POPUPphaseContent2":"' 'life wille be set to ",
     "POPUPphaseContent3":".)",
 
+    "POPUPschemeHeadDeck":"Deck",
+    "POPUPschemeHeadHero":"Hero",
+    "POPUPschemeInfos":"Informations",
+    "POPUPschemeReveal":"When revealed",
+    "POPUPschemeDefeat":"When defeated",
+
+    "NSSIntro0":"Revealing a new Side Scheme for the Villain '",
+    "NSSIntro1":"'.<br/>Please choose the deck bellow, and then the new Side Scheme from the deck.",
+    "NSSDeck":"Deck : ",
+    "NSSScheme":" , Scheme : ",
+
     "ws::serverOperationNotFound":"[CLient] Operation not found",
     "ws::connextionLost":"[Client] Server connection lost",
     "wss::operationNotFound":"[Server] Operation not found",

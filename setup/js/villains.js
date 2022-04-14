@@ -133,12 +133,11 @@ function sideSchemeDisplay (sideDisp,villainIndex,villainSC) {
 function sideSchemePopup (villain,id) {
     popupDiv=document.getElementById('villain' + villain + '-sideInfos');
     popupDiv.getElementsByClassName('titleIn')[0].textContent = sideSchemes[id].name;
-
-    // A travailler : chaines LANG
-    content = sideSchemes[id].info !== undefined ? 'infos : ' + schemeTexts[sideSchemes[id].info] + '<hr/>' : '';
-    content += sideSchemes[id].reveal !== undefined ? 'Une fois révélée : ' + schemeTexts[sideSchemes[id].reveal] + '<hr/>' : '';
-    content += sideSchemes[id].defeat !== undefined ? 'Une fois déjouée : ' + schemeTexts[sideSchemes[id].defeat] + '<hr/>' : '';
-
+    //A ajouter : remplacement dans les chaines ( [pp] **bold** **italic** **Majuscules** etc...)
+    content = '<div class="head"><p class="deck">' + (sideSchemes[id].hero === undefined ? (lang.POPUPschemeHeadDeck + ' \'' + decks[sideSchemes[id].deck].name) : (lang.POPUPschemeHeadHero + ' \'' + heros[sideSchemes[id].hero].name)) + '\'</p>' + (sideSchemes[id].card !== undefined ? '<p class="card">' + sideSchemes[id].card + '</p>' : '') + '</div>';
+    content += sideSchemes[id].info !== undefined ? '<p><h1>' + lang.POPUPschemeInfos + ' :</h1> ' + schemeTexts[sideSchemes[id].info] + '</p>' : '';
+    content += sideSchemes[id].reveal !== undefined ? '<p><h1>' + lang.POPUPschemeReveal + ' :</h1> ' + schemeTexts[sideSchemes[id].reveal] + '</p>' : '';
+    content += sideSchemes[id].defeat !== undefined ? '<p><h1>' + lang.POPUPschemeDefeat + ' :</h1> ' + schemeTexts[sideSchemes[id].defeat] + '</p>' : '';
     popupDiv.getElementsByClassName('inside')[0].innerHTML = content;
     popupDiv.style.display='block';}
 
@@ -204,9 +203,9 @@ function initChangePhase(villainId) {
 
 function newSideScheme(villainId) {
     //Ajout d'une nouvelle manigance annexe
-    let intro = 'Mise en jeu d\'une nouvelle manigance annexe pour le méchant \'' + villains[game.villains[villainId].id].name + '\'.<br/>Sélectionnez ci-dessous le deck auquel appartient la manigance puis la manigance elle-même.';
+    let intro = lang.NSSIntro0 + villains[game.villains[villainId].id].name + lang.NSSIntro1;
     let buttons='<button title="' + lang.BUTTONconfirm + '" id="newSideSchemeOK" style="display:none;" onclick="newSchemeSend(' + villainId + ');">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
-    let content='Deck : <select name="deck" id="deck" onchange="newSideChemeMenu(this.value);"><option selected value="0">' + decks[0].name + '</option>';
+    let content=lang.NSSDeck + '<select name="deck" id="deck" onchange="newSideChemeMenu(this.value);"><option selected value="0">' + decks[0].name + '</option>';
     //Sélectionner les manigances à présenter : celles des héros en jeu et celles non déjà en jeu
     newHeros={};
     newDecks={};
@@ -233,17 +232,17 @@ function newSideChemeMenu(deckId) {
         document.getElementById('newSchemeString').textContent = '';}
     else {
         document.getElementById('newSideSchemeOK').style.display = 'block';
-        if (deckId[0] == 'h') document.getElementById('newSchemeString').innerHTML = ' , manigance : <input type="text" value="' + newHeros[deckId.substring(1)].schemeName + '" disabled><input type="hidden" value="' + newHeros[deckId.substring(1)].schemeId + '" id="newSchemeId">.';
+        if (deckId[0] == 'h') document.getElementById('newSchemeString').innerHTML = lang.NSSScheme + '<input type="text" value="' + newHeros[deckId.substring(1)].schemeName + '" disabled><input type="hidden" value="' + newHeros[deckId.substring(1)].schemeId + '" id="newSchemeId">.';
         else {
             let newSchemes = {}
             for (let i in sideSchemes) if (i != 0) if (sideSchemes[i].deck == deckId.substring(1)) newSchemes[i]={"id":i,"name":sideSchemes[i].name}
-            if (Object.keys(newSchemes).length == 1) document.getElementById('newSchemeString').innerHTML = ' , manigance : <input type="text" value="' + Object.values(newSchemes)[0].name + '" disabled><input type="hidden" value="' + Object.values(newSchemes)[0].id + '" id="newSchemeId">.';
+            if (Object.keys(newSchemes).length == 1) document.getElementById('newSchemeString').innerHTML = lang.NSSScheme + '<input type="text" value="' + Object.values(newSchemes)[0].name + '" disabled><input type="hidden" value="' + Object.values(newSchemes)[0].id + '" id="newSchemeId">.';
             else {
                 newschemeHTML = '<select id="newSchemeId">';
                 let orderSchemes=Object.entries(newSchemes).sort((a,b) => a[1].name > b[1].name?1:-1);
                 for (let i in orderSchemes) if (orderSchemes[i][0] != 0) newschemeHTML += '<option value="' + orderSchemes[i][1].id + '">' + orderSchemes[i][1].name + '</option>';
                 newschemeHTML += '</select>';
-                document.getElementById('newSchemeString').innerHTML = newschemeHTML;}}}}
+                document.getElementById('newSchemeString').innerHTML = lang.NSSScheme + newschemeHTML;}}}}
 
 function newSchemeSend(villainId) {
     sendReq('{"operation":"newScheme","villain":"' + villainId + '","id":"' + document.getElementById('newSchemeId').value + '"}');

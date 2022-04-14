@@ -138,7 +138,7 @@ function addMenu() {
     adminMenu = addElement('button','adminMenu')
     adminMenu.title=lang.MENUadmin;
     adminMenu.onclick=adminPopup;
-    gamekey = addElement('div','gameKey');
+    gamekey = addElement('div','','gameKey');
     gamekey.innerHTML=gameKey;
     document.getElementsByTagName('body')[0].append(gamekey,adminMenu,melodiceMenu,settingsMenu);}
 
