@@ -69,10 +69,18 @@ function villainDisplay(index) {
     vilMax.append(buttonDisplay('minus','{"operation":"villainMainMaxMinus","id":"' + index + '"}',lang.BUTTONminus));
     vilMax.append(valueDisplay(vil.mainScheme.max,vilId + '-mainMaxValue'));
     vilMax.append(buttonDisplay('plus','{"operation":"villainMainMaxPlus","id":"' + index + '"}',lang.BUTTONplus));
+    //Affichage des compteurs multifonctions
+    let vilDCounters = addElement('div','counters',vilId + '-counters');
+    let vilDCountersTitle = addElement('div','title');
+    vilDCountersTitle.textContent = lang.VILcounters;
+    vilDCounters.append(vilDCountersTitle);
+    let vilDCountersNew = addElement('button','new');
+    vilDCountersNew.title = lang.BUTTONnewCounter;
+    vilDCountersNew.onclick = function () { newCounter(index);}
+    vilDCountersTitle.append(vilDCountersNew);
+    vilD.append(vilDCounters);
     //Affichage des manigances annexes du méchant.
     let sideDisp = addElement('div','sideSchemes',vilId + '-sideSchemes');
-
-
     let sideInfos = addElement('div','sideInfos',vilId + '-sideInfos');
     let sideInfosBack = addElement('div','background');
     sideInfos.append(sideInfosBack);
@@ -86,23 +94,17 @@ function villainDisplay(index) {
     sideInfosBack.append(addElement('div','inside'));
     sideDisp.append(sideInfos);
     Object.keys(vil.sideSchemes).forEach(key => {
-        sideSchemeDisplay(sideDisp,index,key);
-        if (sideSchemes[key].crisis !== undefined) vilDlifeMinus.className += ' minusCrisis';
-    })
+        sideDisp.append(sideSchemeDisplay(index,key));
+        if (sideSchemes[key].crisis !== undefined) vilDlifeMinus.className += ' minusCrisis';})
     vilD.append(sideDisp);
     let sideDispNew = addElement('button','new');
     sideDispNew.title=lang.BUTTONaddScheme;
     sideDispNew.onclick = function () {newSideScheme(index)}
     sideDisp.append(sideDispNew);
-    let vilDCounters = addElement('div','counters',vilId + '-counters');
-    vilD.append(vilDCounters);
-    return vilD;
-}
+    return vilD;}
 
-function sideSchemeDisplay (sideDisp,villainIndex,villainSC) {
-    //(le passage du div "sideSchemes -sideDisp- en paramètre est important pour faire fonctionner la fonction pendant la création")
-    let sideScheme = addElement('div','sideScheme');
-    sideScheme.id = 'villain' + villainIndex + '-sideScheme' + villainSC;
+function sideSchemeDisplay (villainIndex,villainSC) {
+    let sideScheme = addElement('div','sideScheme','villain' + villainIndex + '-sideScheme' + villainSC);
     //Affichages du compteur de menace de la manigance annexe
     let sideSchemeThreat = addElement('div','threat');
     sideSchemeThreat.append(buttonDisplay ('minus','{"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"}',lang.BUTTONminus));
@@ -111,33 +113,37 @@ function sideSchemeDisplay (sideDisp,villainIndex,villainSC) {
     sideSchemeThreat.append(buttonDisplay ('plus','{"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"}',lang.BUTTONplus));
     sideScheme.append(sideSchemeThreat);
     //Affichage du nom de la manigance annexe
-    let sideSchemeName = addElement('div','name');
-    sideSchemeName.textContent=sideSchemes[villainSC].name
+    let sideSchemeName = addElement('button','name');
+    sideSchemeName.textContent = sideSchemes[villainSC].name;
+    sideSchemeName.title = (sideSchemes[villainSC].hero === undefined ? (lang.POPUPschemeHeadDeck + ' : ' + decks[sideSchemes[villainSC].deck].name) : (lang.POPUPschemeHeadHero + ' : ' + heros[sideSchemes[villainSC].hero].name)) + (sideSchemes[villainSC].card !== undefined ? '  (' + sideSchemes[villainSC].card + ')' : '');
     sideScheme.append(sideSchemeName);
     //Affichages des informations (crisis,encounter,acceleration,amplification) sur la manigance annexe
     ['crisis','encounter','acceleration','amplification'].forEach((sideSchemeIconId) => {
         if (sideSchemes[villainSC][sideSchemeIconId] !== undefined) {
             let sideSchemeIcon = addElement('img','icon');
-            sideSchemeIcon.alt=sideSchemeIconId;
-            sideSchemeIcon.src='./images/'+sideSchemeIconId+'.png';
+            sideSchemeIcon.alt = sideSchemeIconId;
+            sideSchemeIcon.title = sideSchemeIconId;
+            sideSchemeIcon.src = './images/'+sideSchemeIconId+'.png';
             sideScheme.append(sideSchemeIcon);}})
-    //Affichage des informations complémentaires sur la manigance annexe.
+    //Affichage de l'image 'informations complémentaires' sur la manigance annexe.
     if (sideSchemes[villainSC].info !== undefined || sideSchemes[villainSC].reveal !== undefined || sideSchemes[villainSC].defeat !== undefined) {
-        let sideSchemeInfosButton = addElement('button','sideSchemeInfos');
-        sideSchemeInfosButton.onclick = function () {sideSchemePopup(villainIndex,villainSC)};
-        sideSchemeInfosButton.title=lang.BUTTONsideSchemeInfos;
-        sideScheme.append(sideSchemeInfosButton);}
+        let sideSchemeInfosImg = addElement('img','sideSchemeInfos');
+        sideSchemeName.onclick = function () {sideSchemePopup(villainIndex,villainSC)};
+        sideSchemeInfosImg.alt = lang.BUTTONsideSchemeInfos;
+        sideSchemeInfosImg.title = lang.BUTTONsideSchemeInfos;
+        sideSchemeInfosImg.src = './images/help.png';
+        sideScheme.append(sideSchemeInfosImg);}
+    return(sideScheme);}
 
-    sideDisp.append(sideScheme);}
-
-function sideSchemePopup (villain,id) {
+function sideSchemePopup (villain,id,action='build') {
     popupDiv=document.getElementById('villain' + villain + '-sideInfos');
     popupDiv.getElementsByClassName('titleIn')[0].textContent = sideSchemes[id].name;
-    //A ajouter : remplacement dans les chaines ( [pp] **bold** **italic** **Majuscules** etc...)
+    //A ajouter : remplacement dans les chaines (**bold** **italic** **Majuscules** etc...)
     content = '<div class="head"><p class="deck">' + (sideSchemes[id].hero === undefined ? (lang.POPUPschemeHeadDeck + ' \'' + decks[sideSchemes[id].deck].name) : (lang.POPUPschemeHeadHero + ' \'' + heros[sideSchemes[id].hero].name)) + '\'</p>' + (sideSchemes[id].card !== undefined ? '<p class="card">' + sideSchemes[id].card + '</p>' : '') + '</div>';
-    content += sideSchemes[id].info !== undefined ? '<p><h1>' + lang.POPUPschemeInfos + ' :</h1> ' + schemeTexts[sideSchemes[id].info] + '</p>' : '';
-    content += sideSchemes[id].reveal !== undefined ? '<p><h1>' + lang.POPUPschemeReveal + ' :</h1> ' + schemeTexts[sideSchemes[id].reveal] + '</p>' : '';
-    content += sideSchemes[id].defeat !== undefined ? '<p><h1>' + lang.POPUPschemeDefeat + ' :</h1> ' + schemeTexts[sideSchemes[id].defeat] + '</p>' : '';
+    content += sideSchemes[id].info !== undefined && action == 'build' ? '<p><h1>' + lang.POPUPschemeInfos + ' :</h1> ' + schemeTexts[sideSchemes[id].info] + '</p>' : '';
+    content += sideSchemes[id].reveal !== undefined && (action == 'build' || action == 'reveal') ? '<p><h1>' + lang.POPUPschemeReveal + ' :</h1> ' + schemeTexts[sideSchemes[id].reveal] + '</p>' : '';
+    content += sideSchemes[id].defeat !== undefined && (action == 'build' || action == 'defeat') ? '<p><h1>' + lang.POPUPschemeDefeat + ' :</h1> ' + schemeTexts[sideSchemes[id].defeat] + '</p>' : '';
+    content = content.replace(/\[pp]/g,'<img src="images/pp.png" alt="per player" style="height: 1em;width: auto;">');
     popupDiv.getElementsByClassName('inside')[0].innerHTML = content;
     popupDiv.style.display='block';}
 
@@ -209,8 +215,10 @@ function newSideScheme(villainId) {
     //Sélectionner les manigances à présenter : celles des héros en jeu et celles non déjà en jeu
     newHeros={};
     newDecks={};
+    newSideSchemes={};
     for (let i in sideSchemes) if (i != 0) {
         if (game.villains[villainId].sideSchemes[i] === undefined) {
+            newSideSchemes[i] = sideSchemes[i];
             if (sideSchemes[i].hero === undefined) newDecks[sideSchemes[i].deck] = decks[sideSchemes[i].deck];
              else {
                 for (j in game.players) if (game.players[j].hero == sideSchemes[i].hero) {
@@ -235,7 +243,7 @@ function newSideChemeMenu(deckId) {
         if (deckId[0] == 'h') document.getElementById('newSchemeString').innerHTML = lang.NSSScheme + '<input type="text" value="' + newHeros[deckId.substring(1)].schemeName + '" disabled><input type="hidden" value="' + newHeros[deckId.substring(1)].schemeId + '" id="newSchemeId">.';
         else {
             let newSchemes = {}
-            for (let i in sideSchemes) if (i != 0) if (sideSchemes[i].deck == deckId.substring(1)) newSchemes[i]={"id":i,"name":sideSchemes[i].name}
+            for (let i in newSideSchemes) if (i != 0) if (sideSchemes[i].deck == deckId.substring(1)) newSchemes[i]={"id":i,"name":sideSchemes[i].name}
             if (Object.keys(newSchemes).length == 1) document.getElementById('newSchemeString').innerHTML = lang.NSSScheme + '<input type="text" value="' + Object.values(newSchemes)[0].name + '" disabled><input type="hidden" value="' + Object.values(newSchemes)[0].id + '" id="newSchemeId">.';
             else {
                 newschemeHTML = '<select id="newSchemeId">';
@@ -247,3 +255,7 @@ function newSideChemeMenu(deckId) {
 function newSchemeSend(villainId) {
     sendReq('{"operation":"newScheme","villain":"' + villainId + '","id":"' + document.getElementById('newSchemeId').value + '"}');
     document.getElementById('popup').style.display = 'none';}
+
+function newCounter(villainId) {
+ console.log('écrire la fonction newCounter');
+}

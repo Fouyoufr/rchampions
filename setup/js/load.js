@@ -208,7 +208,8 @@ function valueDisplay (vdVal,id='') {
     return vd;}
 
 function isElem (element) {
-        if (typeof(element) != 'undefined' && element != null) return element; else return nullElement;}
+    let targetElem=document.getElementById(element);
+        if (typeof(targetElem) != 'undefined' && targetElem != null) return targetElem; else return targetElem;}
 
 
         // Pour travailler sur l'import des anciennes sauvegardes :

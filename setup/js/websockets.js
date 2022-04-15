@@ -18,30 +18,30 @@ websocket.onmessage = function(event) {
         //Réalisation d'une opération commandée par la serveur
         case 'villainLife':
             if (message.value < 10) message.value= '0' + message.value;
-            isElem(document.getElementById('villain' + message.id + '-life')).textContent = message.value;
+            isElem('villain' + message.id + '-life').textContent = message.value;
             game.villains[message.id].life=message.value;
             break;
 
         case 'villainStatus':
-            isElem(document.getElementById('villain' + message.id + '-' + message.status)).className = message.value == '1' ? message.status : message.status + ' off';
+            isElem('villain' + message.id + '-' + message.status).className = message.value == '1' ? message.status : message.status + ' off';
             if (message.status == '0') delete game.villains[message.id][message.status]; else game.villains[message.id][message.status]='1';
             break;
 
         case 'changePhase':
-            isElem(document.getElementById('villain' + message.villain + '-phase')).textContent = message.phase;
+            isElem('villain' + message.villain + '-phase').textContent = message.phase;
             game.villains[message.villain].phase=message.phase;
             break;
         
         case 'changeMain' :
             if (message.current < 10) message.current = '0' + message.current;
             if (message.max < 10) message.max = '0' + message.max;
-            isElem(document.getElementById('villain' + message.villain +'-mainName')).textContent = mainSchemes[message.main].name;
+            isElem('villain' + message.villain +'-mainName').textContent = mainSchemes[message.main].name;
             game.villains[message.villain].mainScheme.id = message.main;
             break;
 
         case 'changeVillain' :
-            isElem(document.getElementById('villain' + message.villain + '-pic')).style.backgroundImage = "url('./images/villains/" + message.id + ".png')";
-            isElem(document.getElementById('villain' + message.villain + '-name')).textContent = villains[message.id].name;
+            isElem('villain' + message.villain + '-pic').style.backgroundImage = "url('./images/villains/" + message.id + ".png')";
+            isElem('villain' + message.villain + '-name').textContent = villains[message.id].name;
             game.villains[message.villain].id=message.id;
             game.villains[message.villain].sideSchemes=[];
             //A retravialler après passage aux Id sur les DIVs en direct
@@ -50,28 +50,45 @@ websocket.onmessage = function(event) {
 
         case 'mainThreat' :
             if (message.value < 10) message.value = '0' + message.value;
-            isElem(document.getElementById('villain' + message.id + '-mainValue')).textContent = message.value;
+            isElem('villain' + message.id + '-mainValue').textContent = message.value;
             game.villains[message.id].mainScheme.current = message.value;
-            isElem(document.getElementById('villain' + message.id + '-mainScheme')).className = game.villains[message.id].mainScheme.current >= game.villains[message.id].mainScheme.max ?   'mainSchemeLost' : 'mainScheme';
+            isElem('villain' + message.id + '-mainScheme').className = game.villains[message.id].mainScheme.current >= game.villains[message.id].mainScheme.max ?   'mainSchemeLost' : 'mainScheme';
             break;
 
         case 'mainThreatAccel' :
-            isElem(document.getElementById('villain' + message.id + '-mainAccelValue')).textContent = message.value;
+            isElem('villain' + message.id + '-mainAccelValue').textContent = message.value;
             game.villains[message.id].mainScheme.acceleration = message.value;
             break;
 
         case 'mainThreatMax' :
             if (message.value < 10) message.value = '0' + message.value;
-            isElem(document.getElementById('villain' + message.id + '-mainMaxValue')).textContent = message.value;
+            isElem('villain' + message.id + '-mainMaxValue').textContent = message.value;
             game.villains[message.id].mainScheme.max = message.value;
-            isElem(document.getElementById('villain' + message.id + '-mainScheme')).className = game.villains[message.id].mainScheme.current >= game.villains[message.id].mainScheme.max ?   'mainSchemeLost' : 'mainScheme';
+            isElem('villain' + message.id + '-mainScheme').className = game.villains[message.id].mainScheme.current >= game.villains[message.id].mainScheme.max ?   'mainSchemeLost' : 'mainScheme';
             break;
                 
         case 'sideScheme' :
             if (message.value < 10) message.value = '0' + message.value;
-            isElem(document.getElementById('villain' + message.villain + '-sideScheme' + message.id + '-value')).textContent = message.value;
+            isElem('villain' + message.villain + '-sideScheme' + message.id + '-value').textContent = message.value;
             game.villains[message.villain].sideSchemes[message.id].threat = message.value;
-            break; 
+            break;
+
+        case 'removeSideScheme' :
+            if (document.getElementById('villain' + message.villain)) {
+                //Changer l'affichage du bouton de perte de vie du méchant si disparition d'une crise
+                if (sideSchemes[message.id].crisis !== undefined) isElem('villain' + message.villain + '-lifeMinus').className = 'minus';
+                if (document.getElementById('villain' + message.villain + '-sideScheme' + message.id) !== undefined) {
+                    if (sideSchemes[message.id].defeat !== undefined) sideSchemePopup (message.villain,message.id,'defeat');
+                    document.getElementById('villain' + message.villain + '-sideScheme' + message.id).remove();}}
+                delete game.villains[message.villain].sideSchemes[message.id];
+            break;
+
+        case 'newScheme' :
+            game.villains[message.villain].sideSchemes[message.id]={"threat":message.threat};
+            isElem('villain' + message.villain + '-sideSchemes').prepend(sideSchemeDisplay(message.villain,message.id));
+            if (document.getElementById('villain' + message.villain + '-sideSchemes') && sideSchemes[message.id].reveal !== undefined) sideSchemePopup (message.villain,message.id,'reveal');
+            if (sideSchemes[message.id].crisis !== undefined) isElem('villain' + message.villain + '-lifeMinus').className += ' minusCrisis';
+            break;
         
         default:
           webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}

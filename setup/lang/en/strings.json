@@ -27,6 +27,7 @@
     "BUTTONmain" : "Choose Main Scheme",
     "BUTTONadminRefresh":"Hard refresh",
     "BUTTONsideSchemeInfos":"About this Side Scheme",
+    "BUTTONnewCounter":"Add a new multipurpose counter",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",
@@ -59,6 +60,8 @@
     "NSSIntro1":"'.<br/>Please choose the deck bellow, and then the new Side Scheme from the deck.",
     "NSSDeck":"Deck : ",
     "NSSScheme":" , Scheme : ",
+
+    "VILcounters":"Multipurpose counters",
 
     "ws::serverOperationNotFound":"[CLient] Operation not found",
     "ws::connextionLost":"[Client] Server connection lost",

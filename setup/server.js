@@ -266,17 +266,19 @@ function operation(message,gameKey,clientId) {
                 if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme] === undefined) wsclientSend(clientId,'{"error":"wss::sideSchemeNotFound ' + message.sideScheme + '","errId":"24"}');
                 else {
                     if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat == 1) {
+                        if (sideSchemes[message.sideScheme].acceleration !== undefined) {
+                            //suppression de l'accélération ajoutée par la manigance
+                            games[gameKey].villains[message.villain].mainScheme.acceleration--;
+                            wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.villain + '","value":"' + games[gameKey].villains[message.villain].mainScheme.acceleration + '"}');}
+                        delete games[gameKey].villains[message.villain].sideSchemes[message.sideScheme];
                         wsGameSend(gameKey,'{"operation":"removeSideScheme","villain":"' + message.villain + '","id":"' + message.sideScheme + '"}');
-                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        // !! SUPPRIMER LA MANIGANCE DE LA PARTIE CONCERNEE !!
-                        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        //Supprimer l'acceleration
+                        fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                     }
                     else {                    
                         games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat--;
                         wsGameSend(gameKey,'{"operation":"sideScheme","id":"' + message.sideScheme + '","value":"' + games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat + '","villain":"' + message.villain + '"}');
                         fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }}}
+                    }}}
             break;
 
         case 'sideSchemePlus' :
@@ -299,11 +301,11 @@ function operation(message,gameKey,clientId) {
                 else {
                     newScheme=sideSchemes[message.id];
                     newSchemeThreat = newScheme.init;
-                    if (newScheme.initX !== undefined) newSchemeThreat = newSchemeThreat * games[gameKey].players.length;
+                    if (newScheme.initX !== undefined) newSchemeThreat = Number(newSchemeThreat) * games[gameKey].players.length;
                     if (newScheme.acceleration !== undefined) {
                         games[gameKey].villains[message.villain].mainScheme.acceleration++;
                         wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.villain + '","value":"' + games[gameKey].villains[message.villain].mainScheme.acceleration + '"}');}
-                    if (newScheme.hinder !== undefined) newSchemeThreat = newSchemeThreat + games[gameKey].players.length;
+                    if (newScheme.hinder !== undefined) newSchemeThreat = Number(newSchemeThreat) + Number(games[gameKey].players.length);
                     wsGameSend(gameKey,'{"operation":"newScheme","villain":"' + message.villain + '","id":"' + message.id + '","threat":"' + newSchemeThreat + '"}');
                     games[gameKey].villains[message.villain].sideSchemes[message.id]={"threat":newSchemeThreat};
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
