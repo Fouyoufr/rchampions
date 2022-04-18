@@ -27,18 +27,12 @@ function villainDisplay(index) {
     else vilDPhase.style.cursor='default';
     vilFrame.append(vilDPhase);
     //Ajout de la vie du méchant
-    let vilDLife = addElement('div','life');
-    vilFrame.append(vilDLife);
-    let vilDlifeMinus = buttonDisplay('minus','{"operation":"villainLifeMinus","id":"' + index + '"}',lang.BUTTONminus,'',vilId + '-lifeMinus')
-    vilDLife.append(vilDlifeMinus);
-    if (vil.life < 10) vil.life = '0' + vil.life;
-    vilDLife.append(valueDisplay(vil.life,vilId + '-life'));
-    vilDLife.append(buttonDisplay('plus','{"operation":"villainLifePlus","id":"' + index + '"}',lang.BUTTONplus));
+    vilFrame.append(valuePlusMinus('life',vil.life,vilId + '-life','"operation":"villainLifeMinus","id":"' + index + '"','"operation":"villainLifePlus","id":"' + index + '"'));
     //Ajout des états du méchant
     let vilDStat = addElement('div','status');
     vilFrame.append(vilDStat);
     ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {vilDStat.append(buttonDisplay(vil[statusName] === undefined || vil[statusName] === '0'?statusName + ' off':statusName,'{"operation":"villainStatus","status":"' + statusName + '","id":"' + index + '"}',lang['ST' + statusName],lang['ST' + statusName],vilId + '-' + statusName));});
-    //Ajout du bouton movile
+    //Ajout du bouton mobile
     let vilDMob = addElement('button','mobile');
     vilDMob.title=lang.BUTTONmobile;
     vilFrame.append(vilDMob);
@@ -49,26 +43,14 @@ function villainDisplay(index) {
     vilMainName.textContent=mainSchemes[vil.mainScheme.id].name;
     vilMainName.onclick=function () {changeVillainScheme(index)};
     vilDMain.append(vilMainName);
-    vilThreat = addElement('div','threat');
-    vilDMain.append(vilThreat);
-    if (vil.mainScheme.current < 10) vil.mainScheme.current = '0' + vil.mainScheme.current;
-    vilThreat.append(buttonDisplay('minus','{"operation":"villainMainThreatMinus","id":"' + index + '"}',lang.BUTTONminus,'',vilId + '-mainMinus'));
-    vilThreat.append(valueDisplay(vil.mainScheme.current,vilId + '-mainValue'));
-    vilThreat.append(buttonDisplay('plus','{"operation":"villainMainThreatPlus","id":"' + index + '"}',lang.BUTTONplus));
-    let vilAccel = addElement('div','acceleration');
-    vilDMain.append(vilAccel);
+    vilDMain.append(valuePlusMinus('threat',vil.mainScheme.current,vilId + '-mainValue','"operation":"villainMainThreatMinus","id":"' + index + '"','"operation":"villainMainThreatPlus","id":"' + index + '"'));
+    let vilAccel = valuePlusMinus('acceleration',vil.mainScheme.acceleration,vilId + '-mainAccelValue','"operation":"villainMainAccelerationMinus","id":"' + index + '"','"operation":"villainMainAccelerationPlus","id":"' + index + '"');
     let vilAccImg = addElement('img','acceleration-icon');
     vilAccImg.src = './images/threat+.png';
-     vilAccel.append(vilAccImg);
-    vilAccel.append(buttonDisplay('minus','{"operation":"villainMainAccelerationMinus","id":"' + index + '"}',lang.BUTTONminus));
-    vilAccel.append(valueDisplay(vil.mainScheme.acceleration,vilId + '-mainAccelValue'));
-    vilAccel.append(buttonDisplay('plus','{"operation":"villainMainAccelerationPlus","id":"' + index + '"}',lang.BUTTONplus));
-    let vilMax = addElement('div','max');
-    vilDMain.append(vilMax);
-    if (vil.mainScheme.max < 10) vil.mainScheme.max = '0' + vil.mainScheme.max;
-    vilMax.append(buttonDisplay('minus','{"operation":"villainMainMaxMinus","id":"' + index + '"}',lang.BUTTONminus));
-    vilMax.append(valueDisplay(vil.mainScheme.max,vilId + '-mainMaxValue'));
-    vilMax.append(buttonDisplay('plus','{"operation":"villainMainMaxPlus","id":"' + index + '"}',lang.BUTTONplus));
+    vilAccImg.alt = 'accleration';
+    vilAccel.prepend(vilAccImg);
+    vilDMain.append(vilAccel);
+    vilDMain.append(valuePlusMinus('max',vil.mainScheme.max,vilId + '-mainMaxValue','"operation":"villainMainMaxMinus","id":"' + index + '"','"operation":"villainMainMaxPlus","id":"' + index + '"'));
     //Affichage des compteurs multifonctions
     let vilDCounters = addElement('div','counters',vilId + '-counters');
     let vilDCountersTitle = addElement('div','title');
@@ -78,6 +60,9 @@ function villainDisplay(index) {
     vilDCountersNew.title = lang.BUTTONnewCounter;
     vilDCountersNew.onclick = function () { newCounter(index);}
     vilDCountersTitle.append(vilDCountersNew);
+    if (vil.counters !== undefined) Object.keys(vil.counters).forEach(key => {
+        vilDCounters.append(counterDisplay(index,key));
+    })
     vilD.append(vilDCounters);
     //Affichage des manigances annexes du méchant.
     let sideDisp = addElement('div','sideSchemes',vilId + '-sideSchemes');
@@ -95,7 +80,7 @@ function villainDisplay(index) {
     sideDisp.append(sideInfos);
     Object.keys(vil.sideSchemes).forEach(key => {
         sideDisp.append(sideSchemeDisplay(index,key));
-        if (sideSchemes[key].crisis !== undefined) vilDlifeMinus.className += ' minusCrisis';})
+        if (sideSchemes[key].crisis !== undefined) vilFrame.getElementsByClassName('minus')[0].className += ' minusCrisis';})
     vilD.append(sideDisp);
     let sideDispNew = addElement('button','new');
     sideDispNew.title=lang.BUTTONaddScheme;
@@ -103,15 +88,24 @@ function villainDisplay(index) {
     sideDisp.append(sideDispNew);
     return vilD;}
 
+function counterDisplay (villainId,counterId) {
+    let counter = game.villains[villainId].counters[counterId];
+    let counterDiv = addElement('div','counter','villain' + villainId + '-counter' + counterId);
+    //Ajouter ligne suivante les opérations pour augmenter/diminuer le conteur !!!!
+    let counterDivVal = valuePlusMinus('counterValue',counter.value,'vilain' + villainId + '-count' + counterId,'','');
+    let counterName = addElement('p','name');
+    counterName.textContent = counter.name;
+    counterDivVal.append(counterName);
+    counterDiv.append(counterDivVal);
+    //Ajouter ici le bouton de suppression de ce compteur !!!!
+
+    return counterDiv;}
+
 function sideSchemeDisplay (villainIndex,villainSC) {
     let sideScheme = addElement('div','sideScheme','villain' + villainIndex + '-sideScheme' + villainSC);
     //Affichages du compteur de menace de la manigance annexe
-    let sideSchemeThreat = addElement('div','threat');
-    sideSchemeThreat.append(buttonDisplay ('minus','{"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"}',lang.BUTTONminus));
-    if (game.villains[villainIndex].sideSchemes[villainSC].threat < 10) game.villains[villainIndex].sideSchemes[villainSC].threat = '0' + game.villains[villainIndex].sideSchemes[villainSC].threat;
-    sideSchemeThreat.append(valueDisplay(game.villains[villainIndex].sideSchemes[villainSC].threat ,sideScheme.id + '-value'));
-    sideSchemeThreat.append(buttonDisplay ('plus','{"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"}',lang.BUTTONplus));
-    sideScheme.append(sideSchemeThreat);
+    //valuePlusMinus(vpmClass,vpmValue,vpmId,vpmOperationMinus,vpmOperationPlus) 
+    sideScheme.append(valuePlusMinus('threat',game.villains[villainIndex].sideSchemes[villainSC].threat,sideScheme.id + '-value','"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"','"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"'));
     //Affichage du nom de la manigance annexe
     let sideSchemeName = addElement('button','name');
     sideSchemeName.textContent = sideSchemes[villainSC].name;
@@ -257,5 +251,10 @@ function newSchemeSend(villainId) {
     document.getElementById('popup').style.display = 'none';}
 
 function newCounter(villainId) {
- console.log('écrire la fonction newCounter');
+    //Ajout d'un nouveau compteur générique
+     let intro='Ajouter un compteur générique vous permettra de suivre toute valeur chiffrée que vous avez besoin/envie de suivre pendant votre partie concenrnant le méchant \'' + villains[game.villains[villainId].id].name + '\'.<br/> Si vous indiquez un nom pour votre compteur, il sera affichée dans la liste des compteurs sur l\'écran de jeu.';
+    let buttons='<button title="' + lang.BUTTONconfirm + '" id ="newCounterConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    let content = '<p>Nom du nouveau compteur <input type="text" id="newCounterName"></p><p>Valeur initiale du compteur <input type="number" min="0" max="1000" id="newCounterValue" value="0"></p>';
+    popupDisplay(lang.BUTTONnewCounter,intro,content,buttons,'','200px');
+    document.getElementById('newCounterConfirm').onclick = function () {sendReq('{"operation":"newCounter","villain":"' + villainId + '","counterName":"' + document.getElementById('newCounterName').value + '","value":"'+ document.getElementById('newCounterValue').value + '"}');document.getElementById('popup').style.display='none';}
 }

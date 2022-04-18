@@ -76,7 +76,7 @@ websocket.onmessage = function(event) {
         case 'removeSideScheme' :
             if (document.getElementById('villain' + message.villain)) {
                 //Changer l'affichage du bouton de perte de vie du méchant si disparition d'une crise
-                if (sideSchemes[message.id].crisis !== undefined) isElem('villain' + message.villain + '-lifeMinus').className = 'minus';
+                if (sideSchemes[message.id].crisis !== undefined) isElem('villain' + message.villain + '-life-minus').className = 'minus';
                 if (document.getElementById('villain' + message.villain + '-sideScheme' + message.id) !== undefined) {
                     if (sideSchemes[message.id].defeat !== undefined) sideSchemePopup (message.villain,message.id,'defeat');
                     document.getElementById('villain' + message.villain + '-sideScheme' + message.id).remove();}}
@@ -87,7 +87,12 @@ websocket.onmessage = function(event) {
             game.villains[message.villain].sideSchemes[message.id]={"threat":message.threat};
             isElem('villain' + message.villain + '-sideSchemes').prepend(sideSchemeDisplay(message.villain,message.id));
             if (document.getElementById('villain' + message.villain + '-sideSchemes') && sideSchemes[message.id].reveal !== undefined) sideSchemePopup (message.villain,message.id,'reveal');
-            if (sideSchemes[message.id].crisis !== undefined) isElem('villain' + message.villain + '-lifeMinus').className += ' minusCrisis';
+            if (sideSchemes[message.id].crisis !== undefined) isElem('villain' + message.villain + '-life-minus').className += ' minusCrisis';
+            break;
+        
+        case 'newCounter' :
+            game.villains[message.villain].counters[message.id] = {"name":message.name,"value":message.value};
+            isElem('villain' + message.villain + '-counters').append(counterDisplay (message.villain,message.id));
             break;
         
         default:

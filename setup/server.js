@@ -21,13 +21,13 @@ TLSserver = http.createServer(webRequest);
 
 function webRequest (req, res) {
     if (url.parse(req.url).pathname === '/') req.url = '/index.html';
-    let contentType = 'text/html';
-    if (url.parse(req.url).pathname.endsWith('.json')) contentType = 'application/json';
-    else if (url.parse(req.url).pathname.endsWith('.js')) contentType = 'text/javascript';
+    let contentType = 'text/html; charset=utf-8';
+    if (url.parse(req.url).pathname.endsWith('.json')) contentType = 'application/json; charset=utf-8';
+    else if (url.parse(req.url).pathname.endsWith('.js')) contentType = 'text/javascript; charset=utf-8';
     else if (url.parse(req.url).pathname.endsWith('.png')) contentType = 'image/png';
-    else if (url.parse(req.url).pathname.endsWith('.css')) contentType = 'text/css';
+    else if (url.parse(req.url).pathname.endsWith('.css')) contentType = 'text/css; charset=utf-8';
     else if (url.parse(req.url).pathname.endsWith('.pdf')) contentType = 'application/pdf';
-    else if (url.parse(req.url).pathname.endsWith('.xml')) contentType = 'application/xml';
+    else if (url.parse(req.url).pathname.endsWith('.xml')) contentType = 'application/xml; charset=utf-8';
     else if (url.parse(req.url).pathname.endsWith('.ico')) contentType = 'image/x-icon';
     if (contentType === 'text/html' || contentType === 'application/json') console.log('HTTP GET Request -> ' + req.url);
     fs.readFile(__dirname + url.parse(req.url).pathname,function (err, data) {
@@ -311,6 +311,22 @@ function operation(message,gameKey,clientId) {
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                 }}
             break;
+
+        case 'newCounter' :
+            //Ajout d'un nouveu compteur à un méchant
+            let newCounter = {"name":message.counterName,"value":message.value};
+            if (games[gameKey].villains[message.villain].counters === undefined) {
+                //premier compteur du méchant
+                games[gameKey].villains[message.villain].counters = {"0":newCounter};
+                wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"0","name":"' + message.counterName + '","value":"' + message.value + '"}');}
+            else {
+                //Compteur(s) suivant(s) : incrémenter le dernier Id présent
+                let gameCounters = games[gameKey].villains[message.villain].counters;
+                newCounterId = Number(Object.keys(gameCounters)[Object.keys(gameCounters).length-1]) + 1;
+                gameCounters[newCounterId] = newCounter;
+                wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"' + newCounterId + '","name":"' + message.counterName + '","value":"' + message.value + '"}');}
+                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+           break;
         
         default:
           wsclientSend(clientId,'{"error":"wss::operationNotFound ' + message.operation + '","errId":"18"}');
