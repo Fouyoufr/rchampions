@@ -1,5 +1,6 @@
 {
     "TITgame":"Partie en cours",
+    "TITvillain":"Affichage du méchant",
 
     "STconfused":"Désorienté",
     "STstunned":"Sonné",
@@ -28,6 +29,7 @@
     "BUTTONadminRefresh":"Rechargement forçé",
     "BUTTONsideSchemeInfos":"Informations sur la manigance annexe",
     "BUTTONnewCounter":"Ajouter un compteur générique",
+    "BUTTONremoveCounter":"Retirer ce compteur de la partie",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
@@ -74,6 +76,7 @@
     "wss::mainNotFound":"[Serveur] Manigance principale introuvable",
     "wss::newVillainNotFound":"[Serveur] Nouveau Méchant introuvable",
     "wss::threatNegative":"[Serveur] La menace ne peut être négative",
-    "wss::sideSchemeNotFound":"[Serveur] La manigance annexe est introuvable"
+    "wss::sideSchemeNotFound":"[Serveur] La manigance annexe est introuvable",
+    "wss::counterNotFound":"[Server] Compteur introuvable"
 
 }

@@ -1,5 +1,6 @@
 {
     "TITgame":"Current game",
+    "TITvillain":"Villain display",
 
     "STconfused":"Confused",
     "STstunned":"Stunned",
@@ -28,6 +29,7 @@
     "BUTTONadminRefresh":"Hard refresh",
     "BUTTONsideSchemeInfos":"About this Side Scheme",
     "BUTTONnewCounter":"Add a new multipurpose counter",
+    "BUTTONremoveCounter":"Remove this counter from game",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",
@@ -73,6 +75,7 @@
     "wss::mainNotFound":"[Server] Main Scheme not found",
     "wss::newVillainNotFound":"[Server] New Villain not found",
     "wss::threatNegative":"[Server] Threat can't be negative",
-    "wss::sideSchemeNotFound":"[Server] Side Scheme not found"
+    "wss::sideSchemeNotFound":"[Server] Side Scheme not found",
+    "wss::counterNotFound":"[Server] Counter not found"
 
 }

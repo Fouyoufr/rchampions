@@ -34,7 +34,8 @@ function villainDisplay(index) {
     ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {vilDStat.append(buttonDisplay(vil[statusName] === undefined || vil[statusName] === '0'?statusName + ' off':statusName,'{"operation":"villainStatus","status":"' + statusName + '","id":"' + index + '"}',lang['ST' + statusName],lang['ST' + statusName],vilId + '-' + statusName));});
     //Ajout du bouton mobile
     let vilDMob = addElement('button','mobile');
-    vilDMob.title=lang.BUTTONmobile;
+    vilDMob.title = lang.BUTTONmobile;
+    vilDMob.onclick = function () {localStorage.setItem('rChampions-villain',index);window.location.href = "villain.html";}
     vilFrame.append(vilDMob);
     //Ajout de la manigance principale
     vilDMain = addElement('div',game.villains[index].mainScheme.current >= game.villains[index].mainScheme.max ? 'mainSchemeLost' : 'mainScheme',vilId + '-mainScheme');
@@ -92,13 +93,16 @@ function counterDisplay (villainId,counterId) {
     let counter = game.villains[villainId].counters[counterId];
     let counterDiv = addElement('div','counter','villain' + villainId + '-counter' + counterId);
     //Ajouter ligne suivante les opérations pour augmenter/diminuer le conteur !!!!
-    let counterDivVal = valuePlusMinus('counterValue',counter.value,'vilain' + villainId + '-count' + counterId,'','');
+    let counterDivVal = valuePlusMinus('counterValue',counter.value,'villain' + villainId + '-count' + counterId,'"operation":"counterMinus","villain":"' + villainId + '","id":"' + counterId + '"','"operation":"counterPlus","villain":"' + villainId + '","id":"' + counterId + '"');
     let counterName = addElement('p','name');
     counterName.textContent = counter.name;
     counterDivVal.append(counterName);
     counterDiv.append(counterDivVal);
+    let counterRemoveButton = addElement('button','remove');
+    counterRemoveButton.title = lang.BUTTONremoveCounter;
+    counterRemoveButton.onclick = function () {sendReq('{"operation":"deleteCounter","villain":"' + villainId + '","counter":"' + counterId + '"}');}
+    counterDiv.append(counterRemoveButton);
     //Ajouter ici le bouton de suppression de ce compteur !!!!
-
     return counterDiv;}
 
 function sideSchemeDisplay (villainIndex,villainSC) {

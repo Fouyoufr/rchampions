@@ -56,6 +56,7 @@ websocket.onmessage = function(event) {
             break;
 
         case 'mainThreatAccel' :
+            if (message.value < 10) message.value = '0' + message.value;
             isElem('villain' + message.id + '-mainAccelValue').textContent = message.value;
             game.villains[message.id].mainScheme.acceleration = message.value;
             break;
@@ -93,6 +94,17 @@ websocket.onmessage = function(event) {
         case 'newCounter' :
             game.villains[message.villain].counters[message.id] = {"name":message.name,"value":message.value};
             isElem('villain' + message.villain + '-counters').append(counterDisplay (message.villain,message.id));
+            break;
+
+        case 'deleteCounter' :
+            delete game.villains[message.villain].counters[message.id];
+            isElem('villain' + message.villain + '-counter' + message.id).remove();
+            break;
+
+        case 'counter' :
+            if (message.value < 10) message.value = '0' + message.value;
+            game.villains[message.villain].counters[message.id].value = message.value;
+            isElem('villain' + message.villain + '-count' + message.id).textContent = message.value;
             break;
         
         default:

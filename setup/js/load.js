@@ -17,6 +17,7 @@ if (document.getElementById('loading')) {
 //Chargement des scripts externes
 loadScript ('websockets');
 if (document.getElementById('villains')) loadScript('villains');
+if (document.getElementById('villain')) loadScript('villain');
 if (document.getElementById('players')) loadScript('players');
 function loadScript(scriptName) {
     loaded[scriptName + 'Script'] = false;
@@ -27,9 +28,7 @@ function loadScript(scriptName) {
     //Attente que le script soit chargé...
     let intervalScript = setInterval(function() {if (loaded[scriptName + 'Script'] === true) {
         clearInterval(intervalScript);
-        }},100);
-
-}
+        }},100);}
 
 //Chargement de la config, depuis site distant si config locale absente ou datant de plus d'un jour
 if (localStorage.getItem('rChampionsConfig') === null) {
@@ -38,7 +37,7 @@ if (localStorage.getItem('rChampionsConfig') === null) {
 else {configLoad(localStorage.getItem('rChampionsConfig'));}
 
 //Mise en place des chaines de caractères "lang" (si config chargée).
-let intervalLang = setInterval(function() {if (loaded.config !== false) {
+let intervalLang = setInterval(function() {if (loaded.config != false) {
     clearInterval(intervalLang);
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {
         console.log('langues chargées à distance.');
@@ -47,7 +46,7 @@ let intervalLang = setInterval(function() {if (loaded.config !== false) {
     }},100);
 
 //Récupération du contenu des boites (si langues chargées).
-let intervalBox = setInterval(function() {if (loaded.lang !== false) {
+let intervalBox = setInterval(function() {if (loaded.lang != false) {
     clearInterval(intervalBox);
     if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {
         console.log('Contenu des boites récupéré à distance.');
@@ -55,8 +54,9 @@ let intervalBox = setInterval(function() {if (loaded.lang !== false) {
     else {boxesLoad(localStorage.getItem('rChampionsBoxes'));}
     }},100);
 
-if (gameKey !== undefined) {
+if (localStorage.getItem('rChampions-gameKey')) {
     //Récupération des informations de la partie en cours.
+    gameKey=localStorage.getItem('rChampions-gameKey');
     load ('./games/' + gameKey + '.json',mainLoad);}
 
 
@@ -97,23 +97,28 @@ function mainLoad(gameJson) {
     //Chargement principal de la page de jeu
     game=JSON.parse(gameJson);
     //Attente d'avoir récupéré les éléments nécessaires avant de construire la page...
-      var interval = setInterval(function() {if (loaded.lang === true && loaded.boxes === true){
-        clearInterval(interval);}
+      var interval = setInterval(function() {if (loaded.lang == true && loaded.boxes == true){
+        clearInterval(interval);
         //Insertion des skins dans l'en-tête
         ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
         if (document.getElementById('villains')) {
             //Affichage des méchants
-            for (let i=0; i < game.villains.length; i++) {document.getElementById('villains').append(villainDisplay(i));};}
+            for (let i=0; i < game.villains.length; i++) document.getElementById('villains').append(villainDisplay(i));;}
+        if (document.getElementById('villain') && localStorage.getItem('rChampions-villain')) document.getElementById('villain').append(villainDisplay(localStorage.getItem('rChampions-villain')));
 
         if (document.getElementById('players')) {
             //masquer les joueurs non utilisés dans la partie et afficher le(s) autre(s)
             for (let i=game.players.length; i < 4; i++) {document.getElementById('player' + (i+1)).style.display='none';};
             for (let i=0; i < game.players.length; i++) {playerDisplay(document.getElementById('player' + (i+1)),game.players[i]);};}
 
-        addMenu();
+        if (!document.getElementById('villain')) {
+            //Chargement des menus pleine page
+            addMenu();
+        }
+
         addPopup();
 
-        document.getElementById('loading').style.display='none';
+        document.getElementById('loading').style.display='none';}
   
         },100);
     }

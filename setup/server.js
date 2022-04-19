@@ -2,7 +2,7 @@
 const http = require('http'),
 https = require('https'),
 fs = require('fs'),
-url = require ('url');
+url = require ('url'),
 wsServer = require ('ws');
 let clientIndex = 0, games=[];
 
@@ -88,26 +88,18 @@ function operation(message,gameKey,clientId) {
 
     //Sélection de 'opération
     if (games[gameKey] !== undefined) switch (message.operation) {
-        case 'villainLifePlus':
-            //Augmentation de la vie du méchant
-            if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"2"}');
-            else {
-                games[gameKey].villains[message.id].life++;
-                wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].life + '"}');
-                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-            }
-            break;
 
         case 'villainLifeMinus':
-            //Diminution de la vie du méchant
+        case 'villainLifePlus' :
+            //Diminution /augmentation de la vie du méchant
             if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"3"}');
             else {
-                if (games[gameKey].villains[message.id].life < 1) wsclientSend(clientId,'{"error":"wss::villainLifeNegative  ' + gameKey + '/' + message.id + '","errId":"4"}');
-                else {
-                    games[gameKey].villains[message.id].life--;
-                    wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].life + '"}');
-                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }}
+                if (message.operation == 'villainLifeMinus') {
+                    if (games[gameKey].villains[message.id].life < 1) wsclientSend(clientId,'{"error":"wss::villainLifeNegative  ' + gameKey + '/' + message.id + '","errId":"4"}'); else games[gameKey].villains[message.id].life--;}
+                else games[gameKey].villains[message.id].life++;
+                wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].life + '"}');
+                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                }
             break;
 
         case 'villainStatus' :
@@ -158,7 +150,6 @@ function operation(message,gameKey,clientId) {
                     wsGameSend(gameKey,'{"operation":"mainThreat","id":"' + message.villain + '","value":"' + currentThreat + '"}');
                     wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.villain + '","value":"0"}');
                     wsGameSend(gameKey,'{"operation":"mainThreatMax","id":"' + message.villain + '","value":"' + maxThreat + '"}');
-
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                 }}
             break;
@@ -194,103 +185,67 @@ function operation(message,gameKey,clientId) {
             break;
 
         case 'villainMainThreatMinus' :
-            //Diminution de la menace sur la manigance principale
+        case 'villainMainThreatPlus' :
+            //Diminution/augmentation de la menace sur la manigance principale
             if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"13"}');
             else {
-                if (games[gameKey].villains[message.id].mainScheme.current < 1) wsclientSend(clientId,'{"error":"wss::threatNegative ' + gameKey + '/' + message.id + '","errId":"14"}');
-                else {
-                    games[gameKey].villains[message.id].mainScheme.current--;
+                if (message.operation == 'villainMainThreatMinus') {
+                    if (games[gameKey].villains[message.id].mainScheme.current < 1) wsclientSend(clientId,'{"error":"wss::threatNegative ' + gameKey + '/' + message.id + '","errId":"14"}'); else games[gameKey].villains[message.id].mainScheme.current--; }    
+                else  games[gameKey].villains[message.id].mainScheme.current++;
                     wsGameSend(gameKey,'{"operation":"mainThreat","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].mainScheme.current + '"}');
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }}
+                }
             break;
 
         case 'villainMainAccelerationMinus' :
-            //Diminution de l'acceleration sur la manigance principale
+        case 'villainMainAccelerationPlus' :
+            //Diminution/augmentation de l'acceleration sur la manigance principale
             if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"15"}');
             else {
-                if (games[gameKey].villains[message.id].mainScheme.acceleration < 1) wsclientSend(clientId,'{"error":"wss::threatNegative ' + gameKey + '/' + message.id + '","errId":"16"}');
-                else {
-                    games[gameKey].villains[message.id].mainScheme.acceleration--;
+                if (message.operation == 'villainMainAccelerationMinus') {
+                  if (games[gameKey].villains[message.id].mainScheme.acceleration < 1) wsclientSend(clientId,'{"error":"wss::threatNegative ' + gameKey + '/' + message.id + '","errId":"16"}'); else games[gameKey].villains[message.id].mainScheme.acceleration--;}
+                else games[gameKey].villains[message.id].mainScheme.acceleration++;
                     wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].mainScheme.acceleration + '"}');
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }}
+                }
             break;
 
         case 'villainMainMaxMinus' :
-            //Diminution du maximum sur la manigance principale
+        case 'villainMainMaxPlus' :
+            //Diminution/augmentation du maximum sur la manigance principale
             if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '"}');
             else {
-                if (games[gameKey].villains[message.id].mainScheme.max < 1) wsclientSend(clientId,'{"error":"wss::threatNegative ' + gameKey + '/' + message.id + '","errId":"19"}');
-                else {
-                    games[gameKey].villains[message.id].mainScheme.max--;
+                if (message.operation == 'villainMainMaxMinus') {
+                    if (games[gameKey].villains[message.id].mainScheme.max < 1) wsclientSend(clientId,'{"error":"wss::threatNegative ' + gameKey + '/' + message.id + '","errId":"19"}'); else games[gameKey].villains[message.id].mainScheme.max--; }
+                else games[gameKey].villains[message.id].mainScheme.max--;
                     wsGameSend(gameKey,'{"operation":"mainThreatMax","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].mainScheme.max + '"}');
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }}
-            break;
-
-        case 'villainMainThreatPlus' :
-            //Augmentation de la menace sur la manigance principale
-            if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"20"}');
-            else {
-                games[gameKey].villains[message.id].mainScheme.current++;
-                wsGameSend(gameKey,'{"operation":"mainThreat","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].mainScheme.current + '"}');
-                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }
-            break;
-
-        case 'villainMainAccelerationPlus' :
-            //Augmentation de l'acceleration sur la manigance principale
-            if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"21"}');
-            else {
-                games[gameKey].villains[message.id].mainScheme.acceleration++;
-                wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].mainScheme.acceleration + '"}');
-                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }
-            break;
-
-        case 'villainMainMaxPlus' :
-            //Augmentation du maximum sur la manigance principale
-            if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"22"}');
-            else {
-                games[gameKey].villains[message.id].mainScheme.max++;
-                wsGameSend(gameKey,'{"operation":"mainThreatMax","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].mainScheme.max + '"}');
-                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                 }
             break;
 
         case 'sideSchemeMinus' :
+        case 'sideSchemePlus' :
             //Diminution de la menace d'une manigance secondaire
             if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"23"}');
             else {
                 if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme] === undefined) wsclientSend(clientId,'{"error":"wss::sideSchemeNotFound ' + message.sideScheme + '","errId":"24"}');
                 else {
-                    if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat == 1) {
-                        if (sideSchemes[message.sideScheme].acceleration !== undefined) {
-                            //suppression de l'accélération ajoutée par la manigance
-                            games[gameKey].villains[message.villain].mainScheme.acceleration--;
-                            wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.villain + '","value":"' + games[gameKey].villains[message.villain].mainScheme.acceleration + '"}');}
-                        delete games[gameKey].villains[message.villain].sideSchemes[message.sideScheme];
-                        wsGameSend(gameKey,'{"operation":"removeSideScheme","villain":"' + message.villain + '","id":"' + message.sideScheme + '"}');
-                        fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                    }
-                    else {                    
-                        games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat--;
-                        wsGameSend(gameKey,'{"operation":"sideScheme","id":"' + message.sideScheme + '","value":"' + games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat + '","villain":"' + message.villain + '"}');
-                        fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                    }}}
-            break;
-
-        case 'sideSchemePlus' :
-            //Augmentation de la menace d'une manigance secondaire
-            if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"25"}');
-            else {
-                if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme] === undefined) wsclientSend(clientId,'{"error":"wss::sideSchemeNotFound ' + message.sideScheme + '","errId":"26"}');
-                else {
-                    games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat++;
-                    wsGameSend(gameKey,'{"operation":"sideScheme","id":"' + message.sideScheme + '","value":"' + games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat + '","villain":"' + message.villain + '"}');
+                    if (message.operation == 'sideSchemeMinus') {
+                        if (games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat == 1) {
+                            if (sideSchemes[message.sideScheme].acceleration !== undefined) {
+                                //suppression de l'accélération ajoutée par la manigance
+                                games[gameKey].villains[message.villain].mainScheme.acceleration--;
+                                wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.villain + '","value":"' + games[gameKey].villains[message.villain].mainScheme.acceleration + '"}');}
+                            delete games[gameKey].villains[message.villain].sideSchemes[message.sideScheme];
+                            wsGameSend(gameKey,'{"operation":"removeSideScheme","villain":"' + message.villain + '","id":"' + message.sideScheme + '"}');}
+                        else {                    
+                            games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat--;
+                            wsGameSend(gameKey,'{"operation":"sideScheme","id":"' + message.sideScheme + '","value":"' + games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat + '","villain":"' + message.villain + '"}');}}
+                    else {
+                        games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat++;
+                        wsGameSend(gameKey,'{"operation":"sideScheme","id":"' + message.sideScheme + '","value":"' + games[gameKey].villains[message.villain].sideSchemes[message.sideScheme].threat + '","villain":"' + message.villain + '"}');}
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }}
+                }}   
             break;
 
         case 'newScheme' :
@@ -327,9 +282,31 @@ function operation(message,gameKey,clientId) {
                 wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"' + newCounterId + '","name":"' + message.counterName + '","value":"' + message.value + '"}');}
                 fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
            break;
+        case 'deleteCounter' :
+            //Suppression d'un compteur
+            if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"31"}');
+            else {
+                if (games[gameKey].villains[message.villain].counters[message.counter] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.villain + '/' + message.counter + '","errId":"32"}');
+                else {
+                    delete (games[gameKey].villains[message.villain].counters[message.counter]);
+                    wsGameSend(gameKey,'{"operation":"deleteCounter","villain":"' + message.villain + '","id":"' + message.counter + '"}');
+                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                }}
+            break;
+        
+        case 'counterPlus' :
+        case 'counterMinus' :
+            //Incrémenter/Décrémenter un compteur
+            if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"33"}');
+            else {
+                if (games[gameKey].villains[message.villain].counters[message.id] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.villain + '/' + message.id + '","errId":"34"}');
+                else {
+                    if (message.operation == 'counterPlus') games[gameKey].villains[message.villain].counters[message.id].value++; else if (games[gameKey].villains[message.villain].counters[message.id].value > 0)  games[gameKey].villains[message.villain].counters[message.id].value--;
+                    wsGameSend(gameKey,'{"operation":"counter","villain":"' + message.villain + '","id":"' + message.id + '","value":"' + games[gameKey].villains[message.villain].counters[message.id].value + '"}');
+                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                    }}
+            break;
         
         default:
           wsclientSend(clientId,'{"error":"wss::operationNotFound ' + message.operation + '","errId":"18"}');
-      }
-      
-}
+      }}
