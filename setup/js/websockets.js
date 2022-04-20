@@ -107,6 +107,7 @@ websocket.onmessage = function(event) {
             isElem('villain' + message.villain + '-count' + message.id).textContent = message.value;
             break;
         
+        //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin
         default:
           webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}
 

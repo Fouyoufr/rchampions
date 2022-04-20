@@ -30,6 +30,7 @@
     "BUTTONsideSchemeInfos":"About this Side Scheme",
     "BUTTONnewCounter":"Add a new multipurpose counter",
     "BUTTONremoveCounter":"Remove this counter from game",
+    "BUTTONhero":"Choose a new Hero",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",

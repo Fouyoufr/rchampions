@@ -102,7 +102,6 @@ function counterDisplay (villainId,counterId) {
     counterRemoveButton.title = lang.BUTTONremoveCounter;
     counterRemoveButton.onclick = function () {sendReq('{"operation":"deleteCounter","villain":"' + villainId + '","counter":"' + counterId + '"}');}
     counterDiv.append(counterRemoveButton);
-    //Ajouter ici le bouton de suppression de ce compteur !!!!
     return counterDiv;}
 
 function sideSchemeDisplay (villainIndex,villainSC) {

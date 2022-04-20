@@ -56,7 +56,8 @@ wss.on('connection', function (webSocket) {
         if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId);
     });
     webSocket.on('close',function () {
-        //détection de la perte de connexion d'un client
+        //détection de la perte de connexion/déconnexion d'un client
+        if (typeof gameKey !== 'undefined') delete games[gameKey].wsClients[clientId];
         console.log('disconnected');});
   });
 
@@ -81,7 +82,10 @@ function operation(message,gameKey,clientId) {
     if (games[gameKey] === undefined) {
         // Chargement de la partie sollicitée
         try {
-          if (fs.existsSync(__dirname + '/games/' + gameKey + '.json')) games[gameKey]=JSON.parse(fs.readFileSync(__dirname + '/games/' + gameKey + '.json'));
+          if (fs.existsSync(__dirname + '/games/' + gameKey + '.json')) {
+              games[gameKey]=JSON.parse(fs.readFileSync(__dirname + '/games/' + gameKey + '.json'));
+              //Mise en place du webSocket dans la partie
+              games[gameKey].wsClients[clientId]=Date.now();}
           else wsclientSend(clientId,'{"error":"wss::gameKeyNotFound ' + gameKey + '","errId":"1"}');
         } catch(err) {
             wsclientSend(clientId,'{"error":"wssError : ' + err + '"}');}}
@@ -180,6 +184,10 @@ function operation(message,gameKey,clientId) {
                         wsGameSend(gameKey,'{"operation":"changeVillain","villain":"' + message.villain + '","id":"' + message.newVillain + '"}');
                         wsGameSend(gameKey,'{"operation":"changePhase","villain":"' + message.villain + '","phase":"' + 1 + '"}');
                         wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.villain + '","value":"' + villains[message.villain].life1 + '"}');
+                        //Ajouter la désignation du premier joueur (si plusieurs joueurs présents)
+                        if (games[gameKey].players.length > 1) {
+
+                        }
                         fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                     }}}
             break;
@@ -282,6 +290,7 @@ function operation(message,gameKey,clientId) {
                 wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"' + newCounterId + '","name":"' + message.counterName + '","value":"' + message.value + '"}');}
                 fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
            break;
+
         case 'deleteCounter' :
             //Suppression d'un compteur
             if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"31"}');
@@ -296,7 +305,7 @@ function operation(message,gameKey,clientId) {
         
         case 'counterPlus' :
         case 'counterMinus' :
-            //Incrémenter/Décrémenter un compteur
+            //Incrémenter/Décrémenter un compteur de méchant
             if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"33"}');
             else {
                 if (games[gameKey].villains[message.villain].counters[message.id] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.villain + '/' + message.id + '","errId":"34"}');
@@ -310,3 +319,9 @@ function operation(message,gameKey,clientId) {
         default:
           wsclientSend(clientId,'{"error":"wss::operationNotFound ' + message.operation + '","errId":"18"}');
       }}
+
+const { createHash } = require('crypto');
+//Hash pour mots de passe
+function hash(string) {
+  return createHash('sha256').update(string).digest('hex');
+}

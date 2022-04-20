@@ -30,6 +30,7 @@
     "BUTTONsideSchemeInfos":"Informations sur la manigance annexe",
     "BUTTONnewCounter":"Ajouter un compteur générique",
     "BUTTONremoveCounter":"Retirer ce compteur de la partie",
+    "BUTTONhero":"Choisir un nouveau héros",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
