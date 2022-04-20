@@ -59,3 +59,6 @@ button.settingsMenu:hover,button.adminMenu:hover,button.melodiceMenu:hover {widt
 
 /*Gestion des erreurs renvoyées en direct par le serveur */
 div#websocketError {display:inline-block;background-color:brown;padding:2px;color:yellow;font-weight:bold;position:fixed;bottom:2px;left:2px;border:2px solid red;padding-right:30px;height:20px;line-height: 20px;}
+
+/* Affichage générique des erreurs (par exemple mauvais mot de passe) */
+.errorText {font-weight:bold;color:crimson;}

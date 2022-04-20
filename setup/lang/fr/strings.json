@@ -39,7 +39,8 @@
     "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
     
     "POPUPAdminIntro":"Cette partie du site est protégée par un mot de passe...",
-    "popupAdminContent":"Merci de saisir le mot de passe administratif de rChampions :<br/><input type='password'>",
+    "popupAdminContent":"Merci de saisir le mot de passe administratif de rChampions :",
+    "POPUPAdminBadPassword":"Erreur : mot de passe incorrect...",
 
     "POPUPmainIntroA1":"La Manigance Princiaple actuellement en jeu est '",
     "POPUPmainIntroA2":"', vous pouvez en changer en en sélectionnant une nouvelle ci-dessous.",

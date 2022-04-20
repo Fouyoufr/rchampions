@@ -12,7 +12,10 @@ websocket.onclose = function (event) {
 websocket.onmessage = function(event) {
     message=JSON.parse(event.data);
     console.log(message);
-    if (message.clientId !== undefined) webSocketId=message.clientId;
+    if (message.clientId !== undefined) {
+        //INformations récupérées à l'ouverture de la websocket
+        webSocketId=message.clientId;
+        webSocketSalt=message.salt;}
     if (message.error !== undefined) webSockError(message.error,message.errId !== undefined ? message.errId : 0);
     else if (message.operation !== undefined) switch (message.operation) {
         //Réalisation d'une opération commandée par la serveur
@@ -105,6 +108,15 @@ websocket.onmessage = function(event) {
             if (message.value < 10) message.value = '0' + message.value;
             game.villains[message.villain].counters[message.id].value = message.value;
             isElem('villain' + message.villain + '-count' + message.id).textContent = message.value;
+            break;
+
+        case 'adminKO' :
+            document.getElementById('popup').getElementsByClassName('outro')[0].innerHTML = lang.POPUPAdminBadPassword;
+            document.getElementById('popup').getElementsByClassName('outro')[0] . className = ' outro errorText'
+            break;
+        
+        case 'adminOK' :
+            window.location.href = "admin.html";
             break;
         
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin

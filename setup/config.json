@@ -2,5 +2,7 @@
     "defaultLang":"fr",
     "defaultSkin":"initial",
     "siteName":"rChampions",
-    "refreshDate":"0"
+    "refreshDate":"0",
+    "__default_Password__":"Marvel-Champions",
+    "defaultAdminPassword":"9b3e0e51fef37796ab75adcd8510c757cfe90ba5e806de13892ac7bd0741fb1b"
 }

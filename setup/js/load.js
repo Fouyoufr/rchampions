@@ -3,7 +3,7 @@ const refreshToday = Math.round((new Date()).getTime()/86400000);
 let rcConfig={}, lang={}, game={},
 boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},nullElement={},
 loaded={"config":false,"lang":false,"boxes":false},
-webSocketId='';
+webSocketId='',webSocketSalt='';
 popupDiv=addElement('div','');
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
@@ -62,8 +62,14 @@ if (localStorage.getItem('rChampions-gameKey')) {
 function configLoad(configJson) {
     //Gestion de la configration locale du site.
     rcConfig=JSON.parse(configJson);
+    if (localStorage.rChampionsConfig !== undefined) {
+        let oldConfig = JSON.parse(localStorage.rChampionsConfig);
+        rcConfig.skin = oldConfig.skin;
+        rcConfig.lang = oldConfig.lang;
+        rcConfig.adminPassword = oldConfig.adminPassword;}
     if (rcConfig.skin === undefined) rcConfig.skin = rcConfig.defaultSkin;
     if (rcConfig.lang === undefined) rcConfig.lang = rcConfig.defaultLang;
+    if (rcConfig.adminPassword === undefined) rcConfig.adminPassword = rcConfig.defaultAdminPassword;
     document.getElementsByTagName('html')[0].lang = rcConfig.lang;
     loaded.config=true;
     //(re)stockage de la configuration en local.
@@ -176,15 +182,20 @@ function popupDisplay(title,intro,content,buttons,outro='',height='17%') {
 
 function adminPopup() {
     //Popup de saisie du mot de passe pour accès administratif
-    let intro=lang.POPUPAdminIntro, content= lang.popupAdminContent;
-    let buttons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    //Réclamer au serveur une chaine de caractère pour vérification du mot de passe
+    let intro=lang.POPUPAdminIntro, content = lang.popupAdminContent + '<br/><input type="password" id = "adminPassword">';
+    let buttons='<button title="' + lang.BUTTONconfirm + '" id="adminPopupConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     popupDisplay(lang.MENUadmin,intro,content,buttons);
     let refreshButton=document.createElement('button');
     refreshButton.className='adminRefresh';
     refreshButton.onclick=function () {localStorage.clear();location.reload();}
     refreshButton.title=lang.BUTTONadminRefresh;
     refreshButton.innerHTML='&nbsp;';
-    document.getElementById('popup').getElementsByClassName('title')[0].append(refreshButton);}
+    document.getElementById('popup').getElementsByClassName('title')[0].append(refreshButton);
+    let confirmButton = document.getElementById('adminPopupConfirm');
+    confirmButton.onclick = function () {
+        hash(document.getElementById('adminPassword').value).then(function(hashedPass) { sessionStorage.setItem('rChampions-adminHash',hashedPass); hash(webSocketSalt + hashedPass).then ((hashedValue) => sendReq('{"admin":"checkPass","passHash":"' + hashedValue + '"}'))});}
+}
 
 function addElement(aeType,aeClass='',aeId='') {
     //Ajout d'un élément dans le document

@@ -7,6 +7,7 @@ wsServer = require ('ws');
 let clientIndex = 0, games=[];
 
 //import des données du jeu
+let config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
 let boxesFile=JSON.parse(fs.readFileSync(__dirname + '/lang/fr/boxes.json'));
 let boxes=boxesFile.boxes;
 let villains=boxesFile.villains;
@@ -46,7 +47,9 @@ const wss = new wsServer.WebSocketServer({ server });
 
 wss.on('connection', function (webSocket) {
     webSocket.clientId = clientIndex;
-    wsclientSend(clientIndex,'{"clientId":"' + webSocket.clientId + '"}');
+    //Création d'une chaine aléatoire pour vérification des mots de passe
+    webSocket.salt = hash(Math.random().toString());
+    wsclientSend(clientIndex,'{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '"}');
     clientIndex ++;
     webSocket.on('message',function (data) {
         console.log('Data received from client ' + webSocket.clientId + ' : \'' + data + '\'');
@@ -54,6 +57,7 @@ wss.on('connection', function (webSocket) {
         //Ajout de la clef de la partie si non présente
         if (message.gameKey !== undefined && webSocket.gameKey === undefined) webSocket.gameKey = message.gameKey;
         if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId);
+        if (message.admin !== undefined) adminOP(message,webSocket);
     });
     webSocket.on('close',function () {
         //détection de la perte de connexion/déconnexion d'un client
@@ -73,7 +77,20 @@ function wsGameSend(gameKey,data) {
 
 server.listen(80);
 TLSserver.listen(443);
-console.log('Node.js web server at port 80 is running..')
+console.log('Node.js web server at port 80 is running..');
+
+function adminOP(message,websocket) {
+    //Gestion des fonctionnalités administratives
+    switch(message.admin) {
+        case 'checkPass' :
+            //Vérification du mot de passe admin
+            if (hash(websocket.salt + config.defaultAdminPassword) == message.passHash) {
+                websocket.admin = true;
+                wsclientSend(websocket.clientId,'{"operation":"adminOK"}');}
+            else wsclientSend(websocket.clientId,'{"operation":"adminKO"}');
+            break;
+    }
+}
 
 function operation(message,gameKey,clientId) {
     //Gestion des modifications apportées par les clients.

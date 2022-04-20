@@ -38,7 +38,8 @@
     "POPUPvillaintIntro3":" and all side schemes removed from the game",
     "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
     "POPUPAdminIntro":"You need a password to access the adminsitration page.",
-    "popupAdminContent":"Please type the administrative pssord below to gain access to rChampion administration :<br/><input type='password'>",
+    "popupAdminContent":"Please type the administrative pssord below to gain access to rChampion administration :",
+    "POPUPAdminBadPassword":"Error : Bad password...",
 
     "POPUPmainIntroA1":"Current Main Scheme is '",
     "POPUPmainIntroA2":"', you can change it by selecting a new one bellow.",
