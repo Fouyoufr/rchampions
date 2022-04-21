@@ -32,6 +32,9 @@
     "BUTTONnewCounter":"Ajouter un compteur générique",
     "BUTTONremoveCounter":"Retirer ce compteur de la partie",
     "BUTTONhero":"Choisir un nouveau héros",
+    "BUTTONdelete":"Supprimer",
+    "BUTTONsave":"Sauvegarder",
+    "BUTTONAdminMessage":"Envoyer un message instantanné",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
@@ -84,6 +87,15 @@
     "wss::adminBadPass":"[Serveur] Mot de passe administratif incorrect",
 
     "ADMINTILEgamesListTitle":"Liste des parties",
-    "ADMINTILEgamesListIntro":"Liste des parties hébergées par le serveur, mise à jour en temps-réel."
+    "ADMINTILEgamesListIntro":"Liste des parties hébergées par le serveur, mise à jour en temps-réel.",
+    "ADMINTILEemptyList":"Cette liste est vide !",
+    "ADMINTILEgamesListTH1":"Clef de partie",
+    "ADMINTILEgamesListTH2":"Date de création",
+    "ADMINTILEgamesListTH3":"Méchant(s)",
+    "ADMINTILEgamesListTH4":"Joueur(s)",
+    "ADMINTILEgamesListTH5":"Connecté(s)",
+    "ADMINTILEgamesListTH6":"Administration",
 
+
+    "noItem":"Aucun"
 }

@@ -65,8 +65,10 @@ wss.on('connection', function (webSocket) {
                     wsclientSend(message.clientId,'{"error":"wssError : ' + err + '"}');}}
             if (games[message.gameKey].wsClients === undefined) games[message.gameKey].wsClients = {};
             if (games[message.gameKey] !== undefined) {
-                if (games[message.gameKey].wsClients[webSocket.clientId] === undefined) wsAdminSend('{"operation":"adminPlayerConnected","gameKey":"' + webSocket.gameKey + '","socketId":"' + webSocket.clientId + '"}');
-                games[message.gameKey].wsClients[webSocket.clientId]=Date.now();}}
+                if (games[message.gameKey].wsClients[webSocket.clientId] === undefined) {
+                    games[message.gameKey].wsClients[webSocket.clientId]=Date.now();
+                    wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.gameKey]) + '}');}
+                else games[message.gameKey].wsClients[webSocket.clientId]=Date.now();}}
         if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId);
         if (message.admin !== undefined) adminOP(message,webSocket);
     });
@@ -74,7 +76,7 @@ wss.on('connection', function (webSocket) {
         //détection de la perte de connexion/déconnexion d'un client
         if (webSocket.gameKey !== undefined) {
             delete games[webSocket.gameKey].wsClients[webSocket.clientId];
-            wsAdminSend('{"operation":"adminPlayerDisconnected","gameKey":"' + webSocket.gameKey + '","socketId":"' + webSocket.clientId + '"}');}
+            wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[webSocket.gameKey]) + '}');}
         //Nettoyage de la connexion avec la page Admin
         if (adminSockets[webSocket.clientId] !== undefined) delete adminSockets[webSocket.clientId];
     });
@@ -103,7 +105,7 @@ function adminOP(message,webSocket) {
     if (message.admin == 'checkPass') {
         //Vérification de la saisie du mot de passe admin
         if (hash(webSocket.salt + config.adminPassword) == message.passHash) {
-            websocket.admin = true;
+            webSocket.admin = true;
             wsclientSend(webSocket.clientId,'{"operation":"adminOK"}');}
         else wsclientSend(webSocket.clientId,'{"operation":"adminKO"}');}
     else {

@@ -2,3 +2,7 @@
 div.adminTile .background {box-sizing:border-box;position: relative;Width: calc(100% - 20px);margin:10px;border: thick double darkolivegreen;border-top:none;background-color:antiquewhite}
 div.adminTile .title {margin:0px;width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
 div.adminTile .inside {padding: 2px;padding-left:10px;padding-right:10px;}
+
+/*Mise en forme de la liste des parties */
+tr.adminGameDisplay div.villain img, tr.adminGameDisplay div.player img {height:1em;border:solid 1px black;}
+tr.adminGameDisplay button.gameKey { padding:2px;padding-left:5px;padding-right:5px;background-color:black;color:yellow;font-size:large;font-weight:bold;}

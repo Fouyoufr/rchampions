@@ -121,9 +121,18 @@ websocket.onmessage = function(event) {
 
         case 'adminGamesList' :
             gamesListDiv = document.getElementById('gamesListTile-content');
-            gamesListTable = addElement('table');
-            gamesListDiv.append(gamesListTable);
-            Object.keys(message.gamesList).forEach(key => {gamesListTable.append(adminGameDisplay(message.gamesList[key]));})
+            if (message.gamesList.length ==0) gamesListDiv.textContent = lang.ADMINTILEemptyList;
+            else {
+                let gamesListTable = addElement('table');
+                gamesListTable.innerHTML = '<tr><th>' + lang.ADMINTILEgamesListTH1 + '</th><th>' + lang.ADMINTILEgamesListTH2 + '</th><th>' + lang.ADMINTILEgamesListTH3 + '</th><th>' + lang.ADMINTILEgamesListTH4 + '</th><th>' + lang.ADMINTILEgamesListTH5 + '</th><th>' + lang.ADMINTILEgamesListTH6 + '</th></tr>';
+                gamesListDiv.append(gamesListTable);
+                Object.keys(message.gamesList).forEach(key => {gamesListTable.append(adminGameDisplay(message.gamesList[key]));})}
+            
+            break;
+
+        case 'adminGamesUpdate' :
+            oldItem = document.getElementById('adminGame-' + message.game.key);
+            oldItem.parentNode.replaceChild(adminGameDisplay(message.game),oldItem);
             break;
         
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin
