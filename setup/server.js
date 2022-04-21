@@ -4,7 +4,7 @@ https = require('https'),
 fs = require('fs'),
 url = require ('url'),
 wsServer = require ('ws');
-let clientIndex = 0, games=[];
+let clientIndex = 0, games = [], adminSockets = [];
 
 //import des données du jeu
 let config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
@@ -54,15 +54,30 @@ wss.on('connection', function (webSocket) {
     webSocket.on('message',function (data) {
         console.log('Data received from client ' + webSocket.clientId + ' : \'' + data + '\'');
         message=JSON.parse(data);
-        //Ajout de la clef de la partie si non présente
-        if (message.gameKey !== undefined && webSocket.gameKey === undefined) webSocket.gameKey = message.gameKey;
+        //Ajout de la clef de la partie si non présente et chargement de la partie si nécessaire
+        if (message.gameKey !== undefined) {
+            webSocket.gameKey = message.gameKey;
+            //Chargement en mémoire de la partie si elle n'y était pas...
+            if (games[message.gameKey] === undefined) {
+                try {
+                    if (fs.existsSync(__dirname + '/games/' + message.gameKey + '.json')) games[message.gameKey]=JSON.parse(fs.readFileSync(__dirname + '/games/' + message.gameKey + '.json')); else wsclientSend(webSocket.clientId,'{"error":"wss::gameKeyNotFound ' + message.gameKey + '","errId":"1"}');} 
+                catch(err) {
+                    wsclientSend(message.clientId,'{"error":"wssError : ' + err + '"}');}}
+            if (games[message.gameKey].wsClients === undefined) games[message.gameKey].wsClients = {};
+            if (games[message.gameKey] !== undefined) {
+                if (games[message.gameKey].wsClients[webSocket.clientId] === undefined) wsAdminSend('{"operation":"adminPlayerConnected","gameKey":"' + webSocket.gameKey + '","socketId":"' + webSocket.clientId + '"}');
+                games[message.gameKey].wsClients[webSocket.clientId]=Date.now();}}
         if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId);
         if (message.admin !== undefined) adminOP(message,webSocket);
     });
     webSocket.on('close',function () {
         //détection de la perte de connexion/déconnexion d'un client
-        if (typeof gameKey !== 'undefined') delete games[gameKey].wsClients[clientId];
-        console.log('disconnected');});
+        if (webSocket.gameKey !== undefined) {
+            delete games[webSocket.gameKey].wsClients[webSocket.clientId];
+            wsAdminSend('{"operation":"adminPlayerDisconnected","gameKey":"' + webSocket.gameKey + '","socketId":"' + webSocket.clientId + '"}');}
+        //Nettoyage de la connexion avec la page Admin
+        if (adminSockets[webSocket.clientId] !== undefined) delete adminSockets[webSocket.clientId];
+    });
   });
 
 function wsclientSend(clientId,data) {
@@ -75,37 +90,43 @@ function wsGameSend(gameKey,data) {
     wss.clients.forEach(element => {
         if (element.gameKey == gameKey) element.send(data);});}
 
+function wsAdminSend(data) {
+    //envoi d'informations aux clients connectés sur la page d'administration
+    adminSockets.forEach(function(key) {wsclientSend(key,data);});}
+
 server.listen(80);
 TLSserver.listen(443);
 console.log('Node.js web server at port 80 is running..');
 
-function adminOP(message,websocket) {
+function adminOP(message,webSocket) {
     //Gestion des fonctionnalités administratives
-    switch(message.admin) {
-        case 'checkPass' :
-            //Vérification du mot de passe admin
-            if (hash(websocket.salt + config.defaultAdminPassword) == message.passHash) {
-                websocket.admin = true;
-                wsclientSend(websocket.clientId,'{"operation":"adminOK"}');}
-            else wsclientSend(websocket.clientId,'{"operation":"adminKO"}');
-            break;
-    }
-}
+    if (message.admin == 'checkPass') {
+        //Vérification de la saisie du mot de passe admin
+        if (hash(webSocket.salt + config.adminPassword) == message.passHash) {
+            websocket.admin = true;
+            wsclientSend(webSocket.clientId,'{"operation":"adminOK"}');}
+        else wsclientSend(webSocket.clientId,'{"operation":"adminKO"}');}
+    else {
+        //Vérification que le mot de passe admin utilisé est/reste correct
+        if (hash(webSocket.salt + config.adminPassword) != message.passHash) {
+            wsclientSend(webSocket.clientId,'{"error":"wss::adminBadPass","errId":"40"}');}
+        else {
+            //Mot de passe admin correct : actions administratives (ajout de la socket aux admins à prévenir sur connexion/déconnexions par exemple)
+            adminSockets.push(webSocket.clientId);
+            switch(message.admin) {
+                case 'getList' :
+                    //Récupération de la liste des parties en cours sur le serveur
+                    let gamesList = {};
+                    fs.readdirSync(__dirname + '/games').forEach (function(fileName) {
+                        let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
+                        gamesList[gameContent.key] = games[gameContent.key] === undefined ? gameContent : games[gameContent.key];});
+                    wsclientSend(webSocket.clientId,'{"operation":"adminGamesList","gamesList":' + JSON.stringify(gamesList) + '}');
+                    break;
+            }}}}
 
 function operation(message,gameKey,clientId) {
     //Gestion des modifications apportées par les clients.
-
-    //Chargement en mémoire de la partie si elle n'y était pas...
-    if (games[gameKey] === undefined) {
-        // Chargement de la partie sollicitée
-        try {
-          if (fs.existsSync(__dirname + '/games/' + gameKey + '.json')) {
-              games[gameKey]=JSON.parse(fs.readFileSync(__dirname + '/games/' + gameKey + '.json'));
-              //Mise en place du webSocket dans la partie
-              games[gameKey].wsClients[clientId]=Date.now();}
-          else wsclientSend(clientId,'{"error":"wss::gameKeyNotFound ' + gameKey + '","errId":"1"}');
-        } catch(err) {
-            wsclientSend(clientId,'{"error":"wssError : ' + err + '"}');}}
+    games[gameKey].wsClients[clientId]=Date.now();
 
     //Sélection de 'opération
     if (games[gameKey] !== undefined) switch (message.operation) {

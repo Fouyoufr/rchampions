@@ -1,6 +1,7 @@
 {
     "TITgame":"Current game",
     "TITvillain":"Villain display",
+    "TITadmin":"Administration",
 
     "STconfused":"Confused",
     "STstunned":"Stunned",
@@ -78,6 +79,10 @@
     "wss::newVillainNotFound":"[Server] New Villain not found",
     "wss::threatNegative":"[Server] Threat can't be negative",
     "wss::sideSchemeNotFound":"[Server] Side Scheme not found",
-    "wss::counterNotFound":"[Server] Counter not found"
+    "wss::counterNotFound":"[Server] Counter not found",
+    "wss::adminBadPass":"[Server] Bad Admin Password",
+
+    "ADMINTILEgamesListTitle":"Games list",
+    "ADMINTILEgamesListIntro":"List of games currently hosted by the server (realtime update)."
 
 }

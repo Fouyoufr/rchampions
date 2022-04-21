@@ -18,6 +18,7 @@ loadScript ('websockets');
 if (document.getElementById('villains')) loadScript('villains');
 if (document.getElementById('villain')) loadScript('villain');
 if (document.getElementById('players')) loadScript('players');
+if (pageTitle == 'TITadmin') loadScript('admin');
 function loadScript(scriptName) {
     loaded[scriptName + 'Script'] = false;
     let script = document.createElement('script');
@@ -105,13 +106,14 @@ function mainLoad(gameJson) {
       var interval = setInterval(function() {if (loaded.lang == true && loaded.boxes == true){
         clearInterval(interval);
         //Insertion des skins dans l'en-tête
-        ['main','playerDisplay','villainDisplay','game',].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
+        ['main','playerDisplay','villainDisplay','game','admin'].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
         if (document.getElementById('villains')) for (let i=0; i < game.villains.length; i++) document.getElementById('villains').append(villainDisplay(i));
         if (document.getElementById('villain') && localStorage.getItem('rChampions-villain')) document.getElementById('villain').append(villainDisplay(localStorage.getItem('rChampions-villain')));
         if (document.getElementById('players')) for (let i=0; i < game.players.length; i++) document.getElementById('players').append(playerDisplay(i));
+        if (pageTitle == 'TITadmin') hash(webSocketSalt + sessionStorage.getItem('rChampions-adminHash')).then ((hashedValue) => adminLoad(hashedValue));
             
         //Chargement des menus pleine page
-        if (!document.getElementById('villain')) addMenu();
+        if (!document.getElementById('villain') && pageTitle != 'TITadmin') addMenu();
 
         addPopup();
 
@@ -194,7 +196,9 @@ function adminPopup() {
     document.getElementById('popup').getElementsByClassName('title')[0].append(refreshButton);
     let confirmButton = document.getElementById('adminPopupConfirm');
     confirmButton.onclick = function () {
-        hash(document.getElementById('adminPassword').value).then(function(hashedPass) { sessionStorage.setItem('rChampions-adminHash',hashedPass); hash(webSocketSalt + hashedPass).then ((hashedValue) => sendReq('{"admin":"checkPass","passHash":"' + hashedValue + '"}'))});}
+        hash(document.getElementById('adminPassword').value).then(function(hashedPass) {
+            sessionStorage.setItem('rChampions-adminHash',hashedPass);
+            hash(webSocketSalt + hashedPass).then ((hashedValue) => sendReq('{"admin":"checkPass","passHash":"' + hashedValue + '"}'))});}
 }
 
 function addElement(aeType,aeClass='',aeId='') {

@@ -1,6 +1,7 @@
 {
     "TITgame":"Partie en cours",
     "TITvillain":"Affichage du méchant",
+    "TITadmin":"Administration",
 
     "STconfused":"Désorienté",
     "STstunned":"Sonné",
@@ -79,6 +80,10 @@
     "wss::newVillainNotFound":"[Serveur] Nouveau Méchant introuvable",
     "wss::threatNegative":"[Serveur] La menace ne peut être négative",
     "wss::sideSchemeNotFound":"[Serveur] La manigance annexe est introuvable",
-    "wss::counterNotFound":"[Server] Compteur introuvable"
+    "wss::counterNotFound":"[Serveur] Compteur introuvable",
+    "wss::adminBadPass":"[Serveur] Mot de passe administratif incorrect",
+
+    "ADMINTILEgamesListTitle":"Liste des parties",
+    "ADMINTILEgamesListIntro":"Liste des parties hébergées par le serveur, mise à jour en temps-réel."
 
 }

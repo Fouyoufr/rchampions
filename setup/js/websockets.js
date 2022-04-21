@@ -2,7 +2,7 @@ let websocket = new WebSocket('ws://' + location.host);
 
 websocket.onopen = function() {
     //Envoi de la clef de partie à l'ouverture de session webSocket.
-    if (gameKey !== undefined && gameKey !== '') sendReq('{"gameKey":"'+ gameKey +'"}');
+    if (typeof gameKey != 'undefined' && gameKey !== '' && pageTitle != 'TITadmin') sendReq('{"gameKey":"'+ gameKey +'"}');
       };
 
 websocket.onclose = function (event) {
@@ -118,6 +118,13 @@ websocket.onmessage = function(event) {
         case 'adminOK' :
             window.location.href = "admin.html";
             break;
+
+        case 'adminGamesList' :
+            gamesListDiv = document.getElementById('gamesListTile-content');
+            gamesListTable = addElement('table');
+            gamesListDiv.append(gamesListTable);
+            Object.keys(message.gamesList).forEach(key => {gamesListTable.append(adminGameDisplay(message.gamesList[key]));})
+            break;
         
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin
         default:
@@ -137,8 +144,8 @@ function webSockError(errorText,id=0) {
     let websocketError=document.createElement('div');
     websocketError.id='websocketError';
     let errorCode = (/(ws*::\w*)/).exec(errorText)[1];
-    let errorDetail = (/\s(.*)/).exec(errorText)[1]
-    errorText = (lang[errorCode] != undefined ? lang[errorCode] : errorCode) + (errorDetail != '' ? " '" + errorDetail + "'" : '');
+    let errorDetail = (/\s(.*)/).exec(errorText);
+    errorText = (lang[errorCode] != undefined ? lang[errorCode] : errorCode) + (errorDetail != null ? " '" + errorDetail[1] + "'" : '');
     if (lang[errorText] !== undefined) errorText = lang[errorText];
     if (id !== 0) errorText += ' (' + id + ')';
     websocketError.textContent=errorText;
