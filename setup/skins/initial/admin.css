@@ -4,5 +4,14 @@ div.adminTile .title {margin:0px;width:100%;height:30px;line-height:30px;text-al
 div.adminTile .inside {padding: 2px;padding-left:10px;padding-right:10px;}
 
 /*Mise en forme de la liste des parties */
-tr.adminGameDisplay div.villain img, tr.adminGameDisplay div.player img {height:1em;border:solid 1px black;}
+#gamesListTile table,#gamesListTile tr {border: 1px solid #555;width:100%;border-collapse: collapse;}
+#gamesListTile tr:nth-child(odd) {background-color:bisque;}
+#gamesListTile th {background-color: #555;color: #e5d2e5;font-size:large;}
+#gamesListTile td {border: 1px solid #555; display:flexbox;font-weight:bold;font-size:medium;}
+tr.adminGameDisplay div.villain img, tr.adminGameDisplay div.player img {height:1em;border:solid 1px black;margin-right:3px;}
 tr.adminGameDisplay button.gameKey { padding:2px;padding-left:5px;padding-right:5px;background-color:black;color:yellow;font-size:large;font-weight:bold;}
+#gamesListTile td.webSockets {text-align: center;}
+#gamesListTile td.actions {text-align:center;display:flexbox;flex-flow: row;}
+#gamesListTile td.actions button {background-color:transparent;height:1em;width:1em;font-size:large;margin:5px;}
+#gamesListTile button.delete {background-image: url(./trash.png);}
+#gamesListTile button.save {background-image: url(./save.png);}

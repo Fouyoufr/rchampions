@@ -22,6 +22,8 @@ function playerDisplay(index) {
     let playerStat = addElement('div','status');
     playerFrame.append(playerStat);
     ['confused','stunned','tough'].forEach((statusName) => {playerStat.append(buttonDisplay(play[statusName] === undefined || play[statusName] === '0'?statusName + ' off':statusName,'{"operation":"playerStatus","status":"' + statusName + '","id":"' + index + '"}',lang['ST' + statusName],lang['ST' + statusName],playId + '-' + statusName));});
+    //Ajout de l'alter-ego/héros alterHero
+    playerFrame.append(buttonDisplay('alterHero','{"operation":"alterHero","player":"' + index + '"}',play.alterHero == 'h' ? 'Passer en Alter-Ego':'Passer en Superhéros',play.alterHero == 'h' ? 'Super-Héros' : 'Alter-Ego','alterHero' + index));
     //Ajout du bouton mobile
     let playerMob = addElement('button','mobile');
     playerMob.title = lang.BUTTONmobile;
