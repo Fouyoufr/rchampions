@@ -4,7 +4,7 @@ https = require('https'),
 fs = require('fs'),
 url = require ('url'),
 wsServer = require ('ws');
-let clientIndex = 0, games = [], adminSockets = [];
+let clientIndex = 0, games = {}, adminSockets = [];
 
 //import des données du jeu
 let config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
@@ -15,7 +15,10 @@ let mainSchemes=boxesFile.mainSchemes;
 let heros=boxesFile.heros;
 let decks=boxesFile.decks;
 let sideSchemes=boxesFile.sideSchemes;
-    //let schemeTexts=boxesFile.schemeTexts;
+//Construction de la liste des parties sur le serveur
+fs.readdirSync(__dirname + '/games').forEach (function(fileName) {
+    let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
+    games[gameContent.key] = gameContent;});
 
 const server = http.createServer(webRequest),
 TLSserver = http.createServer(webRequest);
@@ -76,7 +79,8 @@ wss.on('connection', function (webSocket) {
         //détection de la perte de connexion/déconnexion d'un client
         if (webSocket.gameKey !== undefined) {
             delete games[webSocket.gameKey].wsClients[webSocket.clientId];
-            wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[webSocket.gameKey]) + '}');}
+            wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[webSocket.gameKey]) + '}');
+            delete webSocket.gameKey;}
         //Nettoyage de la connexion avec la page Admin
         if (adminSockets[webSocket.clientId] !== undefined) delete adminSockets[webSocket.clientId];
     });
@@ -114,15 +118,32 @@ function adminOP(message,webSocket) {
             wsclientSend(webSocket.clientId,'{"error":"wss::adminBadPass","errId":"40"}');}
         else {
             //Mot de passe admin correct : actions administratives (ajout de la socket aux admins à prévenir sur connexion/déconnexions par exemple)
-            adminSockets.push(webSocket.clientId);
+            if (!adminSockets.includes(webSocket.clientId)) adminSockets.push(webSocket.clientId);
             switch(message.admin) {
                 case 'getList' :
                     //Récupération de la liste des parties en cours sur le serveur
-                    let gamesList = {};
-                    fs.readdirSync(__dirname + '/games').forEach (function(fileName) {
-                        let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
-                        gamesList[gameContent.key] = games[gameContent.key] === undefined ? gameContent : games[gameContent.key];});
-                    wsclientSend(webSocket.clientId,'{"operation":"adminGamesList","gamesList":' + JSON.stringify(gamesList) + '}');
+                    wsclientSend(webSocket.clientId,'{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');
+                    break;
+
+                case 'playerName' :
+                    //Changement du nom affiché d'un joueur
+                    if(games[message.game].players[message.player] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + message.game + '/' + message.player + '","errId":"51"}');
+                    else {
+                        games[message.game].players[message.player].name = message.newName;
+                        wsGameSend(message.game,'{"operation":"playerName","player":"' + message.player + '","newName":"' + message.newName + '"}');
+                        wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.game]) + '}');
+                        fs.writeFileSync(__dirname + '/games/' + message.game + '.json',JSON.stringify(games[message.game]));
+                    }
+                    break;
+
+                case 'deleteGame' :
+                    //Suppression administrative d'une partie
+                    if(games[message.id] === undefined) wsclientSend(webSocket.clientId,'{"error":"wss::gameNotFound ' + message.id + '","errId":"52"}');
+                    else {
+                        delete games[message.id];
+                        wsAdminSend('{"operation":"deleteGame","id":"' + message.id + '"}');
+                        //fs.writeFileSync(__dirname + '/games/' + message.game + '.json',JSON.stringify(games[message.game]));
+                    }
                     break;
             }}}}
 
@@ -146,6 +167,19 @@ function operation(message,gameKey,clientId) {
                 }
             break;
 
+        case 'playerLifeMinus' :
+        case 'playerLifePlus'  :
+            //Diminution /augmentation de la vie du joueur
+            if(games[gameKey].players[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + gameKey + '/' + message.id + '","errId":"41"}');
+            else {
+                if (message.operation == 'playerLifeMinus') {
+                    if (games[gameKey].players[message.id].life < 1) wsclientSend(clientId,'{"error":"wss::playerLifeNegative ' + gameKey + '/' + message.id + '","errId":"42"}'); else games[gameKey].players[message.id].life--;}
+                else games[gameKey].players[message.id].life++;
+                wsGameSend(gameKey,'{"operation":"playerLife","id":"' + message.id + '","value":"' + games[gameKey].players[message.id].life + '"}');
+                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                }
+            break;
+
         case 'villainStatus' :
             //Changement d'état du méchant
             if(games[gameKey].villains[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.id + '","errId":"5"}');
@@ -156,6 +190,30 @@ function operation(message,gameKey,clientId) {
                  else {
                     delete games[gameKey].villains[message.id][message.status];
                     wsGameSend(gameKey,'{"operation":"villainStatus","id":"' + message.id + '","status":"' + message.status + '","value":"0"}');}
+                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+            }
+            break;
+
+        case 'playerStatus' :
+            //Changement d'état du joueur
+            if(games[gameKey].players[message.id] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + gameKey + '/' + message.id + '","errId":"43"}');
+            else {
+                 if (games[gameKey].players[message.id][message.status] === undefined) {
+                    games[gameKey].players[message.id][message.status] = "1";
+                    wsGameSend(gameKey,'{"operation":"playerStatus","id":"' + message.id + '","status":"' + message.status + '","value":"1"}');}
+                 else {
+                    delete games[gameKey].players[message.id][message.status];
+                    wsGameSend(gameKey,'{"operation":"playerStatus","id":"' + message.id + '","status":"' + message.status + '","value":"0"}');}
+                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+            }
+            break;
+
+        case 'alterHero' :
+            //Passage de l'Alter-Ego au Super-héros
+            if(games[gameKey].players[message.player] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + gameKey + '/' + message.player + '","errId":"44"}');
+            else {
+                games[gameKey].players[message.player].alterHero = games[gameKey].players[message.player].alterHero == 'h' ? 'a' : 'h'; 
+                wsGameSend(gameKey,'{"operation":"playerAlterHero","id":"' + message.player + '","alterHero":"' + games[gameKey].players[message.player].alterHero + '"}');
                 fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
             }
             break;
@@ -198,6 +256,37 @@ function operation(message,gameKey,clientId) {
                 }}
             break;
 
+        case 'changeHero' :
+            //changement de héros
+            if(games[gameKey].players[message.player] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + gameKey + '/' + message.player + '","errId":"44"}');
+            else {
+                if (heros[message.newHero] === undefined) wsclientSend(clientId,'{"error":"wss::newHeroNotFound ' + message.newHero + '","errId":"45"}');
+                else {
+                    games[gameKey].players[message.player].hero = message.newHero;
+                    games[gameKey].players[message.player].life = heros[message.newHero].life;
+                    games[gameKey].players[message.player].alterHero = 'a';
+                    ['confused','stunned','tough'].forEach((statusName) => {
+                        delete games[gameKey].players[message.player][statusName];
+                        wsGameSend(gameKey,'{"operation":"playerStatus","id":"' + message.player + '","status":"' + statusName+ '","value":"0"}');});
+                    wsGameSend(gameKey,'{"operation":"changeHero","hero":"' + message.newHero + '","id":"' + message.player + '"}');
+                    wsGameSend(gameKey,'{"operation":"playerAlterHero","id":"' + message.player + '","alterHero":"a"}');
+                    wsGameSend(gameKey,'{"operation":"playerLife","id":"' + message.player + '","value":"' + games[gameKey].players[message.player].life + '"}');
+                    wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[gameKey]) + '}');
+                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                    }}
+            break;
+
+        case 'playerName' :
+            //Changement du nom affiché d'un joueur
+            if(games[gameKey].players[message.player] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + gameKey + '/' + message.player + '","errId":"50"}');
+            else {
+                games[gameKey].players[message.player].name = message.newName;
+                wsGameSend(gameKey,'{"operation":"playerName","player":"' + message.player + '","newName":"' + message.newName + '"}');
+                wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[gameKey]) + '}');
+                fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+            }
+            break;
+
         case 'changevillain' :
             //Changement de méchant
             if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"10"}');
@@ -224,6 +313,7 @@ function operation(message,gameKey,clientId) {
                         wsGameSend(gameKey,'{"operation":"changeVillain","villain":"' + message.villain + '","id":"' + message.newVillain + '"}');
                         wsGameSend(gameKey,'{"operation":"changePhase","villain":"' + message.villain + '","phase":"' + 1 + '"}');
                         wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.villain + '","value":"' + villains[message.villain].life1 + '"}');
+                        wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[gameKey]) + '}');
                         //Ajouter la désignation du premier joueur (si plusieurs joueurs présents)
                         if (games[gameKey].players.length > 1) {
 
@@ -318,35 +408,65 @@ function operation(message,gameKey,clientId) {
         case 'newCounter' :
             //Ajout d'un nouveu compteur à un méchant
             let newCounter = {"name":message.counterName,"value":message.value};
-            if (games[gameKey].villains[message.villain].counters === undefined) {
-                //premier compteur du méchant
-                games[gameKey].villains[message.villain].counters = {"0":newCounter};
-                wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"0","name":"' + message.counterName + '","value":"' + message.value + '"}');}
+            if (message.villain !== undefined) {
+                //Compteur de méchant
+                if (games[gameKey].villains[message.villain].counters === undefined || Object.keys(games[gameKey].villains[message.villain].counters).length == 0) {
+                    //premier compteur du méchant
+                    games[gameKey].villains[message.villain].counters = {"0":newCounter};
+                    wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"0","name":"' + message.counterName + '","value":"' + message.value + '"}');}
+                else {
+                    //Compteur(s) suivant(s) : incrémenter le dernier Id présent
+                    let gameCounters = games[gameKey].villains[message.villain].counters;
+                    newCounterId = Number(Object.keys(gameCounters)[Object.keys(gameCounters).length-1]) + 1;
+                    gameCounters[newCounterId] = newCounter;
+                    wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"' + newCounterId + '","name":"' + message.counterName + '","value":"' + message.value + '"}');}}
             else {
-                //Compteur(s) suivant(s) : incrémenter le dernier Id présent
-                let gameCounters = games[gameKey].villains[message.villain].counters;
-                newCounterId = Number(Object.keys(gameCounters)[Object.keys(gameCounters).length-1]) + 1;
-                gameCounters[newCounterId] = newCounter;
-                wsGameSend(gameKey,'{"operation":"newCounter","villain":"' + message.villain + '","id":"' + newCounterId + '","name":"' + message.counterName + '","value":"' + message.value + '"}');}
+                //compteur de joueur
+                console.log(games[gameKey].players[message.player].counters);
+                if (games[gameKey].players[message.player].counters === undefined || Object.keys(games[gameKey].players[message.player].counters).length == 0) {
+                    console.log('témoin');
+                    //premier compteur du joueur
+                    games[gameKey].players[message.player].counters = {"0":newCounter};
+                    wsGameSend(gameKey,'{"operation":"newCounter","player":"' + message.player + '","id":"0","name":"' + message.counterName + '","value":"' + message.value + '"}');}
+                else {
+                    //Compteur(s) suivant(s) : incrémenter le dernier Id présent
+                    let gameCounters = games[gameKey].players[message.player].counters;
+                    newCounterId = Number(Object.keys(gameCounters)[Object.keys(gameCounters).length-1]) + 1;
+                    gameCounters[newCounterId] = newCounter;
+                    wsGameSend(gameKey,'{"operation":"newCounter","player":"' + message.player + '","id":"' + newCounterId + '","name":"' + message.counterName + '","value":"' + message.value + '"}');}}
                 fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
            break;
 
         case 'deleteCounter' :
             //Suppression d'un compteur
-            if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"31"}');
-            else {
-                if (games[gameKey].villains[message.villain].counters[message.counter] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.villain + '/' + message.counter + '","errId":"32"}');
+            if (message.villain !== undefined) {
+                //Suppresion d'un compteur de méchant
+                if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"31"}');
                 else {
-                    delete (games[gameKey].villains[message.villain].counters[message.counter]);
-                    wsGameSend(gameKey,'{"operation":"deleteCounter","villain":"' + message.villain + '","id":"' + message.counter + '"}');
-                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
-                }}
+                    if (games[gameKey].villains[message.villain].counters[message.counter] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.villain + '/' + message.counter + '","errId":"32"}');
+                    else {
+                        delete (games[gameKey].villains[message.villain].counters[message.counter]);
+                        wsGameSend(gameKey,'{"operation":"deleteCounter","villain":"' + message.villain + '","id":"' + message.counter + '"}');
+                        fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                    }}
+            }
+            else {
+                //Suppression d'un compteur de joueur
+                if(games[gameKey].players[message.player] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + gameKey + '/' + message.villain + '","errId":"46"}');
+                else {
+                    if (games[gameKey].players[message.player].counters[message.counter] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.player + '/' + message.counter + '","errId":"47"}');
+                    else {
+                        delete (games[gameKey].players[message.player].counters[message.counter]);
+                        wsGameSend(gameKey,'{"operation":"deleteCounter","player":"' + message.player + '","id":"' + message.counter + '"}');
+                        fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                    }}}
             break;
         
         case 'counterPlus' :
         case 'counterMinus' :
-            //Incrémenter/Décrémenter un compteur de méchant
-            if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"33"}');
+            if (message.villain != undefined) {
+                //Incrémenter/Décrémenter un compteur de méchant
+                if(games[gameKey].villains[message.villain] === undefined) wsclientSend(clientId,'{"error":"wss::villainNotFound ' + gameKey + '/' + message.villain + '","errId":"33"}');
             else {
                 if (games[gameKey].villains[message.villain].counters[message.id] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.villain + '/' + message.id + '","errId":"34"}');
                 else {
@@ -354,6 +474,17 @@ function operation(message,gameKey,clientId) {
                     wsGameSend(gameKey,'{"operation":"counter","villain":"' + message.villain + '","id":"' + message.id + '","value":"' + games[gameKey].villains[message.villain].counters[message.id].value + '"}');
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                     }}
+            }
+            else {
+                //Incrémenter/Décrémenter un compteur de joueur
+                if(games[gameKey].players[message.player] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + gameKey + '/' + message.player + '","errId":"48"}');
+            else {
+                if (games[gameKey].players[message.player].counters[message.id] === undefined ) wsclientSend(clientId,'{"error":"wss::counterNotFound ' + gameKey + '/' + message.player + '/' + message.id + '","errId":"49"}');
+                else {
+                    if (message.operation == 'counterPlus') games[gameKey].players[message.player].counters[message.id].value++; else if (games[gameKey].players[message.player].counters[message.id].value > 0)  games[gameKey].players[message.player].counters[message.id].value--;
+                    wsGameSend(gameKey,'{"operation":"counter","player":"' + message.player + '","id":"' + message.id + '","value":"' + games[gameKey].players[message.player].counters[message.id].value + '"}');
+                    fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+                    }}}
             break;
         
         default:
@@ -363,5 +494,4 @@ function operation(message,gameKey,clientId) {
 const { createHash } = require('crypto');
 //Hash pour mots de passe
 function hash(string) {
-  return createHash('sha256').update(string).digest('hex');
-}
+  return createHash('sha256').update(string).digest('hex');}

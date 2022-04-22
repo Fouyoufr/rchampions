@@ -16,11 +16,13 @@ button#bug {display: none;}
 div.language {display: none;}
 
 /* popup boxes styling */
+div#popup {z-index: 10;}
 div#popup .background {position:fixed;Width: 50%;margin-top: 10%;margin-left: 25%;border: thick double darkolivegreen;border-top:none;overflow:hidden;}
 div#popup .title {width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
 div#popup .close, div#websocketError .close {width:24px;height:24px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
 div#popup .close::before , div#websocketError .close::before {content: 'X';}
 div#popup .close:hover, div#websocketError .close:hover {background-color:crimson;}
+
 /* Bouton de "Hard Refresh" derrière l'icône Admin */
 div#popup .adminRefresh {width:24px;height:24px;background-color:transparent;background-image:url(./refresh.png);position:absolute;top:0px;left:0px;}
 div#popup .adminRefresh:hover {background-color:crimson;}
@@ -34,7 +36,7 @@ div#popup .buttons {width:100%;justify-content:space-evenly;display:flex;}
 div#popup .outro {text-align:justify;}
 
 /* buttons for life/threat input */
-button.minus,button.plus,div.value {border-radius: 4px;border: 2px solid white;font-weight:bold;display:inline-flex;font-size: 12px;height:24px;line-height: 24px;}
+button.minus,button.plus,div.value {box-sizing:border-box; border-radius: 4px;border: 2px solid white;font-weight:bold;display:inline-flex;font-size: 12px;height:24px;line-height: 24px;margin:1px;}
 button.minus,button.plus {width:24px;color: white; background-color: black;font-size:18px;}
 button.minus::before{content:'<';}
 button.plus::before{content:'>';}
@@ -58,7 +60,7 @@ button.adminMenu {bottom:2px;background-image: url(./admin.png);}
 button.settingsMenu:hover,button.adminMenu:hover,button.melodiceMenu:hover {width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}
 
 /*Gestion des erreurs renvoyées en direct par le serveur */
-div#websocketError {display:inline-block;background-color:brown;padding:2px;color:yellow;font-weight:bold;position:fixed;bottom:2px;left:2px;border:2px solid red;padding-right:30px;height:20px;line-height: 20px;}
+div#websocketError {display:inline-block;background-color:brown;padding:2px;color:yellow;font-weight:bold;position:fixed;bottom:2px;left:2px;border:2px solid red;padding-right:30px;height:20px;line-height: 20px;z-index: 1;}
 
 /* Affichage générique des erreurs (par exemple mauvais mot de passe) */
 .errorText {font-weight:bold;color:crimson;}

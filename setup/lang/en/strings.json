@@ -1,4 +1,5 @@
 {
+    "TITindex":"Wellcome",
     "TITgame":"Current game",
     "TITvillain":"Villain display",
     "TITadmin":"Administration",
@@ -12,6 +13,8 @@
 
     "PLalter":"Alter-Ego",
     "PLhero":"Hero",
+    "PLchangePlayerNameIntro1":"Here you can change the pseudonym of the player '",
+    "PLchangePlayerNameIntro2":"' (this name will be seen by all palyers of this game and server administrators).",
 
     "MENUsettings":"Settings",
     "MENUmelodice":"Music (MeloDice)",
@@ -35,15 +38,23 @@
     "BUTTONdelete":"Delete",
     "BUTTONsave":"Save",
     "BUTTONAdminMessage":"Send Instant Message",
+    "BUTTONplayerName":"Change player name",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",
     "POPUPvillainIntro2b":"Please select bellow the Villain you wanna fight during this game.",
     "POPUPvillaintIntro3":" and all side schemes removed from the game",
     "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
+
+    "POPUPheroIntro1":"You may choose a new hero that will be played by '",
+    "POPUPheroIntro2":"'.",
+    "POPUPheroOutro":"Please note this player's status will be reset.",
+
     "POPUPAdminIntro":"You need a password to access the adminsitration page.",
     "popupAdminContent":"Please type the administrative pssord below to gain access to rChampion administration :",
     "POPUPAdminBadPassword":"Error : Bad password...",
+    "POPUPAdminConfirmDelete":"Are you sure you want to delete the selected game ?",
+    "POPUPAdminConfirmDeleteOutro":"This can't be undone.<br/>You may save the game before proceeding with this deletion.",
 
     "POPUPmainIntroA1":"Current Main Scheme is '",
     "POPUPmainIntroA2":"', you can change it by selecting a new one bellow.",
@@ -63,6 +74,12 @@
     "POPUPschemeInfos":"Informations",
     "POPUPschemeReveal":"When revealed",
     "POPUPschemeDefeat":"When defeated",
+
+    "POPUPPlayCounterIntro1" :"Add a new multipurpose counter will let you track any numbered value you need/may track during your game for player '",
+    "POPUPVilCounterIntro1" :"Add a new multipurpose counter will let you track any numbered value you need/may track during your game against '",
+    "POPIPCounterIntro2":"'.<br/> If you set a name to this counter, it will be displayed in the counters' list on the game screen.",
+    "POPUPCounterName":"Name of the new counter",
+    "POPUPCounterInitialValue":"Initial value of this counter",
 
     "NSSIntro0":"Revealing a new Side Scheme for the Villain '",
     "NSSIntro1":"'.<br/>Please choose the deck bellow, and then the new Side Scheme from the deck.",
@@ -84,6 +101,11 @@
     "wss::sideSchemeNotFound":"[Server] Side Scheme not found",
     "wss::counterNotFound":"[Server] Counter not found",
     "wss::adminBadPass":"[Server] Bad Admin Password",
+    "wss::playerNotFound":"[server] Player not found",
+    "wss::playerLifeNegative":"[server] Player's life can't be negative",
+    "wss::newHeroNotFound":"[server] New hero not found",
+    "wss::gameNotFound":"[Server] Game not found",
+
 
     "ADMINTILEgamesListTitle":"Games list",
     "ADMINTILEgamesListIntro":"List of games currently hosted by the server (realtime update).",

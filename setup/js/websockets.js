@@ -30,6 +30,16 @@ websocket.onmessage = function(event) {
             if (message.status == '0') delete game.villains[message.id][message.status]; else game.villains[message.id][message.status]='1';
             break;
 
+        case 'playerStatus' :
+            isElem('player' + message.id + '-' + message.status).className = message.value == '1' ? message.status : message.status + ' off';
+            if (message.status == '0') delete game.players[message.id][message.status]; else game.players[message.id][message.status]='1';
+            break;
+
+        case 'playerAlterHero' :
+            isElem('alterHero' + message.id ).textContent = message.alterHero == 'h' ? lang.PLhero : lang.PLalter;
+            game.players[message.id].alterHero = message.alterHero;
+            break;
+
         case 'changePhase':
             isElem('villain' + message.villain + '-phase').textContent = message.phase;
             game.villains[message.villain].phase=message.phase;
@@ -49,6 +59,11 @@ websocket.onmessage = function(event) {
             game.villains[message.villain].sideSchemes=[];
             //A retravialler après passage aux Id sur les DIVs en direct
             if (document.getElementById('villain' + message.villain)) Array.from(document.getElementById('villain' + message.villain).getElementsByClassName('sideScheme')).forEach(element => {element.remove();})
+            break;
+        
+        case 'changeHero' :
+            isElem('player' + message.id + '-pic').style.backgroundImage = "url('./images/heros/" + message.hero + ".png')";
+            game.players[message.id].id=message.hero;
             break;
 
         case 'mainThreat' :
@@ -95,19 +110,45 @@ websocket.onmessage = function(event) {
             break;
         
         case 'newCounter' :
-            game.villains[message.villain].counters[message.id] = {"name":message.name,"value":message.value};
-            isElem('villain' + message.villain + '-counters').append(counterDisplay (message.villain,message.id));
+            if (message.villain !== undefined) {
+                if (game.villains[message.villain].counters === undefined) game.villains[message.villain].counters = [];
+                game.villains[message.villain].counters[message.id] = {"name":message.name,"value":message.value};
+                isElem('villain' + message.villain + '-counters').append(counterDisplay (message.villain,message.id));}
+            else {
+                if (game.players[message.player].counters === undefined) game.players[message.player].counters = [];
+                game.players[message.player].counters[message.id] = {"name":message.name,"value":message.value};
+                isElem('player' + message.player + '-counters').append(PcounterDisplay (message.player,message.id));}
             break;
 
         case 'deleteCounter' :
-            delete game.villains[message.villain].counters[message.id];
-            isElem('villain' + message.villain + '-counter' + message.id).remove();
+            if (message.villain !== undefined) {
+                delete game.villains[message.villain].counters[message.id];
+                isElem('villain' + message.villain + '-counter' + message.id).remove();}
+            else {
+                delete game.players[message.player].counters[message.id];
+                isElem('player' + message.player + '-counter' + message.id).remove();}
+
             break;
 
         case 'counter' :
             if (message.value < 10) message.value = '0' + message.value;
-            game.villains[message.villain].counters[message.id].value = message.value;
-            isElem('villain' + message.villain + '-count' + message.id).textContent = message.value;
+            if (message.villain != undefined) {
+                game.villains[message.villain].counters[message.id].value = message.value;
+                isElem('villain' + message.villain + '-count' + message.id).textContent = message.value;}
+            else {
+                game.players[message.player].counters[message.id].value = message.value;
+                isElem('player' + message.player + '-count' + message.id).textContent = message.value;}
+            break;
+
+        case 'playerLife' :
+            if (message.value < 10) message.value= '0' + message.value;
+            isElem('player' + message.id + '-life').textContent = message.value;
+            game.players[message.id].life=message.value;
+            break;
+
+        case 'playerName' :
+            isElem('player' + message.player + '-name').textContent = message.newName;
+            game.players[message.player].name = message.newName;
             break;
 
         case 'adminKO' :
@@ -121,18 +162,22 @@ websocket.onmessage = function(event) {
 
         case 'adminGamesList' :
             gamesListDiv = document.getElementById('gamesListTile-content');
-            if (message.gamesList.length ==0) gamesListDiv.textContent = lang.ADMINTILEemptyList;
+            if (message.gamesList == {} || Object.keys(message.gamesList).length == 0) gamesListDiv.textContent = lang.ADMINTILEemptyList;
             else {
                 let gamesListTable = addElement('table');
                 gamesListTable.innerHTML = '<tr><th>' + lang.ADMINTILEgamesListTH1 + '</th><th>' + lang.ADMINTILEgamesListTH2 + '</th><th>' + lang.ADMINTILEgamesListTH3 + '</th><th>' + lang.ADMINTILEgamesListTH4 + '</th><th>' + lang.ADMINTILEgamesListTH5 + '</th><th>' + lang.ADMINTILEgamesListTH6 + '</th></tr>';
                 gamesListDiv.append(gamesListTable);
                 Object.keys(message.gamesList).forEach(key => {gamesListTable.append(adminGameDisplay(message.gamesList[key]));})}
-            
             break;
 
         case 'adminGamesUpdate' :
             oldItem = document.getElementById('adminGame-' + message.game.key);
             oldItem.parentNode.replaceChild(adminGameDisplay(message.game),oldItem);
+            break;
+
+        case 'deleteGame' :
+            document.getElementById('adminGame-' + message.id).remove();
+            if (document.getElementById('gamesListTile-content').getElementsByTagName('tr').length == 1) document.getElementById('gamesListTile-content').textContent = lang.ADMINTILEemptyList;
             break;
         
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin

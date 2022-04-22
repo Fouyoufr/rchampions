@@ -1,6 +1,8 @@
 function adminLoad(passHash) {
+    sessionStorage.setItem('rChampions-adminHash',passHash);
     //Chargement des éléments de la page Admin
-    sendReq('{"admin":"getList","passHash":"' + passHash + '"}');
+    sendReq('{"admin":"getList","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
+    
     document.getElementById('tiles').append(adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro))
 }
 
@@ -49,10 +51,15 @@ function adminGameDisplay(game) {
     if (game.villains.length == 0) gameVillains.textContent = lang.noItem;
     gameTr.append(gameVillains);
     //Joueurs de la partie
-    let gamePlayers = addElement('td','villains','players-' + game.key);
-    game.players.forEach(element => {
+    let gamePlayers = addElement('td','players','players-' + game.key);
+    game.players.forEach((element,index) => {
         let player = addElement('div','player');
-        player.innerHTML = '<img src="./images/heros/' + element.hero + '.png" alt = "' + heros[element.hero].name + '">' + element.name;
+        player.innerHTML = '<img src="./images/heros/' + element.hero + '.png" alt = "' + heros[element.hero].name + '">';
+        let playerButton = addElement('button','playerName');
+        playerButton.textContent = element.name;
+        playerButton.title = lang.BUTTONplayerName;
+        playerButton.onclick = function () {adminPlayerNamePopup(game.key,index,element.name);}
+        player.append(playerButton);
         gamePlayers.append(player);
     });
     if (game.players.length == 0) gamePlayers.textContent = lang.noItem;
@@ -68,25 +75,49 @@ function adminGameDisplay(game) {
     gameTr.append(connected);
     //Actions sur la partie (suppressiuon sauvegarde message)
     let gameActions = addElement('td','actions');
-    gameActions.append(buttonDisplay('delete','{"admin":"deleteGame","id":"' + game.key + '"}',lang.BUTTONdelete));
-    gameActions.append(buttonDisplay('save','{"admin":"saveGame","id":"' + game.key + '"}',lang.BUTTONsave));
+    let deleteButton = buttonDisplay('delete','',lang.BUTTONdelete);
+    deleteButton.onclick = function () {
+        //Fenêtre de confirmation de la suppression de la partie
+        document.getElementById('adminGame-' + game.key).className +=' selected';
+        let deleteConfirmButtons='<button title="' + lang.BUTTONconfirm + '" id ="deleteConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';document.getElementById(\'adminGame-' + game.key + '\').className =\'adminGameDisplay\';">' + lang.BUTTONcancel + '</button>';
+        popupDisplay(lang.BUTTONdelete,'',lang.POPUPAdminConfirmDelete,deleteConfirmButtons,lang.POPUPAdminConfirmDeleteOutro,'20%');
+        document.getElementById('deleteConfirm').onclick = function () {
+            document.getElementById('popup').style.display='none';
+            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';
+            sendReq('{"admin":"deleteGame","id":"' + game.key + '","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');}
+        document.getElementById('popup').getElementsByClassName('close')[0].onclick = function() {
+            document.getElementById('popup').style.display='none';
+            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';
+            document.getElementById('popup').getElementsByClassName('close')[0].onclick = function () {document.getElementById('popup').style.display='none';}}}
+    gameActions.append(deleteButton);
+    let saveButton = buttonDisplay('save','',lang.BUTTONsave);
+    saveButton.onclick=function () {
+        saveLink = document.createElement('a');
+        saveLink.href = 'games/' + game.key + '.json';
+        saveLink.download = game.key + '.json';
+        saveLink.click();
+        saveLink.remove();}
+    gameActions.append(saveButton);
     gameTr.append(gameActions);
-
-
-
-
-    return (gameTr);
-
-
-
-}
+    return (gameTr);}
 
 function adminMessage (gameKey) {
     //Popup d'envoi d'un message aux joueurs connectés sur la partie
     let intro = lang.POPUPadminMessageIntro;
-    let adminMessageButtons='<button title="' + lang.BUTTONconfirm + '">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
-    let messageForm = '';
+    let adminMessageButtons='<button title="' + lang.BUTTONconfirm + '" id ="adminMessageConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    let messageForm = '<textarea type="text" id="adminMessage"></textarea>';
 
     popupDisplay(lang.BUTTONAdminMessage,intro,messageForm,adminMessageButtons,'','50%');
+    textFocus('adminMessage');
 
 }
+
+function adminPlayerNamePopup(gameKey,player,oldName) {
+    let PNbuttons='<button title="' + lang.BUTTONconfirm + '" onclick = "adminPlayerNameSend(\'' + gameKey + '\',\'' + player + '\');" id="adminPlayerNameSubmit">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    let PNintro = lang.PLchangePlayerNameIntro1 + oldName + lang.PLchangePlayerNameIntro2
+    let PNcontent = '<input type = "text" value = "' + oldName + '" id = "newPlayerName">';
+    popupDisplay(lang.BUTTONplayerName,PNintro,PNcontent,PNbuttons,'');
+    textFocus('newPlayerName','adminPlayerNameSubmit');}
+function adminPlayerNameSend(gameKey,player) {
+    sendReq('{"admin":"playerName","game":"' + gameKey + '","player":"' + player + '","newName":"' + document.getElementById('newPlayerName').value + '","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
+    document.getElementById('popup').style.display='none';}

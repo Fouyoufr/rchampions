@@ -3,17 +3,13 @@
 .player {font-variant: small-caps; text-transform: capitalize;display:inline-block;margin-right: 5px;margin-left: 5px;min-width: 320px;border-radius: 10px;}
 .player .player-frame {background:radial-gradient(black,red);border-radius: 4px;margin-bottom: 2px;position: relative;padding-bottom: 10px;}
 .player button.picture {border:solid 1px black;position:absolute;left:3px;top:3px;background-image:none;width:40px;height:40px;}
-.player-frame > div.name {display:block;font-weight:bolder;font-size:x-large;color:white;margin-bottom: 3px;}
-.player div.life div.value {background-color:lightcyan;color:black;border-color:black;}
+.player-frame > button.name {display:block;width:100%;font-weight:bolder;font-size:x-large;color:white;margin-bottom: 3px;background-color: transparent;}
+.player div.life {display:block;}
+.player div.life div.value {background-color:lightcyan;color:black;}
 .player div.status {display:flex;flex-wrap:wrap;margin-top:5px;}
 .player div.status button {flex: 1 1 25%;font-weight: bolder;margin:2px;margin-left:5px;margin-right:5px;font-size: medium;}
 .player .alterHero {color:yellow;font-size:large;font-weight:bold;background:transparent;margin-top:5px;}
 .player button.mobile {position:absolute;bottom:2px;left:2px;}
-
-/* Button "Hero/Alter Ego" */
-.player button.alterHero {}
-.player div.counters {}
-.player button.mobile {}
 
 /* Liste des compteurs génériques */
 .player div.counters {background-color:rgba(0, 0, 0, 0.5);padding:0px;text-align:left;position:relative;border: solid 2px darkolivegreen;box-sizing: border-box;}

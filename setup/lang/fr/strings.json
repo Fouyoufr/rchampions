@@ -1,4 +1,5 @@
 {
+    "TITindex":"Bienvenue",
     "TITgame":"Partie en cours",
     "TITvillain":"Affichage du méchant",
     "TITadmin":"Administration",
@@ -11,7 +12,9 @@
     "STranged":"A distance",
 
     "PLalter":"Alter-Égo",
-    "PLhero":"Héros",
+    "PLhero":"Super-Héros",
+    "PLchangePlayerNameIntro1":"Vous pouvez ici choisir un nom/surnom pour représenter le joueur '",
+    "PLchangePlayerNameIntro2":"' (ce nom sera visible par tous les joueurs de la partie et les administrateurs du serveur).",
 
     "MENUsettings":"Paramètres",
     "MENUmelodice":"Musique (MeloDice)",
@@ -35,16 +38,23 @@
     "BUTTONdelete":"Supprimer",
     "BUTTONsave":"Sauvegarder",
     "BUTTONAdminMessage":"Envoyer un message instantanné",
+    "BUTTONplayerName":"Changer le nom du joueur",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
     "POPUPvillainIntro2b":"Choisissez ci-dessous le méchant à affronter lors de cette partie.",
     "POPUPvillaintIntro3":" et toutes les éventuelles manigances annexes seront otées.",
     "POPUPvillainOutro":"La partie sera réinitialisée à la phase 1.",
+
+    "POPUPheroIntro1":"Vous pouvez choisir un nouveau héro qui sera joué par '",
+    "POPUPheroIntro2":"'.",
+    "POPUPheroOutro":"Notez que l'état du héros sera réinitialisé.",
     
     "POPUPAdminIntro":"Cette partie du site est protégée par un mot de passe...",
     "popupAdminContent":"Merci de saisir le mot de passe administratif de rChampions :",
     "POPUPAdminBadPassword":"Erreur : mot de passe incorrect...",
+    "POPUPAdminConfirmDelete":"Etes-vous certain(e) de souhaiter supprimée la partie sélectionnée ?",
+    "POPUPAdminConfirmDeleteOutro":"Cette opération est irréversible.<br/>Il est conseillé de préalablement sauvegarder la partie.",
 
     "POPUPmainIntroA1":"La Manigance Princiaple actuellement en jeu est '",
     "POPUPmainIntroA2":"', vous pouvez en changer en en sélectionnant une nouvelle ci-dessous.",
@@ -64,6 +74,12 @@
     "POPUPschemeInfos":"Informations",
     "POPUPschemeReveal":"Une fois révélée",
     "POPUPschemeDefeat":"Une fois déjouée",
+
+    "POPUPPlayCounterIntro1" :"Ajouter un compteur générique vous permettra de suivre toute valeur chiffrée que vous avez besoin/envie de suivre pendant votre partie concenrnant le joueur '",
+    "POPUPVilCounterIntro1" :"Ajouter un compteur générique vous permettra de suivre toute valeur chiffrée que vous avez besoin/envie de suivre pendant votre partie concenrnant le méchant '",
+    "POPIPCounterIntro2":"'.<br/> Si vous indiquez un nom pour votre compteur, il sera affichée dans la liste des compteurs sur l'écran de jeu.",
+    "POPUPCounterName":"Nom du nouveau compteur",
+    "POPUPCounterInitialValue":"Valeur initiale du compteur ",
 
     "NSSIntro0":"Mise en jeu d'une nouvelle manigance annexe pour le méchant '",
     "NSSIntro1":"'.<br/>Sélectionnez ci-dessous le deck auquel appartient la manigance, puis la manigance elle-même.",
@@ -85,6 +101,10 @@
     "wss::sideSchemeNotFound":"[Serveur] La manigance annexe est introuvable",
     "wss::counterNotFound":"[Serveur] Compteur introuvable",
     "wss::adminBadPass":"[Serveur] Mot de passe administratif incorrect",
+    "wss::playerNotFound":"[Serveur] Joueur introuvable",
+    "wss::playerLifeNegative":"[Serveur] La vie du joueur ne peut être négative",
+    "wss::newHeroNotFound":"[Serveur] Le nouveau héros est introuvable",
+    "wss::gameNotFound":"[Serveur] Partie introuvable",
 
     "ADMINTILEgamesListTitle":"Liste des parties",
     "ADMINTILEgamesListIntro":"Liste des parties hébergées par le serveur, mise à jour en temps-réel.",

@@ -58,6 +58,7 @@ if (localStorage.getItem('rChampions-gameKey')) {
     //Récupération des informations de la partie en cours.
     gameKey=localStorage.getItem('rChampions-gameKey');
     load ('./games/' + gameKey + '.json',mainLoad);}
+else mainLoad();
 
 
 function configLoad(configJson) {
@@ -99,18 +100,23 @@ function boxesLoad(boxesJson) {
     saveBoxes='{"boxes":' + JSON.stringify(boxes) +',"villains":' + JSON.stringify(villains) + ', "mainSchemes":' + JSON.stringify(mainSchemes) + ', "heros":' + JSON.stringify(heros) + ', "decks":' + JSON.stringify(decks) + ', "sideSchemes":' + JSON.stringify(sideSchemes) + ', "schemeTexts":' + JSON.stringify(schemeTexts) + '}';
     if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) localStorage.setItem('rChampionsBoxes',saveBoxes);}
 
-function mainLoad(gameJson) {
-    //Chargement principal de la page de jeu
-    game=JSON.parse(gameJson);
+function mainLoad(gameJson='') {
+    //Chargement principal de la page
+    if (gameJson !='') game=JSON.parse(gameJson);
     //Attente d'avoir récupéré les éléments nécessaires avant de construire la page...
       var interval = setInterval(function() {if (loaded.lang == true && loaded.boxes == true){
         clearInterval(interval);
         //Insertion des skins dans l'en-tête
-        ['main','playerDisplay','villainDisplay','game','admin'].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
+        ['main','playerDisplay','villainDisplay','admin'].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
         if (document.getElementById('villains')) for (let i=0; i < game.villains.length; i++) document.getElementById('villains').append(villainDisplay(i));
         if (document.getElementById('villain') && localStorage.getItem('rChampions-villain')) document.getElementById('villain').append(villainDisplay(localStorage.getItem('rChampions-villain')));
         if (document.getElementById('players')) for (let i=0; i < game.players.length; i++) document.getElementById('players').append(playerDisplay(i));
-        if (pageTitle == 'TITadmin') hash(webSocketSalt + sessionStorage.getItem('rChampions-adminHash')).then ((hashedValue) => adminLoad(hashedValue));
+        if (pageTitle == 'TITadmin') {
+            var adminInterval = setInterval(function() {if (loaded.adminScript == true){
+                clearInterval(adminInterval);
+                hash(webSocketSalt + sessionStorage.getItem('rChampions-adminPass')).then ((hashedValue) => adminLoad(hashedValue));}
+            },100);}
+        //if (pageTitle == 'TITadmin') hash(webSocketSalt + sessionStorage.getItem('rChampions-adminPass')).then ((hashedValue) => adminLoad(hashedValue));
             
         //Chargement des menus pleine page
         if (!document.getElementById('villain') && pageTitle != 'TITadmin') addMenu();
@@ -123,7 +129,7 @@ function mainLoad(gameJson) {
     
 
   function load(fileLoad,functionLoad) {
-      // Chargement de fichier distant (AJAX)
+      // Chargement de fichier distant (AJAX à refaire en webSocket !)
     let request = new XMLHttpRequest();
     request.open('GET', fileLoad);
     request.onreadystatechange = function() {
@@ -146,9 +152,11 @@ function addMenu() {
     adminMenu = addElement('button','adminMenu')
     adminMenu.title=lang.MENUadmin;
     adminMenu.onclick=adminPopup;
-    gamekey = addElement('div','','gameKey');
-    gamekey.innerHTML=gameKey;
-    document.getElementsByTagName('body')[0].append(gamekey,adminMenu,melodiceMenu,settingsMenu);}
+    if (typeof(gameKey) != 'undefined' && pageTitle != 'TITindex') {
+        gamekey = addElement('div','','gameKey');
+        gamekey.innerHTML=gameKey;
+        document.getElementsByTagName('body')[0].append(gamekey);}
+    document.getElementsByTagName('body')[0].append(adminMenu,melodiceMenu,settingsMenu);}
 
 function addPopup() {
     //Ajout du div pour les popup (masque les intéractions à l'écran et présente une fenêtre générique)
@@ -184,7 +192,6 @@ function popupDisplay(title,intro,content,buttons,outro='',height='17%') {
 
 function adminPopup() {
     //Popup de saisie du mot de passe pour accès administratif
-    //Réclamer au serveur une chaine de caractère pour vérification du mot de passe
     let intro=lang.POPUPAdminIntro, content = lang.popupAdminContent + '<br/><input type="password" id = "adminPassword">';
     let buttons='<button title="' + lang.BUTTONconfirm + '" id="adminPopupConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     popupDisplay(lang.MENUadmin,intro,content,buttons);
@@ -197,9 +204,9 @@ function adminPopup() {
     let confirmButton = document.getElementById('adminPopupConfirm');
     confirmButton.onclick = function () {
         hash(document.getElementById('adminPassword').value).then(function(hashedPass) {
-            sessionStorage.setItem('rChampions-adminHash',hashedPass);
+            sessionStorage.setItem('rChampions-adminPass',hashedPass);
             hash(webSocketSalt + hashedPass).then ((hashedValue) => sendReq('{"admin":"checkPass","passHash":"' + hashedValue + '"}'))});}
-}
+    textFocus('adminPassword','adminPopupConfirm');}
 
 function addElement(aeType,aeClass='',aeId='') {
     //Ajout d'un élément dans le document
@@ -236,12 +243,24 @@ function valuePlusMinus(vpmClass,vpmValue,vpmId,vpmOperationMinus,vpmOperationPl
     return vpm;}
 
 function hash(string) {
-    //https://remarkablemark.org/blog/2021/08/29/javascript-generate-sha-256-hexadecimal-hash/
     const utf8 = new TextEncoder().encode(string);
     return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => {
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         const hashHex = hashArray.map((bytes) => bytes.toString(16).padStart(2, '0')).join('');
           return hashHex;});}
+
+function textFocus(elementId,buttonId='') {
+    //Placer le focus sur le champ texte et le curseur à la fin
+    textInput=document.getElementById(elementId);
+    textInput.focus();
+    textInput.setSelectionRange(textInput.value.length,textInput.value.length);
+    if (buttonId != '') {
+        //Déclencher l'appui d'un bouton sur [Entrée]
+        textInput.addEventListener('keyup',function (event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                document.getElementById(buttonId).click();}
+        })}}
 
     // Pour travailler sur l'import des anciennes sauvegardes :
     // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
