@@ -8,7 +8,8 @@ let rcConfig={}, lang={}, game={},
 boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},nullElement={},
 loaded={"config":false,"lang":false,"boxes":false},
 webSocketId='',webSocketSalt='';
-popupDiv=addElement('div','');
+popupDiv=addElement('div','','popup');
+adminMessageDiv = addElement('div','','adminMessagePopup');
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 metaViewport = document.createElement('meta');
@@ -120,7 +121,6 @@ function mainLoad(gameJson='') {
                 clearInterval(adminInterval);
                 hash(webSocketSalt + sessionStorage.getItem('rChampions-adminPass')).then ((hashedValue) => adminLoad(hashedValue));}
             },100);}
-        //if (pageTitle == 'TITadmin') hash(webSocketSalt + sessionStorage.getItem('rChampions-adminPass')).then ((hashedValue) => adminLoad(hashedValue));
             
         //Chargement des menus pleine page
         if (!document.getElementById('villain') && pageTitle != 'TITadmin') addMenu();
@@ -150,6 +150,7 @@ function addHeadLink(rel,type,href) {
 
 function addMenu() {
     settingsMenu = addElement('button','settingsMenu');
+    //Ajouter ici : langue, aide(s), homepage, Chwazy, bug report, doc, box/decks de la partie
     settingsMenu.title=lang.MENUsettings;
     melodiceMenu = addElement('button','melodiceMenu');
     melodiceMenu.title=lang.MENUmelodice;
@@ -164,7 +165,6 @@ function addMenu() {
 
 function addPopup() {
     //Ajout du div pour les popup (masque les intéractions à l'écran et présente une fenêtre générique)
-    popupDiv.id='popup';
     let popupBack = addElement('div','background');
     let popupTitle = addElement('div','title');
     popupTitle.append(addElement('div','titleIn'));
@@ -180,7 +180,22 @@ function addPopup() {
     popupIn.append(addElement('p','outro'));
     popupBack.append(popupIn);
     popupDiv.append(popupBack);
-    document.getElementsByTagName('body')[0].append(popupDiv);}
+    //document.getElementsByTagName('body')[0].append(popupDiv);
+    //Ajout du div pour les messages administratifs adminMessageDiv
+    let adminMessageBack = addElement('div','background');
+    let adminMessageTitle = addElement('div','title');
+    let adminMessageTitleIn = addElement('div','titleIn');
+    adminMessageTitleIn.textContent = lang.POPUPAdminMessageTitle;
+    adminMessageTitle.append(adminMessageTitleIn);
+    let adminMessageClose = addElement('button','close');
+    adminMessageClose.title=lang.BUTTONclose;
+    adminMessageClose.onclick=function () {document.getElementById('adminMessagePopup').style.display='none';}
+    adminMessageTitle.append(adminMessageClose);
+    adminMessageBack.append(adminMessageTitle);
+    adminMessageBack.append(addElement('div','inside'));
+    adminMessageBack.append(addElement('div','foot'));
+    adminMessageDiv.append(adminMessageBack);
+    document.getElementsByTagName('body')[0].append(popupDiv,adminMessageDiv);}
 
 function popupDisplay(title,intro,content,buttons,outro='',height='17%') {
     //Affichage d'une popup

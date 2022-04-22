@@ -147,6 +147,19 @@ function adminOP(message,webSocket) {
                     }
                     break;
 
+                case 'sendMessage' :
+                    //nvoi d'un message administratif
+                    if (message.game !== undefined) {
+                        let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"game":message.game});
+                        wsGameSend(message.game,textMessage);}
+                    else if (message.all !== undefined) {
+                        let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"all":message.all});
+                        wsGameSend(message.game,textMessage);}
+                    else if (message.admins !== undefined) {
+                        let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"all":message.admins});
+                        wsGameSend(message.game,textMessage);}
+                    break;
+
                 default:
                         wsclientSend(webSocket.clientId,'{"error":"wss::operationNotFound ' + message.admin + '","errId":"53"}');
             }}}}
@@ -297,7 +310,7 @@ function operation(message,gameKey,clientId) {
             if (message.first == 'next') {
                 newFirst = Number(games[gameKey].first) + 1;
                 if (newFirst > (games[gameKey].players.length -1)) newFirst = 0;}
-            if (message.first == 'random') newFirst = Math.random() * 3;
+            if (message.first == 'random') newFirst = Math.random() * (games[gameKey].players.length -1);
             games[gameKey].first = newFirst;
             wsGameSend(gameKey,'{"operation":"changeFirst","first":"' +newFirst + '"}');
             fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
@@ -331,10 +344,10 @@ function operation(message,gameKey,clientId) {
                         wsGameSend(gameKey,'{"operation":"changePhase","villain":"' + message.villain + '","phase":"' + 1 + '"}');
                         wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.villain + '","value":"' + villains[message.villain].life1 + '"}');
                         wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[gameKey]) + '}');
-                        //Ajouter la désignation du premier joueur (si plusieurs joueurs présents)
-                        if (games[gameKey].players.length > 1) {
-
-                        }
+                        //Désignation du premier joueur (si plusieurs joueurs présents et un seul méchant)
+                        if (games[gameKey].players.length > 1 && games[gamekey].villains.length == 1) {
+                            games[gameKey].first = Math.random() * (games[gameKey].players.length -1);
+                            wsGameSend(gameKey,'{"operation":"changeFirst","first":"' + games[gameKey].first + '"}');}
                         fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                     }}}
             break;

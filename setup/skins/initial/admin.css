@@ -3,6 +3,10 @@ div.adminTile .background {box-sizing:border-box;position: relative;Width: calc(
 div.adminTile .title {margin:0px;width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
 div.adminTile .inside {padding: 2px;padding-left:10px;padding-right:10px;}
 
+/*AdminMessagePopup */
+#adminMessage {resize: none;width:100%;height: 4em;}
+
+
 /*Mise en forme de la liste des parties */
 #gamesListTile table,#gamesListTile tr {border: 1px solid #555;width:100%;border-collapse: collapse;}
 tr.adminGameDisplay td button {background-color: transparent;}

@@ -3,7 +3,10 @@ function adminLoad(passHash) {
     //Chargement des éléments de la page Admin
     sendReq('{"admin":"getList","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
     
-    document.getElementById('tiles').append(adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro))
+    document.getElementById('tiles').append(
+        adminTile('adminMessages','ADMINTileMessagesTitle','Ajouter un test par bouclage local...',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
+        adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro)
+        )
 }
 
 function adminTile(tileId,tileTitle,tileContent='',tileIntro='',tileOutro='') {
@@ -12,6 +15,9 @@ function adminTile(tileId,tileTitle,tileContent='',tileIntro='',tileOutro='') {
     tile.append(background);
     let tileTit = addElement('div','title');
     tileTit.textContent = lang[tileTitle];
+    tileTit.onclick = function () {
+        let tileCont =  document.getElementById(tileId).getElementsByClassName('inside')[0];
+        tileCont.style.display = tileCont.style.display == 'none' ? 'block' : 'none'; }
     background.append(tileTit);
     let tileInside = addElement('div','inside');
     background.append(tileInside);
@@ -101,13 +107,13 @@ function adminGameDisplay(game) {
     gameTr.append(gameActions);
     return (gameTr);}
 
-function adminMessagePopup (gameKey='',all=false,admins=false) {
+function adminMessagePopup (gameKey='', all=false, admins=false) {
     //Popup d'envoi d'un message aux joueurs connectés (sur la partie, au serveur ou en admin)
-    let intro = lang.POPUPadminMessageIntro;
-    let adminMessageButtons='<button title="' + lang.BUTTONconfirm + '" id ="adminMessageConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';" id ="adminMessageCancel">' + lang.BUTTONcancel + '</button>';
+    let intro = lang.POPUPAdminMessageGameIntro;
+    let adminMessageButtons='<button title="' + lang.BUTTONsendMessage + '" id ="adminMessageConfirm">' + lang.BUTTONsendMessage + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';" id ="adminMessageCancel">' + lang.BUTTONcancel + '</button>';
     let messageForm = '<textarea type="text" id="adminMessage"></textarea>';
 
-    popupDisplay(lang.BUTTONAdminMessage,intro,messageForm,adminMessageButtons,'','50%');
+    popupDisplay(lang.BUTTONAdminMessage,intro,messageForm,adminMessageButtons,'','12em');
     if (gameKey != '') {
         //(Dé)sélection de la ligne de la partie concernée
         document.getElementById('adminGame-' + game.key).className +=' selected';

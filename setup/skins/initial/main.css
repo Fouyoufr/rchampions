@@ -19,9 +19,9 @@ div.language {display: none;}
 div#popup {z-index: 10;}
 div#popup .background {position:fixed;Width: 50%;margin-top: 10%;margin-left: 25%;border: thick double darkolivegreen;border-top:none;overflow:hidden;}
 div#popup .title {width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
-div#popup .close, div#websocketError .close {width:24px;height:24px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
-div#popup .close::before , div#websocketError .close::before {content: 'X';}
-div#popup .close:hover, div#websocketError .close:hover {background-color:crimson;}
+div#popup .close, div#websocketError .close, div#adminMessagePopup .close {width:24px;height:24px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
+div#popup .close::before , div#websocketError .close::before, div#adminMessagePopup .close::before {content: 'X';}
+div#popup .close:hover, div#websocketError .close:hover, div#adminMessagePopup .close:hover {background-color:crimson;}
 
 /* Bouton de "Hard Refresh" derrière l'icône Admin */
 div#popup .adminRefresh {width:24px;height:24px;background-color:transparent;background-image:url(./refresh.png);position:absolute;top:0px;left:0px;}
@@ -64,3 +64,13 @@ div#websocketError {display:inline-block;background-color:brown;padding:2px;colo
 
 /* Affichage générique des erreurs (par exemple mauvais mot de passe) */
 .errorText {font-weight:bold;color:crimson;}
+
+/* Admin messages boxes styling */
+div#adminMessagePopup {z-index: 10;position:fixed;bottom:0px;Width: 100%;background: black;color:yellow;font-size: large; display: none;}
+div#adminMessagePopup .close {top:2px;right:4px;}
+div#adminMessagePopup .background {border: thick double white;border-top:none;overflow:hidden;height:calc(10em + 30px);}
+div#adminMessagePopup .title {width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: white;color:black}
+div#adminMessagePopup .inside {padding:1em;}
+div#adminMessagePopup .inside::before {content:"> "; color:chartreuse;font-size:xx-large;font-weight: bold;animation: blinker 1s linear infinite;}
+@keyframes blinker {50% {opacity: 0;}}
+div#adminMessagePopup .foot {position: absolute;bottom:6px;right:6px;color:goldenrod;}

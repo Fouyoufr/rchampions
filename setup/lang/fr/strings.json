@@ -40,6 +40,7 @@
     "BUTTONAdminMessage":"Envoyer un message instantanné",
     "BUTTONplayerName":"Changer le nom du joueur",
     "BUTTONfirstPlayer":"Premier joueur",
+    "BUTTONsendMessage":"Envoyer",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
@@ -54,8 +55,14 @@
     "POPUPAdminIntro":"Cette partie du site est protégée par un mot de passe...",
     "popupAdminContent":"Merci de saisir le mot de passe administratif de rChampions :",
     "POPUPAdminBadPassword":"Erreur : mot de passe incorrect...",
-    "POPUPAdminConfirmDelete":"Etes-vous certain(e) de souhaiter supprimée la partie sélectionnée ?",
+    "POPUPAdminConfirmDelete":"Etes-vous certain(e) de souhaiter supprimer la partie sélectionnée ?",
     "POPUPAdminConfirmDeleteOutro":"Cette opération est irréversible.<br/>Il est conseillé de préalablement sauvegarder la partie.",
+    "POPUPAdminMessageGameIntro":"Cette fonctionnalité vous permet d'nevoyer un message instantanné à tous les joueurs actuellement connectés à la partie sélectionné",
+    "POPUPAdminMessageTitle":"Message administratif",
+    "POPUPAdminMessageFootGame":"Message envoyé à tous les joueurs connectés sur cette partie",
+    "POPUPAdminMessageFootAll":"Message envoyé à tous les joueurs connectés sur le serveur",
+    "POPUPAdminMessageFootAdmins":"Message envoyé à tous les admins connectés sur le serveur",
+    
 
     "POPUPmainIntroA1":"La Manigance Princiaple actuellement en jeu est '",
     "POPUPmainIntroA2":"', vous pouvez en changer en en sélectionnant une nouvelle ci-dessous.",
@@ -116,6 +123,10 @@
     "ADMINTILEgamesListTH4":"Joueur(s)",
     "ADMINTILEgamesListTH5":"Connecté(s)",
     "ADMINTILEgamesListTH6":"Administration",
+
+    "ADMINTileMessagesTitle":"Messagerie administrative",
+    "ADMINTileMessagesIntro":"Cette fonctionnalité permet de voir les joueurs et administrateurs connectés et de leur envoyer un mmessage en direct.",
+    "ADMINTileMessageOutro":"(Vous pouvez également envoyer un message aux joueurs connectés à une partie en cliquant sur le nombre de connectés dans l'affichage de la liste de parties)",
 
 
     "noItem":"Aucun"

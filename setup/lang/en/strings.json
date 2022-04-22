@@ -40,6 +40,7 @@
     "BUTTONAdminMessage":"Send Instant Message",
     "BUTTONplayerName":"Change player name",
     "BUTTONfirstPlayer":"First player",
+    "BUTTONsendMessage":"Send",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",
@@ -56,6 +57,11 @@
     "POPUPAdminBadPassword":"Error : Bad password...",
     "POPUPAdminConfirmDelete":"Are you sure you want to delete the selected game ?",
     "POPUPAdminConfirmDeleteOutro":"This can't be undone.<br/>You may save the game before proceeding with this deletion.",
+    "POPUPAdminMessageGameIntro":"This feature allows to send an Instant Message to every player connected to this game",
+    "POPUPAdminMessageTitle":"Administrative Information",
+    "POPUPAdminMessageFootGame":"Sent to all players connected to this game",
+    "POPUPAdminMessageFootAll":"Sent to all players currently connected",
+    "POPUPAdminMessageFootAdmins":"Sent to all administrators currently connected",
 
     "POPUPmainIntroA1":"Current Main Scheme is '",
     "POPUPmainIntroA2":"', you can change it by selecting a new one bellow.",
@@ -117,6 +123,10 @@
     "ADMINTILEgamesListTH4":"Player(s)",
     "ADMINTILEgamesListTH5":"Online",
     "ADMINTILEgamesListTH6":"Administration",
+
+    "ADMINTileMessagesTitle":"Administrative messages",
+    "ADMINTileMessagesIntro":"This feature allows seeing connected players and administrators and sending them Instant Messages.",
+    "ADMINTileMessageOutro":"(You can also send a message to all players connected to a game by clicking on the number of online players in the diplauy of games list",
     
     "noItem":"None"
 

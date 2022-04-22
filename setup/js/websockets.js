@@ -185,6 +185,14 @@ websocket.onmessage = function(event) {
             document.getElementById('firstplayer' + message.first).className = 'firstPlayer';
             game.first = message.first;
             break;
+
+        case 'adminMessage' :
+            document.getElementById('adminMessagePopup').getElementsByClassName('inside')[0].textContent = message.message;
+            if (message.game != undefined) document.getElementById('adminMessagePopup').getElementsByClassName('foot')[0].innerHTML = '(' + lang.POPUPAdminMessageFootGame + ')';
+            else if (message.all != undefined) document.getElementById('adminMessagePopup').getElementsByClassName('foot')[0].innerHTML = '(' + lang.POPUPAdminMessageFootAll + ')';
+            else if (message.admins != undefined) document.getElementById('adminMessagePopup').getElementsByClassName('foot')[0].innerHTML = '(' + lang.POPUPAdminMessageFootAdmins + ')';
+            document.getElementById('adminMessagePopup').style.display = 'block';
+            break;
         
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin
         default:
