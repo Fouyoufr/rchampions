@@ -39,6 +39,7 @@
     "BUTTONsave":"Save",
     "BUTTONAdminMessage":"Send Instant Message",
     "BUTTONplayerName":"Change player name",
+    "BUTTONfirstPlayer":"First player",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",

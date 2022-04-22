@@ -70,10 +70,10 @@ function adminGameDisplay(game) {
     connected.append(connectedButton);
     connectedNumber = game.wsClients !== undefined ? Object.keys(game.wsClients).length : lang.noItem;
     connectedButton.textContent = connectedNumber == 0 ? lang.noItem : connectedNumber;
-    connectedButton.onclick = connectedNumber == 0 ? undefined : function () {adminMessage(game.key);}
+    connectedButton.onclick = connectedNumber == 0 || connectedNumber == lang.noItem ? undefined : function () {adminMessagePopup(game.key);}
     connectedButton.title = lang.BUTTONAdminMessage;
     gameTr.append(connected);
-    //Actions sur la partie (suppressiuon sauvegarde message)
+    //Actions sur la partie
     let gameActions = addElement('td','actions');
     let deleteButton = buttonDisplay('delete','',lang.BUTTONdelete);
     deleteButton.onclick = function () {
@@ -101,13 +101,28 @@ function adminGameDisplay(game) {
     gameTr.append(gameActions);
     return (gameTr);}
 
-function adminMessage (gameKey) {
-    //Popup d'envoi d'un message aux joueurs connectés sur la partie
+function adminMessagePopup (gameKey='',all=false,admins=false) {
+    //Popup d'envoi d'un message aux joueurs connectés (sur la partie, au serveur ou en admin)
     let intro = lang.POPUPadminMessageIntro;
-    let adminMessageButtons='<button title="' + lang.BUTTONconfirm + '" id ="adminMessageConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    let adminMessageButtons='<button title="' + lang.BUTTONconfirm + '" id ="adminMessageConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';" id ="adminMessageCancel">' + lang.BUTTONcancel + '</button>';
     let messageForm = '<textarea type="text" id="adminMessage"></textarea>';
 
     popupDisplay(lang.BUTTONAdminMessage,intro,messageForm,adminMessageButtons,'','50%');
+    if (gameKey != '') {
+        //(Dé)sélection de la ligne de la partie concernée
+        document.getElementById('adminGame-' + game.key).className +=' selected';
+        document.getElementById('popup').getElementsByClassName('close')[0].onclick = function() {
+            document.getElementById('popup').style.display='none';
+            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';
+            document.getElementById('popup').getElementsByClassName('close')[0].onclick = function () {document.getElementById('popup').style.display='none';}}
+        document.getElementById('adminMessageCancel').onclick = function() {
+            document.getElementById('popup').style.display='none';
+            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';}
+        document.getElementById('adminMessageConfirm').onclick = function() {
+            sendReq(JSON.stringify({"admin":"sendMessage","game":game.key,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            document.getElementById('popup').style.display='none';
+            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';}
+    }
     textFocus('adminMessage');
 
 }

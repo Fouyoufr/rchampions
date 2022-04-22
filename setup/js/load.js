@@ -1,5 +1,9 @@
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
+const urlParams = new URLSearchParams(window.location.search)
+if (urlParams.has('g')) {
+    //Récupération et stockage en local de la clef de partie
+    localStorage.setItem('rChampions-gameKey',urlParams.get('g'));}
 let rcConfig={}, lang={}, game={},
 boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},nullElement={},
 loaded={"config":false,"lang":false,"boxes":false},

@@ -180,6 +180,12 @@ websocket.onmessage = function(event) {
             if (document.getElementById('gamesListTile-content').getElementsByTagName('tr').length == 1) document.getElementById('gamesListTile-content').textContent = lang.ADMINTILEemptyList;
             break;
         
+        case 'changeFirst' :
+            document.querySelectorAll('button.firstPlayer').forEach(element => {element.className = 'firstPlayer off'});
+            document.getElementById('firstplayer' + message.first).className = 'firstPlayer';
+            game.first = message.first;
+            break;
+        
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin
         default:
           webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}

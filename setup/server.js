@@ -18,6 +18,7 @@ let sideSchemes=boxesFile.sideSchemes;
 //Construction de la liste des parties sur le serveur
 fs.readdirSync(__dirname + '/games').forEach (function(fileName) {
     let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
+    if (gameContent.wsClients !== undefined) delete gameContent.wsClients;
     games[gameContent.key] = gameContent;});
 
 const server = http.createServer(webRequest),
@@ -145,6 +146,9 @@ function adminOP(message,webSocket) {
                         //fs.writeFileSync(__dirname + '/games/' + message.game + '.json',JSON.stringify(games[message.game]));
                     }
                     break;
+
+                default:
+                        wsclientSend(webSocket.clientId,'{"error":"wss::operationNotFound ' + message.admin + '","errId":"53"}');
             }}}}
 
 function operation(message,gameKey,clientId) {
@@ -285,6 +289,19 @@ function operation(message,gameKey,clientId) {
                 wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[gameKey]) + '}');
                 fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
             }
+            break;
+
+        case 'changeFirst' :
+            //Changement de premier joueur : valeur attendue pour first : numéro du nouveau, next, random ou current
+            let newFirst = message.first;
+            if (message.first == 'next') {
+                newFirst = Number(games[gameKey].first) + 1;
+                if (newFirst > (games[gameKey].players.length -1)) newFirst = 0;}
+            if (message.first == 'random') newFirst = Math.random() * 3;
+            games[gameKey].first = newFirst;
+            wsGameSend(gameKey,'{"operation":"changeFirst","first":"' +newFirst + '"}');
+            fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
+
             break;
 
         case 'changevillain' :

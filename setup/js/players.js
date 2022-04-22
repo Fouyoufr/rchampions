@@ -2,7 +2,7 @@ function playerDisplay(index) {
     //Insertion du code HTML du joueur dans la page
     let play = game.players[index];
     let playId = 'player' + index;
-    //Affichage de l'état actuel du méchant
+    //Affichage des statuts du joueur
     let playerD = addElement('div','player',playId);
     let playerFrame = addElement('div','player-frame');
     playerD.append(playerFrame);
@@ -31,6 +31,15 @@ function playerDisplay(index) {
     playerMob.title = lang.BUTTONmobile;
     playerMob.onclick = function () {localStorage.setItem('rChampions-player',index);window.location.href = "player.html";}
     playerFrame.append(playerMob);
+    //Ajout du bouton Premier joueur
+    if (game.players.length > 1) {
+        let firstPlayer = addElement('button',game.first == index ? 'firstPlayer' : 'firstPlayer off','first'+playId);
+        firstPlayer.title = lang.BUTTONfirstPlayer;
+        firstPlayer.onclick = function () {
+            //On clique sur le bouton premier joueur actif : passage au suivant, sinon on envoie l'ID
+            if (game.first == index) newFirst = 'next'; else newFirst = index;
+            sendReq('{"operation":"changeFirst","first":"' + newFirst + '"}');}
+        playerFrame.append(firstPlayer);}
     //Affichage des compteurs multifonctions
     let playerCounters = addElement('div','counters',playId + '-counters');
     let playerCountersTitle = addElement('div','title');

@@ -39,6 +39,7 @@
     "BUTTONsave":"Sauvegarder",
     "BUTTONAdminMessage":"Envoyer un message instantanné",
     "BUTTONplayerName":"Changer le nom du joueur",
+    "BUTTONfirstPlayer":"Premier joueur",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
