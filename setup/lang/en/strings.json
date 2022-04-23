@@ -41,6 +41,8 @@
     "BUTTONplayerName":"Change player name",
     "BUTTONfirstPlayer":"First player",
     "BUTTONsendMessage":"Send",
+    "BUTTONtest":"Test",
+    "BUTTONCopy":"Copy adress of this game",
 
     "POPUPvillainIntro1":"You are currently playing a game against '",
     "POPUPvillainIntro2":"You can change this villain by selecting a new one behons.<br/>Warning: Current phase will be reset",
@@ -62,6 +64,7 @@
     "POPUPAdminMessageFootGame":"Sent to all players connected to this game",
     "POPUPAdminMessageFootAll":"Sent to all players currently connected",
     "POPUPAdminMessageFootAdmins":"Sent to all administrators currently connected",
+    "POPUPAdminMessageOutro":"Please, use the 'test' button to display your message locally and check its content before sending it.",
 
     "POPUPmainIntroA1":"Current Main Scheme is '",
     "POPUPmainIntroA2":"', you can change it by selecting a new one bellow.",
@@ -113,7 +116,6 @@
     "wss::newHeroNotFound":"[server] New hero not found",
     "wss::gameNotFound":"[Server] Game not found",
 
-
     "ADMINTILEgamesListTitle":"Games list",
     "ADMINTILEgamesListIntro":"List of games currently hosted by the server (realtime update).",
     "ADMINTILEemptyList":"This list is empty !",
@@ -127,6 +129,8 @@
     "ADMINTileMessagesTitle":"Administrative messages",
     "ADMINTileMessagesIntro":"This feature allows seeing connected players and administrators and sending them Instant Messages.",
     "ADMINTileMessageOutro":"(You can also send a message to all players connected to a game by clicking on the number of online players in the diplauy of games list",
+    "ADMINTileMessageCUsers":"Currently connected users",
+    "ADMINTileMessageCAdmins":"Currently connected administrtaors",
     
     "noItem":"None"
 

@@ -193,6 +193,11 @@ websocket.onmessage = function(event) {
             else if (message.admins != undefined) document.getElementById('adminMessagePopup').getElementsByClassName('foot')[0].innerHTML = '(' + lang.POPUPAdminMessageFootAdmins + ')';
             document.getElementById('adminMessagePopup').style.display = 'block';
             break;
+
+        case 'adminConnected' :
+            document.getElementById('adminMessages').getElementsByClassName('total')[0].textContent = message.total;
+            document.getElementById('adminMessages').getElementsByClassName('admins')[0].textContent = message.admins;
+            break;
         
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin
         default:

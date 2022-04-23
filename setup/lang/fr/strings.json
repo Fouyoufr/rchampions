@@ -41,6 +41,8 @@
     "BUTTONplayerName":"Changer le nom du joueur",
     "BUTTONfirstPlayer":"Premier joueur",
     "BUTTONsendMessage":"Envoyer",
+    "BUTTONtest":"Test",
+    "BUTTONCopy":"Copier l'adresse de cette partie",
 
     "POPUPvillainIntro1":"Vous jouez actuellement une partie contre '",
     "POPUPvillainIntro2":"Vous pouvez changer ce méchant en en sélectionnant un nouveau ci-dessous.<br/>Attention: la progression actuelle sera perdue",
@@ -62,8 +64,8 @@
     "POPUPAdminMessageFootGame":"Message envoyé à tous les joueurs connectés sur cette partie",
     "POPUPAdminMessageFootAll":"Message envoyé à tous les joueurs connectés sur le serveur",
     "POPUPAdminMessageFootAdmins":"Message envoyé à tous les admins connectés sur le serveur",
+    "POPUPAdminMessageOutro":"Commencez par utiliser le bouton 'test' pour afficher votre message local et en vérifier le contenu avant de réellement l'envoyer.",
     
-
     "POPUPmainIntroA1":"La Manigance Princiaple actuellement en jeu est '",
     "POPUPmainIntroA2":"', vous pouvez en changer en en sélectionnant une nouvelle ci-dessous.",
     "POPUPmainIntroB1":"Afin de compléter votre sélection pour démarrer une partie avec le Méchant '",
@@ -127,7 +129,8 @@
     "ADMINTileMessagesTitle":"Messagerie administrative",
     "ADMINTileMessagesIntro":"Cette fonctionnalité permet de voir les joueurs et administrateurs connectés et de leur envoyer un mmessage en direct.",
     "ADMINTileMessageOutro":"(Vous pouvez également envoyer un message aux joueurs connectés à une partie en cliquant sur le nombre de connectés dans l'affichage de la liste de parties)",
-
+    "ADMINTileMessageCUsers":"Utilisateurs actuellement connectés",
+    "ADMINTileMessageCAdmins":"Administrateurs actuellement connectés",
 
     "noItem":"Aucun"
 }

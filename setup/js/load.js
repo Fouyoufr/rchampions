@@ -1,6 +1,6 @@
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
-const urlParams = new URLSearchParams(window.location.search)
+const urlParams = new URLSearchParams(location.search)
 if (urlParams.has('g')) {
     //Récupération et stockage en local de la clef de partie
     localStorage.setItem('rChampions-gameKey',urlParams.get('g'));}
@@ -121,15 +121,11 @@ function mainLoad(gameJson='') {
                 clearInterval(adminInterval);
                 hash(webSocketSalt + sessionStorage.getItem('rChampions-adminPass')).then ((hashedValue) => adminLoad(hashedValue));}
             },100);}
-            
         //Chargement des menus pleine page
-        if (!document.getElementById('villain') && pageTitle != 'TITadmin') addMenu();
-
+        addMenu();
         addPopup();
-
         document.getElementById('loading').style.display='none';}
-  
-        },100);}
+          },100);}
     
 
   function load(fileLoad,functionLoad) {
@@ -149,19 +145,29 @@ function addHeadLink(rel,type,href) {
     document.head.appendChild(headLink);}
 
 function addMenu() {
+    //Icone de menu d'administration
+    if (pageTitle != 'TITadmin') {
+        adminMenu = addElement('button','adminMenu')
+        adminMenu.title=lang.MENUadmin;
+        adminMenu.onclick=adminPopup;
+        document.getElementsByTagName('body')[0].append(adminMenu);}
+    //Affichage de la clef de la partie
+    if (pageTitle == 'TITgame') {
+        gamekey = addElement('button','','gameKey');
+        gamekey.innerHTML=gameKey;
+        gamekey.title = lang.BUTTONCopy
+        gamekey.onclick = function () {
+            toCopy = location.protocol + '//' + location.host + location.pathname + '?g=' + gameKey;
+            navigator.clipboard.writeText(toCopy);
+            console.log('Copied : ' + toCopy);}
+        document.getElementsByTagName('body')[0].append(gamekey);}
+    //Icone de la musique en jeu (MeloDice) et des parmètres
+    melodiceMenu = addElement('button','melodiceMenu');
+    melodiceMenu.title=lang.MENUmelodice;
     settingsMenu = addElement('button','settingsMenu');
     //Ajouter ici : langue, aide(s), homepage, Chwazy, bug report, doc, box/decks de la partie
     settingsMenu.title=lang.MENUsettings;
-    melodiceMenu = addElement('button','melodiceMenu');
-    melodiceMenu.title=lang.MENUmelodice;
-    adminMenu = addElement('button','adminMenu')
-    adminMenu.title=lang.MENUadmin;
-    adminMenu.onclick=adminPopup;
-    if (typeof(gameKey) != 'undefined' && pageTitle != 'TITindex') {
-        gamekey = addElement('div','','gameKey');
-        gamekey.innerHTML=gameKey;
-        document.getElementsByTagName('body')[0].append(gamekey);}
-    document.getElementsByTagName('body')[0].append(adminMenu,melodiceMenu,settingsMenu);}
+    document.getElementsByTagName('body')[0].append(melodiceMenu,settingsMenu);}
 
 function addPopup() {
     //Ajout du div pour les popup (masque les intéractions à l'écran et présente une fenêtre générique)

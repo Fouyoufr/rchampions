@@ -4,7 +4,7 @@ function adminLoad(passHash) {
     sendReq('{"admin":"getList","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
     
     document.getElementById('tiles').append(
-        adminTile('adminMessages','ADMINTileMessagesTitle','Ajouter un test par bouclage local...',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
+        adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
         adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro)
         )
 }
@@ -25,11 +25,12 @@ function adminTile(tileId,tileTitle,tileContent='',tileIntro='',tileOutro='') {
     intro.textContent = tileIntro;
     tileInside.append(intro);
     content = addElement('div','content',tileId + '-content')
-    content.textContent = tileContent;
+    content.innerHTML = tileContent;
     tileInside.append(content);
-    outro = addElement('p','outro',tileId + '-outro');
-    outro.textContent = tileOutro;
-    tileInside.append(outro);
+    if (tileOutro != '') {
+        outro = addElement('p','outro',tileId + '-outro');
+        outro.textContent = tileOutro;
+        tileInside.append(outro);}
     return (tile);}
 
 function adminGameDisplay(game) {
@@ -52,8 +53,7 @@ function adminGameDisplay(game) {
     game.villains.forEach(element => {
         let villain = addElement('div','villain');
         villain.innerHTML = '<img src="./images/villains/' + element.id + '.png" alt = "' + villains[element.id].name + '">' + villains[element.id].name;
-        gameVillains.append(villain);
-    });
+        gameVillains.append(villain);});
     if (game.villains.length == 0) gameVillains.textContent = lang.noItem;
     gameTr.append(gameVillains);
     //Joueurs de la partie
@@ -66,8 +66,7 @@ function adminGameDisplay(game) {
         playerButton.title = lang.BUTTONplayerName;
         playerButton.onclick = function () {adminPlayerNamePopup(game.key,index,element.name);}
         player.append(playerButton);
-        gamePlayers.append(player);
-    });
+        gamePlayers.append(player);});
     if (game.players.length == 0) gamePlayers.textContent = lang.noItem;
     gameTr.append(gamePlayers);
     //Joueurs connectés
@@ -110,28 +109,44 @@ function adminGameDisplay(game) {
 function adminMessagePopup (gameKey='', all=false, admins=false) {
     //Popup d'envoi d'un message aux joueurs connectés (sur la partie, au serveur ou en admin)
     let intro = lang.POPUPAdminMessageGameIntro;
-    let adminMessageButtons='<button title="' + lang.BUTTONsendMessage + '" id ="adminMessageConfirm">' + lang.BUTTONsendMessage + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';" id ="adminMessageCancel">' + lang.BUTTONcancel + '</button>';
+    let adminMessageButtons='<button title="' + lang.BUTTONsendMessage + '" id ="adminMessageConfirm" style = "display:none;">' + lang.BUTTONsendMessage + '</button><button title="' + lang.BUTTONtest + '" id ="adminMessageTest">' + lang.BUTTONtest + '</button><button title="' + lang.BUTTONcancel + '" id ="adminMessageCancel">' + lang.BUTTONcancel + '</button>';
     let messageForm = '<textarea type="text" id="adminMessage"></textarea>';
-
-    popupDisplay(lang.BUTTONAdminMessage,intro,messageForm,adminMessageButtons,'','12em');
+    popupDisplay(lang.BUTTONAdminMessage,intro,messageForm,adminMessageButtons,lang.POPUPAdminMessageOutro,'14em');
+    document.getElementById('adminMessageCancel').onclick = function() { document.getElementById('popup').style.display='none'; }
     if (gameKey != '') {
         //(Dé)sélection de la ligne de la partie concernée
-        document.getElementById('adminGame-' + game.key).className +=' selected';
+        document.getElementById('adminGame-' + gameKey).className +=' selected';
         document.getElementById('popup').getElementsByClassName('close')[0].onclick = function() {
             document.getElementById('popup').style.display='none';
-            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';
+            document.getElementById('adminGame-' + gameKey).className ='adminGameDisplay';
             document.getElementById('popup').getElementsByClassName('close')[0].onclick = function () {document.getElementById('popup').style.display='none';}}
         document.getElementById('adminMessageCancel').onclick = function() {
             document.getElementById('popup').style.display='none';
-            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';}
+            document.getElementById('adminGame-' + gameKey).className ='adminGameDisplay';}
         document.getElementById('adminMessageConfirm').onclick = function() {
-            sendReq(JSON.stringify({"admin":"sendMessage","game":game.key,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            sendReq(JSON.stringify({"admin":"sendMessage","game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
             document.getElementById('popup').style.display='none';
-            document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';}
-    }
-    textFocus('adminMessage');
-
-}
+            document.getElementById('adminGame-' + gameKey).className ='adminGameDisplay';}
+        document.getElementById('adminMessageTest').onclick = function() {
+            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            document.getElementById('adminMessageConfirm').style.display = 'block';}}
+    else if (all) {
+        //envoi d'un message à tous les connectés
+        document.getElementById('adminMessageConfirm').onclick = function() {
+            sendReq(JSON.stringify({"admin":"sendMessage","all":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            document.getElementById('popup').style.display='none';}
+        document.getElementById('adminMessageTest').onclick = function() {
+            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"all":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            document.getElementById('adminMessageConfirm').style.display = 'block';}}
+    else if (admins) {
+        //envoi d'un message aux administrateurs
+        document.getElementById('adminMessageConfirm').onclick = function() {
+            sendReq(JSON.stringify({"admin":"sendMessage","admins":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            document.getElementById('popup').style.display='none';}
+        document.getElementById('adminMessageTest').onclick = function() {
+            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"admins":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            document.getElementById('adminMessageConfirm').style.display = 'block';}}        
+    textFocus('adminMessage');}
 
 function adminPlayerNamePopup(gameKey,player,oldName) {
     let PNbuttons='<button title="' + lang.BUTTONconfirm + '" onclick = "adminPlayerNameSend(\'' + gameKey + '\',\'' + player + '\');" id="adminPlayerNameSubmit">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';

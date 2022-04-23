@@ -58,21 +58,15 @@ wss.on('connection', function (webSocket) {
     webSocket.on('message',function (data) {
         console.log('Data received from client ' + webSocket.clientId + ' : \'' + data + '\'');
         message=JSON.parse(data);
-        //Ajout de la clef de la partie si non présente et chargement de la partie si nécessaire
+        //Ajout de la clef de la partie si non présente
         if (message.gameKey !== undefined) {
             webSocket.gameKey = message.gameKey;
-            //Chargement en mémoire de la partie si elle n'y était pas...
-            if (games[message.gameKey] === undefined) {
-                try {
-                    if (fs.existsSync(__dirname + '/games/' + message.gameKey + '.json')) games[message.gameKey]=JSON.parse(fs.readFileSync(__dirname + '/games/' + message.gameKey + '.json')); else wsclientSend(webSocket.clientId,'{"error":"wss::gameKeyNotFound ' + message.gameKey + '","errId":"1"}');} 
-                catch(err) {
-                    wsclientSend(message.clientId,'{"error":"wssError : ' + err + '"}');}}
             if (games[message.gameKey].wsClients === undefined) games[message.gameKey].wsClients = {};
-            if (games[message.gameKey] !== undefined) {
-                if (games[message.gameKey].wsClients[webSocket.clientId] === undefined) {
-                    games[message.gameKey].wsClients[webSocket.clientId]=Date.now();
-                    wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.gameKey]) + '}');}
-                else games[message.gameKey].wsClients[webSocket.clientId]=Date.now();}}
+            if (games[message.gameKey].wsClients[webSocket.clientId] === undefined) {
+                games[message.gameKey].wsClients[webSocket.clientId]=Date.now();
+                wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.gameKey]) + '}');
+                wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + adminSockets.length + '"}');}
+            else games[message.gameKey].wsClients[webSocket.clientId]=Date.now();}
         if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId);
         if (message.admin !== undefined) adminOP(message,webSocket);
     });
@@ -83,7 +77,9 @@ wss.on('connection', function (webSocket) {
             wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[webSocket.gameKey]) + '}');
             delete webSocket.gameKey;}
         //Nettoyage de la connexion avec la page Admin
-        if (adminSockets[webSocket.clientId] !== undefined) delete adminSockets[webSocket.clientId];
+        if (adminSockets.includes(webSocket.clientId)) for (let i = 0; i < adminSockets.length; i++) if ( adminSockets[i] == webSocket.clientId) adminSockets.splice(i, 1);
+        //Envoi de la liste des connectés sur la page d'admin
+        wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + adminSockets.length + '"}');
     });
   });
 
@@ -119,11 +115,15 @@ function adminOP(message,webSocket) {
             wsclientSend(webSocket.clientId,'{"error":"wss::adminBadPass","errId":"40"}');}
         else {
             //Mot de passe admin correct : actions administratives (ajout de la socket aux admins à prévenir sur connexion/déconnexions par exemple)
-            if (!adminSockets.includes(webSocket.clientId)) adminSockets.push(webSocket.clientId);
+            if (!adminSockets.includes(webSocket.clientId)) {
+                adminSockets.push(webSocket.clientId);
+                wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + adminSockets.length + '"}');}
             switch(message.admin) {
                 case 'getList' :
-                    //Récupération de la liste des parties en cours sur le serveur
+                    //Envoi de la liste des parties en cours sur le serveur
                     wsclientSend(webSocket.clientId,'{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');
+                    //Envoi de la liste des connectés sur la page d'admin
+                    wsclientSend(webSocket.clientId,'{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + adminSockets.length + '"}');
                     break;
 
                 case 'playerName' :
@@ -148,16 +148,16 @@ function adminOP(message,webSocket) {
                     break;
 
                 case 'sendMessage' :
-                    //nvoi d'un message administratif
+                    //Envoi d'un message administratif
                     if (message.game !== undefined) {
                         let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"game":message.game});
-                        wsGameSend(message.game,textMessage);}
+                        if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else wsGameSend(message.game,textMessage);}
                     else if (message.all !== undefined) {
                         let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"all":message.all});
-                        wsGameSend(message.game,textMessage);}
+                        if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else wss.clients.forEach(element => { element.send(textMessage); });}
                     else if (message.admins !== undefined) {
-                        let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"all":message.admins});
-                        wsGameSend(message.game,textMessage);}
+                        let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"admins":message.admins});
+                        if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else wsAdminSend(textMessage);}
                     break;
 
                 default:
@@ -332,7 +332,7 @@ function operation(message,gameKey,clientId) {
                         games[gameKey].villains[message.villain].mainScheme = {"id":message.main,"current":currentThreat,"max":maxThreat,"acceleration":"0"};
                         games[gameKey].villains[message.villain].id = message.newVillain;
                         games[gameKey].villains[message.villain].phase=1;
-                        games[gameKey].villains[message.villain].life = villains[message.villain].life1;
+                        games[gameKey].villains[message.villain].life = villains[games[gameKey].villains[message.villain].id].life1;
                         games[gameKey].villains[message.villain].sideSchemes={};
                         ['confused','stunned','tough','retaliate','piercing','ranged'].forEach((statusName) => {
                             delete games[gameKey].villains[message.villain][statusName];
@@ -342,10 +342,10 @@ function operation(message,gameKey,clientId) {
                         wsGameSend(gameKey,'{"operation":"mainThreatAccel","id":"' + message.villain + '","value":"0"}');
                         wsGameSend(gameKey,'{"operation":"changeVillain","villain":"' + message.villain + '","id":"' + message.newVillain + '"}');
                         wsGameSend(gameKey,'{"operation":"changePhase","villain":"' + message.villain + '","phase":"' + 1 + '"}');
-                        wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.villain + '","value":"' + villains[message.villain].life1 + '"}');
+                        wsGameSend(gameKey,'{"operation":"villainLife","id":"' + message.villain + '","value":"' + games[gameKey].villains[message.villain].life + '"}');
                         wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[gameKey]) + '}');
                         //Désignation du premier joueur (si plusieurs joueurs présents et un seul méchant)
-                        if (games[gameKey].players.length > 1 && games[gamekey].villains.length == 1) {
+                        if (games[gameKey].players.length > 1 && games[gameKey].villains.length == 1) {
                             games[gameKey].first = Math.random() * (games[gameKey].players.length -1);
                             wsGameSend(gameKey,'{"operation":"changeFirst","first":"' + games[gameKey].first + '"}');}
                         fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
