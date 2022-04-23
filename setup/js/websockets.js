@@ -199,6 +199,14 @@ websocket.onmessage = function(event) {
             document.getElementById('adminMessages').getElementsByClassName('admins')[0].textContent = message.admins;
             break;
         
+        case 'langList' :
+            if (Object.keys(message.langList).length == 1) {
+                //Une seule langue disponible sur le serveur
+                document.getElementById('languageSelection').textContent = lang.langOnlyOne0 + Object.values(message.langList)[0] + lang.langOnlyOne1;
+                document.getElementById('adminLangConfirm').style.display = 'none';}
+            else Object.keys(message.langList).forEach(function(lId) { document.getElementById('languageSelection').innerHTML += '<div><input type="radio" name="languageSelect" value="' + lId + '"'+ (lId == rcConfig.lang ? ' checked' : '') + '>'+ message.langList[lId] + '</div>'; })
+            break;
+
         //Admin : envoyer des infos sur connexions/déconnexions sur les parties à la page d'admin
         default:
           webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}

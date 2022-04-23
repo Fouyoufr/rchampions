@@ -1,0 +1,7 @@
+/* Mise en forme des tuiles de la page d'accueil */
+div.indexTile .background {box-sizing:border-box;position: relative;Width: calc(100% - 20px);margin:10px;border: thick double darkolivegreen;border-top:none;background-color:antiquewhite;}
+div.indexTile .title {margin:0px;width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
+div.indexTile .inside {font-size: large;padding:2px;margin:0px;}
+div.indexTile .inside .intro, div.adminTile .inside .outro {font-size:medium;color:#555;margin:0px;padding:4px;}
+div.indexTile .inside .outro {display:block;text-align: center;border-top:#555 solid 1px;}
+div.indexTile .inside .content {padding-left:10px;padding-right:10px;}

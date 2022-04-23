@@ -7,7 +7,11 @@ wsServer = require ('ws');
 let clientIndex = 0, games = {}, adminSockets = [];
 
 //import des données du jeu
-let config = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
+let config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
+//Premier lancement : mise en place du mot de passe administrateur
+if (config.adminPassword === undefined) {
+    config.adminPassword = config.defaultAdminPassword;
+    fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));}
 let boxesFile=JSON.parse(fs.readFileSync(__dirname + '/lang/fr/boxes.json'));
 let boxes=boxesFile.boxes;
 let villains=boxesFile.villains;
@@ -20,6 +24,9 @@ fs.readdirSync(__dirname + '/games').forEach (function(fileName) {
     let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
     if (gameContent.wsClients !== undefined) delete gameContent.wsClients;
     games[gameContent.key] = gameContent;});
+let langList = {};
+fs.readdirSync(__dirname + '/lang', {withFileTypes: true}).filter(element => element.isDirectory()).forEach (function(dirName) {
+    langList[dirName.name]=JSON.parse(fs.readFileSync(__dirname + '/lang/'+dirName.name+'/strings.json')).langName;});
 
 const server = http.createServer(webRequest),
 TLSserver = http.createServer(webRequest);
@@ -166,10 +173,10 @@ function adminOP(message,webSocket) {
 
 function operation(message,gameKey,clientId) {
     //Gestion des modifications apportées par les clients.
-    games[gameKey].wsClients[clientId]=Date.now();
+    if (games[gameKey] !== undefined) games[gameKey].wsClients[clientId]=Date.now();
 
     //Sélection de 'opération
-    if (games[gameKey] !== undefined) switch (message.operation) {
+    switch (message.operation) {
 
         case 'villainLifeMinus':
         case 'villainLifePlus' :
@@ -517,6 +524,13 @@ function operation(message,gameKey,clientId) {
                     }}}
             break;
         
+        case 'langList' :
+            //Construction de la liste des langues disponibles sur le serveur
+            console.log(clientId);
+            wsclientSend(clientId,JSON.stringify({"operation":"langList","langList":langList}));
+
+            break;
+
         default:
           wsclientSend(clientId,'{"error":"wss::operationNotFound ' + message.operation + '","errId":"18"}');
       }}

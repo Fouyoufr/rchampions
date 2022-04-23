@@ -37,7 +37,7 @@ function loadScript(scriptName) {
 
 //Chargement de la config, depuis site distant si config locale absente ou datant de plus d'un jour
 if (localStorage.getItem('rChampionsConfig') === null) {
-    console.log('config chargée à distance.');
+    console.log('config : remote load.');
     load('./config.json',configLoad);}
 else configLoad(localStorage.getItem('rChampionsConfig'));
 
@@ -45,7 +45,7 @@ else configLoad(localStorage.getItem('rChampionsConfig'));
 let intervalLang = setInterval(function() {if (loaded.config != false) {
     clearInterval(intervalLang);
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) {
-        console.log('langues chargées à distance.');
+        console.log('language strings : remote load.');
         load('./lang/' + rcConfig.lang + '/strings.json',langLoad);}
     else langLoad(localStorage.getItem('rChampionsLangStrings'));
     }},100);
@@ -54,7 +54,7 @@ let intervalLang = setInterval(function() {if (loaded.config != false) {
 let intervalBox = setInterval(function() {if (loaded.lang != false) {
     clearInterval(intervalBox);
     if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) {
-        console.log('Contenu des boites récupéré à distance.');
+        console.log('Game boxes : remote load.');
         load('./lang/' + rcConfig.lang + '/boxes.json',boxesLoad);}
     else boxesLoad(localStorage.getItem('rChampionsBoxes'));
     }},100);
@@ -76,7 +76,6 @@ function configLoad(configJson) {
         rcConfig.adminPassword = oldConfig.adminPassword;}
     if (rcConfig.skin === undefined) rcConfig.skin = rcConfig.defaultSkin;
     if (rcConfig.lang === undefined) rcConfig.lang = rcConfig.defaultLang;
-    if (rcConfig.adminPassword === undefined) rcConfig.adminPassword = rcConfig.defaultAdminPassword;
     document.getElementsByTagName('html')[0].lang = rcConfig.lang;
     loaded.config=true;
     //(re)stockage de la configuration en local.
@@ -87,6 +86,7 @@ function langLoad(langJson) {
     //Mise en place des chaines de caractère de la langue sur la page.
     lang=JSON.parse(langJson);
     if (pageTitle!== null) document.title = lang[pageTitle];
+    if (rcConfig.siteName !== undefined && rcConfig.siteName != '') document.title += ' - ' + rcConfig.siteName;
     loaded.lang=true;
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}
 
@@ -112,7 +112,7 @@ function mainLoad(gameJson='') {
       var interval = setInterval(function() {if (loaded.lang == true && loaded.boxes == true){
         clearInterval(interval);
         //Insertion des skins dans l'en-tête
-        ['main','playerDisplay','villainDisplay','admin'].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
+        ['main','playerDisplay','villainDisplay','admin','index'].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
         if (document.getElementById('villains')) for (let i=0; i < game.villains.length; i++) document.getElementById('villains').append(villainDisplay(i));
         if (document.getElementById('villain') && localStorage.getItem('rChampions-villain')) document.getElementById('villain').append(villainDisplay(localStorage.getItem('rChampions-villain')));
         if (document.getElementById('players')) for (let i=0; i < game.players.length; i++) document.getElementById('players').append(playerDisplay(i));
@@ -145,29 +145,43 @@ function addHeadLink(rel,type,href) {
     document.head.appendChild(headLink);}
 
 function addMenu() {
-    //Icone de menu d'administration
-    if (pageTitle != 'TITadmin') {
-        adminMenu = addElement('button','adminMenu')
-        adminMenu.title=lang.MENUadmin;
-        adminMenu.onclick=adminPopup;
-        document.getElementsByTagName('body')[0].append(adminMenu);}
     //Affichage de la clef de la partie
     if (pageTitle == 'TITgame') {
         gamekey = addElement('button','','gameKey');
         gamekey.innerHTML=gameKey;
         gamekey.title = lang.BUTTONCopy
-        gamekey.onclick = function () {
-            toCopy = location.protocol + '//' + location.host + location.pathname + '?g=' + gameKey;
-            navigator.clipboard.writeText(toCopy);
-            console.log('Copied : ' + toCopy);}
+        gamekey.onclick = function () {navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + '?g=' + gameKey);}
         document.getElementsByTagName('body')[0].append(gamekey);}
     //Icone de la musique en jeu (MeloDice) et des parmètres
-    melodiceMenu = addElement('button','melodiceMenu');
+    let melodiceMenu = addElement('button','melodiceMenu');
     melodiceMenu.title=lang.MENUmelodice;
-    settingsMenu = addElement('button','settingsMenu');
-    //Ajouter ici : langue, aide(s), homepage, Chwazy, bug report, doc, box/decks de la partie
-    settingsMenu.title=lang.MENUsettings;
+    let settingsMenu = addElement('div','','settings');
+    //Ajouter ici : aide(s), Chwazy, bug report, doc, box/decks de la partie
+    let settingsButton = addElement('button','open');
+    settingsButton.title=lang.MENUsettings;
+    settingsButton.onclick = function () { document.getElementById('settingsMenu').style.display = document.getElementById('settingsMenu').style.display == 'flex' ? 'none' : 'flex'; }
+    settingsMenu.append(settingsButton);
+    //Ajout des actions disponibles dans le menu des paramètres
+    let settingsInside = addElement('div','inside','settingsMenu');
+    if (pageTitle !== 'TITindex') settingsInside.append(setMenu('home',function () {location.href = "/";}));
+    settingsInside.append(setMenu('lang',selecLang));
+    let refreshMenu = setMenu('refresh',function () {localStorage.clear();location.href = "/";})
+    refreshMenu.style.marginTop = '4px';
+    settingsInside.append(refreshMenu);
+    //Menu Administration
+    if (pageTitle != 'TITadmin') settingsInside.append(setMenu('admin',adminPopup,'adminMenu'));
+
+
+
+    settingsMenu.append(settingsInside);
     document.getElementsByTagName('body')[0].append(melodiceMenu,settingsMenu);}
+function setMenu (lib, onclick, menuClass='setting') {
+    title = lang['MENU' + lib + '_'] !== undefined ? lang['MENU' + lib + '_'] : lang['MENU' + lib];
+    let settingsEntry = addElement('button',menuClass);
+    settingsEntry.title = title;
+    settingsEntry.textContent = lang['MENU' + lib];
+    settingsEntry.onclick = onclick;
+    return(settingsEntry);}
 
 function addPopup() {
     //Ajout du div pour les popup (masque les intéractions à l'écran et présente une fenêtre générique)
@@ -186,7 +200,6 @@ function addPopup() {
     popupIn.append(addElement('p','outro'));
     popupBack.append(popupIn);
     popupDiv.append(popupBack);
-    //document.getElementsByTagName('body')[0].append(popupDiv);
     //Ajout du div pour les messages administratifs adminMessageDiv
     let adminMessageBack = addElement('div','background');
     let adminMessageTitle = addElement('div','title');
@@ -217,15 +230,10 @@ function popupDisplay(title,intro,content,buttons,outro='',height='17%') {
 
 function adminPopup() {
     //Popup de saisie du mot de passe pour accès administratif
+    document.getElementById('settingsMenu').style.display = 'none';
     let intro=lang.POPUPAdminIntro, content = lang.popupAdminContent + '<br/><input type="password" id = "adminPassword">';
     let buttons='<button title="' + lang.BUTTONconfirm + '" id="adminPopupConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     popupDisplay(lang.MENUadmin,intro,content,buttons);
-    let refreshButton=document.createElement('button');
-    refreshButton.className='adminRefresh';
-    refreshButton.onclick=function () {localStorage.clear();location.reload();}
-    refreshButton.title=lang.BUTTONadminRefresh;
-    refreshButton.innerHTML='&nbsp;';
-    document.getElementById('popup').getElementsByClassName('title')[0].append(refreshButton);
     let confirmButton = document.getElementById('adminPopupConfirm');
     confirmButton.onclick = function () {
         hash(document.getElementById('adminPassword').value).then(function(hashedPass) {
@@ -286,6 +294,25 @@ function textFocus(elementId,buttonId='') {
                 event.preventDefault();
                 document.getElementById(buttonId).click();}
         })}}
+
+function selecLang() {
+    //Changement de la langue d'affichage
+    document.getElementById('settingsMenu').style.display = 'none';
+    let content = '<div id="languageSelection"></div>';
+    let buttons='<button title="' + lang.BUTTONconfirm + '" id="adminLangConfirm" onclick="selecLangValid(document.getElementById(\'languageSelection\').querySelector(\'input[type=radio]:checked\').value);">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
+    popupDisplay(lang.MENUlang_,lang.langSelectIntro,content,buttons,lang.langSelectOutro);
+    sendReq('{"operation":"langList"}');}
+function selecLangValid(lId) {
+    document.getElementById('popup').style.display = 'none';
+    if (lId != rcConfig.lang) {
+        //Changement de la langue d'affichage
+        localStorage.removeItem('rChampionsLangStrings');
+        localStorage.removeItem('rChampionsBoxes');
+        rcConfig.lang = lId;
+        //restockage de la configuration en local.
+        rcConfig.refreshDate=refreshToday;
+        localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
+        location.reload();}}
 
     // Pour travailler sur l'import des anciennes sauvegardes :
     // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications

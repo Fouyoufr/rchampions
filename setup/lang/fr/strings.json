@@ -1,4 +1,10 @@
 {
+    "langName":"Français",
+    "langOnlyOne0":"Désolé, la langue '",
+    "langOnlyOne1":"' est la seule disponible sur le serveur.",
+    "langSelectIntro":"Lorsque disponible, vous pouvez changer la langue d'affichage du site sur votre appareil.",
+    "langSelectOutro":"(Votre choix n'aura pas d'impact sur les autres joueurs de la partie)",
+    
     "TITindex":"Bienvenue",
     "TITgame":"Partie en cours",
     "TITvillain":"Affichage du méchant",
@@ -18,7 +24,15 @@
 
     "MENUsettings":"Paramètres",
     "MENUmelodice":"Musique (MeloDice)",
-    "MENUadmin":"Administration de rChampions",
+    "MENUadmin":"Administration",
+    "MENUadmin_":"Administration de rChampions",
+    "MENUrefresh":"Rechargement forçé",
+    "MENUrefresh_":"Recharger toutes les données depuis le serveur",
+    "MENUhome":"Accueil",
+    "MENUhome_":"Retour à la page d'accueil",
+    "MENUlang":"Langue",
+    "MENUlang_":"Choisir la langue d'affichage",
+
     "BUTTONminus" : "Décrémenter",
     "BUTTONplus" : "incrémenter",
     "BUTTONmobile" : "Ouvrir la version Smartphone",
@@ -30,7 +44,6 @@
     "BUTTONclose" : "Fermer",
     "BUTTONvillain" : "Choisir un nouveau Méchant",
     "BUTTONmain" : "Choisir la Manigance Principale",
-    "BUTTONadminRefresh":"Rechargement forçé",
     "BUTTONsideSchemeInfos":"Informations sur la manigance annexe",
     "BUTTONnewCounter":"Ajouter un compteur générique",
     "BUTTONremoveCounter":"Retirer ce compteur de la partie",

@@ -1,4 +1,11 @@
 {
+    "langName":"English",
+    "langOnlyOne0":"Sorry, the only language available on server is '",
+    "langOnlyOne1":"'.",
+    "langSelectIntro":"When available, you may change the display language of the website on your device.",
+    "langSelectOutro":"(Your choice won't change anything on other users' display)",
+
+
     "TITindex":"Wellcome",
     "TITgame":"Current game",
     "TITvillain":"Villain display",
@@ -18,7 +25,15 @@
 
     "MENUsettings":"Settings",
     "MENUmelodice":"Music (MeloDice)",
-    "MENUadmin":"rChampions Administration",
+    "MENUadmin":"Administration",
+    "MENUadmin_":"rChampions Administration",
+    "MENUrefresh":"Hard refresh",
+    "MENUrefresh_":"Refresh content from server",
+    "MENUhome":"Home",
+    "MENUhome_":"Go back to homepage",
+    "MENUlang":"Language",
+    "MENUlang_":"Choose display language",
+
     "BUTTONminus" : "Decrement",
     "BUTTONplus" : "increment",
     "BUTTONmobile" : "Open Smartphone display",
@@ -30,7 +45,6 @@
     "BUTTONclose" : "close",
     "BUTTONvillain" : "Choose a new Villain",
     "BUTTONmain" : "Choose Main Scheme",
-    "BUTTONadminRefresh":"Hard refresh",
     "BUTTONsideSchemeInfos":"About this Side Scheme",
     "BUTTONnewCounter":"Add a new multipurpose counter",
     "BUTTONremoveCounter":"Remove this counter from game",
