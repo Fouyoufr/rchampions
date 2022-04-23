@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "greenlock": "^4.0.4",
+    "selfsigned": "^2.0.1"
+  }
+}

@@ -1,17 +1,43 @@
 //npm install ws
+//npm install selfsigned
+//npm install greenlock
 const http = require('http'),
 https = require('https'),
 fs = require('fs'),
 url = require ('url'),
-wsServer = require ('ws');
-let clientIndex = 0, games = {}, adminSockets = [];
+wsServer = require ('ws'),
+selfsigned = require('selfsigned'),
+greenlock = require ('greenlock'),
+pkg = require('./package.json');
+let clientIndex = 0, games = {}, adminSockets = [],
+config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
 
-//import des données du jeu
-let config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
+//Génération du certifcat autosigné
+let certAttr = [{ name: 'commonName', value: '127.0.0.1' }];
+let selfCert = selfsigned.generate(certAttr, { days: 365 });
+//Mise en place du bot LetsEncrypt
+gl = greenlock.create({ packageRoot: __dirname, configDir : './letsEncrypt/', packageAgent: pkg.name + '/' + pkg.version,
+    //staging = test//
+    staging : true, maintainerEmail : 'renaud.wangler@gmail.com', notify: function(event, details) {if ('error' === event) console.error(details);}});
+if (config.tls == 'self') TLSoptions = { key: selfCert.private,cert:selfCert.cert};
+else if (config.tls =='auto') {
+
+    
+}
+
+
+gl.manager
+    .defaults({agreeToTerms: true,subscriberEmail: 'renaud.wangler@gmail.com'});
+gl.add({ subject: 'rctest.fouy.net', altnames: ['rctest.fouy.net']});
+//gl.get({servername:'rctest.fouy.net'});
+
+
+
 //Premier lancement : mise en place du mot de passe administrateur
 if (config.adminPassword === undefined) {
     config.adminPassword = config.defaultAdminPassword;
     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));}
+//import des données du jeu
 let boxesFile=JSON.parse(fs.readFileSync(__dirname + '/lang/fr/boxes.json'));
 let boxes=boxesFile.boxes;
 let villains=boxesFile.villains;
@@ -29,7 +55,7 @@ fs.readdirSync(__dirname + '/lang', {withFileTypes: true}).filter(element => ele
     langList[dirName.name]=JSON.parse(fs.readFileSync(__dirname + '/lang/'+dirName.name+'/strings.json')).langName;});
 
 const server = http.createServer(webRequest),
-TLSserver = http.createServer(webRequest);
+TLSserver = https.createServer(TLSoptions,webRequest);
 
 function webRequest (req, res) {
     if (url.parse(req.url).pathname === '/') req.url = '/index.html';
