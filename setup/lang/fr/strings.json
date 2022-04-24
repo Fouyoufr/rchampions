@@ -112,7 +112,8 @@
     "VILcounters":"Compteurs génériques",
 
     "ws::serverOperationNotFound":"[CLient] Opération introuvable",
-    "ws::connextionLost":"[Client] Connexion au serveur perdue",
+    "ws::connectionLost":"[Client] Connexion au serveur perdue",
+    "ws::connectionClosed":"[Client] Serveur injoignable (Vérifier réseau + rafraichir ?)",
     "wss::operationNotFound":"[Serveur] Opération introuvable",
     "wss::gameKeyNotFound":"[Serveur] Clef de partie introuvable",
     "wss::villainNotFound":"[Serveur] Méchant introuvable",

@@ -113,7 +113,8 @@
     "VILcounters":"Multipurpose counters",
 
     "ws::serverOperationNotFound":"[CLient] Operation not found",
-    "ws::connextionLost":"[Client] Server connection lost",
+    "ws::connectionLost":"[Client] Server connection lost",
+    "ws::connectionClosed":"[Client] Server unreachable (Check network and refresh ?)",
     "wss::operationNotFound":"[Server] Operation not found",
     "wss::gameKeyNotFound":"[Serveur] Game key not found",
     "wss::villainNotFound":"[Serveur] Villain not found",

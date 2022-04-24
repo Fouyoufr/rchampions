@@ -3,7 +3,8 @@ const refreshToday = Math.round((new Date()).getTime()/86400000);
 const urlParams = new URLSearchParams(location.search)
 if (urlParams.has('g')) {
     //Récupération et stockage en local de la clef de partie
-    localStorage.setItem('rChampions-gameKey',urlParams.get('g'));}
+    localStorage.setItem('rChampions-gameKey',urlParams.get('g').toUpperCase());
+if (pageTitle == 'TITadmin' || pageTitle == 'TITindex') location.href='game.html';}
 let rcConfig={}, lang={}, game={},
 boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},nullElement={},
 loaded={"config":false,"lang":false,"boxes":false},
@@ -276,6 +277,7 @@ function valuePlusMinus(vpmClass,vpmValue,vpmId,vpmOperationMinus,vpmOperationPl
     return vpm;}
 
 function hash(string) {
+    //utilisé pour l'admin : indisponible hors https !
     const utf8 = new TextEncoder().encode(string);
     return crypto.subtle.digest('SHA-256', utf8).then((hashBuffer) => {
         const hashArray = Array.from(new Uint8Array(hashBuffer));
