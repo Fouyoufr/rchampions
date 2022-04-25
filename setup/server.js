@@ -11,7 +11,8 @@ wsServer = require ('ws'),
 selfsigned = require('selfsigned'),
 greenlock = require ('greenlock'),
 pkg = require('./package.json');
-let clientIndex = 0, games = {}, adminSockets = [], hashes ={},
+let clientIndex = 0, games = {}, hashes ={},
+adminWS = {},
 config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
 
 //Génération du certifcat autosigné
@@ -97,14 +98,16 @@ function webSocketConnect(webSocket) {
         //récupération/génération du hash pour mots de passe
         webSocket.salt = hashes[webSocket.clientId] !== undefined ? hashes[webSocket.clientId] : hash(Math.random().toString());}
     else {
-        //Nouveau clinet (ou nouvelle page , pas un refresh)
+        //Nouveau client (ou nouvelle page , pas un refresh)
         webSocket.clientId = clientIndex;
         clientIndex ++;
         console.log(consoleGReen,'client ' + webSocket.clientId + ' , Opened');
         //Création d'une chaine aléatoire pour vérification des mots de passe
         webSocket.salt = hash(Math.random().toString());}
+    
+    //Envoi des informations lors de la connexion d'un nouvel utilisateur
     wsclientSend(webSocket.clientId,'{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '"}');
-    wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + adminSockets.length + '"}');
+    wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + Object.keys(adminWS).length + '"}');
 
     webSocket.on('message',function (data) {
         console.log(consoleCyan,'client ' + webSocket.clientId + ' , received : \'' + data + '\'');
@@ -132,9 +135,10 @@ function webSocketConnect(webSocket) {
             wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[webSocket.gameKey]) + '}');
             delete webSocket.gameKey;}
         //Nettoyage de la connexion avec la page Admin
-        if (adminSockets.includes(webSocket.clientId)) for (let i = 0; i < adminSockets.length; i++) if ( adminSockets[i] == webSocket.clientId) adminSockets.splice(i, 1);
-        //Envoi de la liste des connectés sur la page d'admin
-        wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + adminSockets.length + '"}');
+        if (adminWS[webSocket.clientId] !== undefined) {
+            delete adminWS[webSocket.clientId];
+            //Envoi de la liste des connectés sur la page d'admin
+            wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + Object.keys(adminWS).length + '"}');}
     });}
 
 function wsclientSend(clientId,data) {
@@ -151,7 +155,7 @@ function wsGameSend(gameKey,data) {
 
 function wsAdminSend(data) {
     //envoi d'informations aux clients connectés sur la page d'administration
-    adminSockets.forEach(function(key) {wsclientSend(key,data);});}
+    Object.keys(adminWS).forEach(function(key) {adminWS[key].send(data);})}
 
 server.listen(80);
 TLSserver.listen(443);
@@ -170,15 +174,15 @@ function adminOP(message,webSocket) {
             wsclientSend(webSocket.clientId,'{"error":"wss::adminBadPass","errId":"40"}');}
         else {
             //Mot de passe admin correct : actions administratives (ajout de la socket aux admins à prévenir sur connexion/déconnexions par exemple)
-            if (!adminSockets.includes(webSocket.clientId)) {
-                adminSockets.push(webSocket.clientId);
-                wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + adminSockets.length + '"}');}
+            if (adminWS[webSocket.clientId] === undefined) {
+                adminWS[webSocket.clientId] = webSocket;
+                wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');}
             switch(message.admin) {
                 case 'getList' :
                     //Envoi de la liste des parties en cours sur le serveur
                     wsclientSend(webSocket.clientId,'{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');
                     //Envoi de la liste des connectés sur la page d'admin
-                    wsclientSend(webSocket.clientId,'{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + adminSockets.length + '"}');
+                    wsclientSend(webSocket.clientId,'{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');
                     break;
 
                 case 'playerName' :

@@ -15,6 +15,7 @@
 ## Génériques
  - Ajouter les autres boites de jeu
  - Feedback utilisateur (email possible)
+ - tester les webSockets en tableau pour envoi (admin OK/game)
 
 ## Greelock
 
