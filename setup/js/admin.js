@@ -33,8 +33,9 @@ function adminTile(tileId,tileTitle,tileContent='',tileIntro='',tileOutro='') {
         tileInside.append(outro);}
     return (tile);}
 
-function adminTLSTile() {
+function adminSecu() {
     //Options possibkle : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)
+
 }
 
 function adminGameDisplay(game) {
@@ -77,7 +78,7 @@ function adminGameDisplay(game) {
     let connected = addElement('td','webSockets');
     let connectedButton = addElement('button','webSocketMessage')
     connected.append(connectedButton);
-    connectedNumber = game.wsClients !== undefined ? Object.keys(game.wsClients).length : lang.noItem;
+    connectedNumber = game.wsClients !== undefined ? game.wsClients : lang.noItem;
     connectedButton.textContent = connectedNumber == 0 ? lang.noItem : connectedNumber;
     connectedButton.onclick = connectedNumber == 0 || connectedNumber == lang.noItem ? undefined : function () {adminMessagePopup(game.key);}
     connectedButton.title = lang.BUTTONAdminMessage;
@@ -161,11 +162,3 @@ function adminPlayerNamePopup(gameKey,player,oldName) {
 function adminPlayerNameSend(gameKey,player) {
     sendReq('{"admin":"playerName","game":"' + gameKey + '","player":"' + player + '","newName":"' + document.getElementById('newPlayerName').value + '","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
     document.getElementById('popup').style.display='none';}
-
-//AJouter deux journaux administratifs : un pour les messages des clients et un des actions administrativs
-// Ajouter une option de "push-refresh" des clients pour que tous les connectés regénérent leur id (avec un simple refresh) après une panne serveur
-//A faire en priorité : 
-// - Gérer la connexion à une partie en page d'accueil + Gérer l'affichage propre "partie inconnue" plutôt que rediriger ver la page game.html
-// - Gérer le certificat du serveur dans la page admin
-// - Gérer la création d'une partie 'avec box/deck)
-// - Ajouter les autres boites de jeu

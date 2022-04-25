@@ -1,7 +1,6 @@
 //npm install ws
 //npm install selfsigned
 //npm install greenlock
-//npm install redbird (revers-proxy avec letsencrypt intégré) ?
 const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGReen = '\x1b[32m%s\x1b[0m',
  http = require('http'),
 https = require('https'),
@@ -12,7 +11,7 @@ selfsigned = require('selfsigned'),
 greenlock = require ('greenlock'),
 pkg = require('./package.json');
 let clientIndex = 0, games = {}, hashes ={},
-adminWS = {},
+adminWS = {}, gamesPlayers = {},
 config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
 
 //Génération du certifcat autosigné
@@ -27,7 +26,7 @@ gl = greenlock.create({ packageRoot: __dirname, configDir : './letsEncrypt/', pa
 //gl.add({ subject: 'rctest.fouy.net', altnames: ['rctest.fouy.net']});
 //gl.get({servername:'rctest.fouy.net'});
 
-if (config.tls == 'self') TLSoptions = { key: selfCert.private,cert:selfCert.cert};
+if (config.tls == 'self' || config.tls == 'test') TLSoptions = { key: selfCert.private,cert:selfCert.cert};
 
 //Premier lancement : mise en place du mot de passe administrateur
 if (config.adminPassword === undefined) {
@@ -56,7 +55,7 @@ const TLSserver = https.createServer(TLSoptions,webRequest);
 
 function webRequest (req, res) {
     //Redirection vers ssl/tls si actif
-    if (config.tls != 'off' && req.connection.encrypted === undefined) {
+    if (config.tls != 'off' && config.tls != 'test' && req.connection.encrypted === undefined) {
         res.writeHead(302,{'location':'https://' + req.headers.host + req.url});
         res.end();}
     if (url.parse(req.url).pathname === '/') req.url = '/index.html';
@@ -93,8 +92,6 @@ function webSocketConnect(webSocket) {
         // Un client revient
         webSocket.clientId = webSocket._protocol.substring(3);
         console.log(consoleGReen,'client ' + webSocket.clientId + ' , Refreshed');
-        //remettre le joueur dans la partie avant d'envoyer ce message
-        //wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.gameKey]) + '}');
         //récupération/génération du hash pour mots de passe
         webSocket.salt = hashes[webSocket.clientId] !== undefined ? hashes[webSocket.clientId] : hash(Math.random().toString());}
     else {
@@ -112,17 +109,20 @@ function webSocketConnect(webSocket) {
     webSocket.on('message',function (data) {
         console.log(consoleCyan,'client ' + webSocket.clientId + ' , received : \'' + data + '\'');
         message=JSON.parse(data);
-        //Ajout de la clef de la partie si non présente
+        //Traitement de la clef de la partie reçu
         if (message.gameKey !== undefined) {
+            message.gameKey= message.gameKey.toUpperCase();
             if (games[message.gameKey] === undefined) wsclientSend(webSocket.clientId,'{"error":"wss::gameNotFound","errId":"55"}');
-            else {
-                message.gameKey= message.gameKey.toUpperCase();
+            else {                
                 webSocket.gameKey = message.gameKey;
-                if (games[message.gameKey].wsClients === undefined) games[message.gameKey].wsClients = {};
-                if (games[message.gameKey].wsClients[webSocket.clientId] === undefined) {
-                    games[message.gameKey].wsClients[webSocket.clientId]=Date.now();
-                    wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.gameKey]) + '}');}
-                else games[message.gameKey].wsClients[webSocket.clientId]=Date.now();}}
+                //Ajout de la webSocket au tableau pour envoi des messages
+                if (gamesPlayers[message.gameKey] === undefined) gamesPlayers[message.gameKey] = {};
+                if (gamesPlayers[message.gameKey][webSocket.clientId] === undefined) {
+                    //Nouveau joueur dans la partie
+                    games[message.gameKey].wsClients = games[message.gameKey].wsClients === undefined ? 1 : Number(games[message.gameKey].wsClients) + 1;
+                    wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.gameKey]) + '}');
+                    gamesPlayers[message.gameKey][webSocket.clientId]=webSocket;}}}
+
         if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId);
         if (message.admin !== undefined) adminOP(message,webSocket);});
 
@@ -131,15 +131,15 @@ function webSocketConnect(webSocket) {
         console.log(consoleRed,'client ' + webSocket.clientId + ' , closed : \'' + event + '\'');
         if (webSocket.gameKey !== undefined) {
             //enlever le client de la partie
-            delete games[webSocket.gameKey].wsClients[webSocket.clientId];
+            delete gamesPlayers[webSocket.gameKey][webSocket.clientId];
+            games[webSocket.gameKey].wsClients = Number(games[webSocket.gameKey].wsClients) - 1
             wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[webSocket.gameKey]) + '}');
             delete webSocket.gameKey;}
         //Nettoyage de la connexion avec la page Admin
         if (adminWS[webSocket.clientId] !== undefined) {
             delete adminWS[webSocket.clientId];
             //Envoi de la liste des connectés sur la page d'admin
-            wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + Object.keys(adminWS).length + '"}');}
-    });}
+            wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + Object.keys(adminWS).length + '"}');}});}
 
 function wsclientSend(clientId,data) {
     //envoi d'informations à un client spécifique
@@ -148,10 +148,7 @@ function wsclientSend(clientId,data) {
 
 function wsGameSend(gameKey,data) {
     //envoi d'informations aux clients d'une partie spécifique
-    ws.clients.forEach(element => {
-        if (element.gameKey == gameKey) element.send(data);})
-    wss.clients.forEach(element => {
-    if (element.gameKey == gameKey) element.send(data);});}
+    Object.keys(gamesPlayers[gameKey]).forEach(function(key) {gamesPlayers[gameKey][key].send(data);})}
 
 function wsAdminSend(data) {
     //envoi d'informations aux clients connectés sur la page d'administration
@@ -225,7 +222,6 @@ function adminOP(message,webSocket) {
 
 function operation(message,gameKey,clientId) {
     //Gestion des modifications apportées par les clients.
-    if (games[gameKey] !== undefined) games[gameKey].wsClients[clientId]=Date.now();
 
     //Sélection de 'opération
     switch (message.operation) {
