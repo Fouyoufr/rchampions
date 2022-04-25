@@ -1,5 +1,7 @@
 # En cours de développement
 
+!!!!!! Mettre le warning de perte temporaire de connexion dans un autre div que les erreurs pour qu'elles ne disparaissent pas !!!!!
+
 ## Page d'administration
  - Ajouter deux journaux administratifs : un pour les messages des clients et un des actions administrativs
  - Ajouter une option de "*push-refresh*" des clients pour que tous les connectés regénérent leur id (avec un simple refresh) après une panne serveur
@@ -25,3 +27,6 @@
 ## Melodice
 
 ## Compteur pour erreurs websocket : ```55```
+
+## Docker
+docker build -t fouyou/rchampions . --no-cache

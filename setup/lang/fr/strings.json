@@ -145,6 +145,7 @@
     "ADMINTileMessageOutro":"(Vous pouvez également envoyer un message aux joueurs connectés à une partie en cliquant sur le nombre de connectés dans l'affichage de la liste de parties)",
     "ADMINTileMessageCUsers":"Utilisateurs actuellement connectés",
     "ADMINTileMessageCAdmins":"Administrateurs actuellement connectés",
+    "ADMINTILEserverTitle":"Serveur et Sécurité",
 
     "noItem":"Aucun"
 }

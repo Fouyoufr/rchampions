@@ -5,7 +5,7 @@ LABEL maintainer=Fouyoufr
 WORKDIR /usr/src/rchampions
 
 RUN npm install ws
-RUN npm install selsigned
+RUN npm install selfsigned
 RUN npm install greenlock
 
 # Bundle app source

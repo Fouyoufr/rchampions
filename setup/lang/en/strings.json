@@ -146,6 +146,7 @@
     "ADMINTileMessageOutro":"(You can also send a message to all players connected to a game by clicking on the number of online players in the diplauy of games list",
     "ADMINTileMessageCUsers":"Currently connected users",
     "ADMINTileMessageCAdmins":"Currently connected administrtaors",
+    "ADMINTILEserverTitle":"Server and Security",
     
     "noItem":"None"
 

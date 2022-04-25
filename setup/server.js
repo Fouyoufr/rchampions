@@ -1,8 +1,17 @@
 //npm install ws
 //npm install selfsigned
 //npm install greenlock
-const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGReen = '\x1b[32m%s\x1b[0m',
- http = require('http'),
+const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGReen = '\x1b[32m%s\x1b[0m';
+console.log = function (arg0,arg1='') {
+    //Capture de la console Node.js
+    adminMessage = arg0;
+    if (arg0 == consoleCyan || arg0 == consoleRed || arg0 == consoleGReen) {
+        arg0 = arg0.replace('%s',arg1);
+        adminMessage = arg1;}
+     process.stdout.write(arg0 + '\n');
+     wsAdminSend(JSON.stringify({"operation":"console","message":adminMessage}));
+};
+const http = require('http'),
 https = require('https'),
 fs = require('fs'),
 url = require ('url'),
