@@ -1,4 +1,12 @@
 {
+  "name": "rchampions",
+  "version": "alpha37",
+  "description": "rChampions server",
+  "author": "renaud.wangler@gmail.com",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "greenlock": "^4.0.4",
     "selfsigned": "^2.0.1"
