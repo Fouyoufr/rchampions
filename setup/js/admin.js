@@ -1,14 +1,12 @@
-function adminLoad(passHash) {
-    sessionStorage.setItem('rChampions-adminHash',passHash);
+function adminLoad() {
+    //sessionStorage.setItem('rChampions-adminHash',passHash);
     //Chargement des éléments de la page Admin
     sendReq('{"admin":"getList","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
-
-    let lorem = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.';
     
     document.getElementById('tiles').append(
         adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
         adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
-        adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole">' + lorem + lorem + lorem + lorem + '</div>')
+        adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole"></div>')
     
     )
 }

@@ -1,27 +1,45 @@
 //npm install ws
 //npm install selfsigned
 //npm install greenlock
-const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGReen = '\x1b[32m%s\x1b[0m';
-console.log = function (arg0,arg1='') {
+const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGReen = '\x1b[32m%s\x1b[0m',
+http = require('http'), https = require('https'), fs = require('fs'), url = require ('url'), wsServer = require ('ws'), selfsigned = require('selfsigned'), greenlock = require ('greenlock'),
+pkg = require('./package.json');
+let clientIndex = 0, games = {}, hashes ={},
+adminWS = {}, gamesPlayers = {}, logFile = '',
+config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
+//Mise en place du log existant en variable
+let today = new Date();
+let fileName = __dirname + '/logs/' +today.getFullYear() + today.getMonth() + today.getDate() + '.json';
+if (fs.existsSync(fileName)) logFile = fs.readFileSync(fileName);
+
+function serverLogFile (message) {
+    //Journalisation sur le serveur
+    let today = new Date();
+    let fileName = __dirname + '/logs/' +today.getFullYear() + today.getMonth() + today.getDate() + '.json';
+    if (!fs.existsSync(fileName)) {
+        let logTitle= JSON.stringify({'date':Date.now(),'message':'NEW Dayly log','color':'white'});
+        fs.appendFileSync(fileName,logTitle);
+        logFile = logTitle;}
+    fs.appendFileSync(fileName,',' + message);
+    logFile += ',' + message;}
+console.log = console.error = function (arg0,arg1='') {
     //Capture de la console Node.js
-    adminMessage = arg0;
+    let adminMessage = arg0.toString();
+    let color = 'white';
     if (arg0 == consoleCyan || arg0 == consoleRed || arg0 == consoleGReen) {
+        if (arg0.substring(2,4) == 36) color='cyan';
+        if (arg0.substring(2,4) == 41) color='red';
+        if (arg0.substring(2,4) == 32) color='green';
         arg0 = arg0.replace('%s',arg1);
         adminMessage = arg1;}
      process.stdout.write(arg0 + '\n');
-     wsAdminSend(JSON.stringify({"operation":"console","message":adminMessage}));
-};
-const http = require('http'),
-https = require('https'),
-fs = require('fs'),
-url = require ('url'),
-wsServer = require ('ws'),
-selfsigned = require('selfsigned'),
-greenlock = require ('greenlock'),
-pkg = require('./package.json');
-let clientIndex = 0, games = {}, hashes ={},
-adminWS = {}, gamesPlayers = {},
-config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
+     serverLogFile(JSON.stringify({'date':Date.now(),'message':adminMessage,'color':color}));
+     wsAdminSend(JSON.stringify({"operation":"console",'date':Date.now(),"message":adminMessage,"color":color}));};
+process.on('uncaughtException', function(err) {
+    //Capture des erreurs bloquantes
+    process.stdout.write((err && err.stack) ? err.stack : err);
+    serverLogFile(JSON.stringify({'date':Date.now(),'message':err.toString(),'color':'red'}));
+    wsAdminSend(JSON.stringify({"operation":"console",'date':Date.now(),"message":err.toString(),"color":'red'}));});
 
 //Génération du certifcat autosigné
 let certAttr = [{ name: 'commonName', value: '127.0.0.1' }];
@@ -51,9 +69,10 @@ let decks=boxesFile.decks;
 let sideSchemes=boxesFile.sideSchemes;
 //Construction de la liste des parties sur le serveur
 fs.readdirSync(__dirname + '/games').forEach (function(fileName) {
-    let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
-    if (gameContent.wsClients !== undefined) delete gameContent.wsClients;
-    games[gameContent.key] = gameContent;});
+    if (fileName != '.gitignore') {
+        let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
+        if (gameContent.wsClients !== undefined) delete gameContent.wsClients;
+        games[gameContent.key] = gameContent;}});
 //Construction de la liste des langues prises en charge
 let langList = {};
 fs.readdirSync(__dirname + '/lang', {withFileTypes: true}).filter(element => element.isDirectory()).forEach (function(dirName) {
@@ -121,7 +140,7 @@ function webSocketConnect(webSocket) {
         //Traitement de la clef de la partie reçu
         if (message.gameKey !== undefined) {
             message.gameKey= message.gameKey.toUpperCase();
-            if (games[message.gameKey] === undefined) wsclientSend(webSocket.clientId,'{"error":"wss::gameNotFound","errId":"55"}');
+            if (games[message.gameKey] === undefined) webSocket.send('{"error":"wss::gameNotFound","errId":"55"}');
             else {                
                 webSocket.gameKey = message.gameKey;
                 //Ajout de la webSocket au tableau pour envoi des messages
@@ -160,6 +179,7 @@ function wsGameSend(gameKey,data) {
     Object.keys(gamesPlayers[gameKey]).forEach(function(key) {gamesPlayers[gameKey][key].send(data);})}
 
 function wsAdminSend(data) {
+    //if (Object.entries(adminWS).length != 0)  console.log(require('util').inspect(adminWS));
     //envoi d'informations aux clients connectés sur la page d'administration
     Object.keys(adminWS).forEach(function(key) {adminWS[key].send(data);})}
 
@@ -171,13 +191,13 @@ function adminOP(message,webSocket) {
     if (message.admin == 'checkPass') {
         //Vérification de la saisie du mot de passe admin
         if (hash(webSocket.salt + config.adminPassword) == message.passHash) {
-            webSocket.admin = true;
-            wsclientSend(webSocket.clientId,'{"operation":"adminOK"}');}
-        else wsclientSend(webSocket.clientId,'{"operation":"adminKO"}');}
+            hashes[webSocket.clientId] = webSocket.salt;
+            webSocket.send('{"operation":"adminOK"}');}
+        else webSocket.send('{"operation":"adminKO"}');}
     else {
         //Vérification que le mot de passe admin utilisé est/reste correct
         if (hash(webSocket.salt + config.adminPassword) != message.passHash) {
-            wsclientSend(webSocket.clientId,'{"error":"wss::adminBadPass","errId":"40"}');}
+            webSocket.send('{"error":"wss::adminBadPass","errId":"40"}');}
         else {
             //Mot de passe admin correct : actions administratives (ajout de la socket aux admins à prévenir sur connexion/déconnexions par exemple)
             if (adminWS[webSocket.clientId] === undefined) {
@@ -186,9 +206,11 @@ function adminOP(message,webSocket) {
             switch(message.admin) {
                 case 'getList' :
                     //Envoi de la liste des parties en cours sur le serveur
-                    wsclientSend(webSocket.clientId,'{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');
+                    webSocket.send('{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');
                     //Envoi de la liste des connectés sur la page d'admin
-                    wsclientSend(webSocket.clientId,'{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');
+                    webSocket.send('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');
+                    //Envoi de l'historique de la console sur la page d'admin
+                    webSocket.send(JSON.stringify({'operation':'console','logFile':JSON.parse('[' + logFile + ']')}));
                     break;
 
                 case 'playerName' :

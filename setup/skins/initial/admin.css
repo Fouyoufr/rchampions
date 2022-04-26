@@ -32,4 +32,11 @@ tr.adminGameDisplay button.gameKey { padding:2px;padding-left:5px;padding-right:
 /* Mise en forme de la tuile Serveur */
 div#serverSecurity-content {height:300px;display:flex; flex-wrap:nowrap;padding:px;}
 div#adminTILEserverSecu {width:46%;margin-left:2%;margin-right:4%;}
-div#adminTILEserverConsole {width:46%;background-color:black;box-sizing:border-box;border-radius: 4px; border: 2px solid grey;margin-top:0px;overflow:auto;color:white;display:flex;flex-direction: column-reverse;}
+div#adminTILEserverConsole {width:46%;background-color:black;box-sizing:border-box;border-radius: 4px; border: 2px solid grey;margin-top:0px;overflow-x:hidden;color:white;display:flex;flex-direction: column-reverse;font-size:smaller;white-space:nowrap;}
+/*white-space: nowrap;*/
+div#adminTILEserverConsole p {padding:0px;margin:0px;}
+div#adminTILEserverConsole div.messWrap div {display:inline-block;height:1em;}
+div#adminTILEserverConsole .red {color: crimson;}
+div#adminTILEserverConsole .green {color: lightgreen;}
+div#adminTILEserverConsole .cyan {color: cyan;}
+div#adminTILEserverConsole .date {color:grey;}

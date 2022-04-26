@@ -217,19 +217,18 @@ function openSocket(clientId=null) {
                 else Object.keys(message.langList).forEach(function(lId) { document.getElementById('languageSelection').innerHTML += '<div><input type="radio" name="languageSelect" value="' + lId + '"'+ (lId == rcConfig.lang ? ' checked' : '') + '>'+ message.langList[lId] + '</div>'; })
                 break;
         
+            case 'console' :
+                let logFile = message.logFile !== undefined ? message.logFile : [{'date':message.date,'message':message.message,'color':message.color}];
+                logFile.forEach(function(mess) {
+                    document.getElementById('adminTILEserverConsole').innerHTML = '<div class="messWrap"><p><span class="date">' + (new Date(parseInt(mess.date))).toLocaleTimeString() + '</span><span class="content ' + mess.color + '">' + mess.message + '</span></p></div>' + document.getElementById('adminTILEserverConsole').innerHTML;
+                })
+                break;
             default:
         webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}}
 
-
-
-
-
-
-
-
 function sendReq(data={}) {
     //Attendre que la webScoket soit pleinement ouverte :
-    let webSocketOpened = setInterval(function() {if (websocket.OPEN) {
+    let webSocketOpened = setInterval(function() {if (websocket.readyState === WebSocket.OPEN) {
         clearInterval(webSocketOpened);
         try {websocket.send (data);} catch(err) {console.log (err);}
     }},100);}
@@ -250,3 +249,8 @@ function webSockError(errorText,id=0) {
     websocketErrorClose.onclick=function () {document.getElementById('websocketError').remove();}
     websocketError.append(websocketErrorClose);
     document.getElementsByTagName('body')[0].append(websocketError);}
+
+function stopRefresh(errorText,id=0) {
+    //Affichage du message de refresh nécessaire (sur connexion perdue par exemple)
+    
+}

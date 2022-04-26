@@ -8,7 +8,7 @@ if (pageTitle == 'TITadmin' || pageTitle == 'TITindex') location.href='game.html
 let rcConfig={}, lang={}, game={},
 boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},nullElement={},
 loaded={"config":false,"lang":false,"boxes":false},
-webSocketId='',webSocketSalt='';
+webSocketId='',webSocketSalt='',hashedValue;
 popupDiv=addElement('div','','popup');
 adminMessageDiv = addElement('div','','adminMessagePopup');
 //Mise en place du favicon et de l'écran de chargement
@@ -120,7 +120,7 @@ function mainLoad(gameJson='') {
         if (pageTitle == 'TITadmin') {
             var adminInterval = setInterval(function() {if (loaded.adminScript == true){
                 clearInterval(adminInterval);
-                hash(webSocketSalt + sessionStorage.getItem('rChampions-adminPass')).then ((hashedValue) => adminLoad(hashedValue));}
+                adminLoad();}
             },100);}
         //Chargement des menus pleine page
         addMenu();
@@ -238,8 +238,10 @@ function adminPopup() {
     let confirmButton = document.getElementById('adminPopupConfirm');
     confirmButton.onclick = function () {
         hash(document.getElementById('adminPassword').value).then(function(hashedPass) {
-            sessionStorage.setItem('rChampions-adminPass',hashedPass);
-            hash(webSocketSalt + hashedPass).then ((hashedValue) => sendReq('{"admin":"checkPass","passHash":"' + hashedValue + '"}'))});}
+            hash(webSocketSalt + hashedPass).then (function(hashedValue) {
+                sessionStorage.setItem('rChampions-adminHash',hashedValue);
+                sendReq('{"admin":"checkPass","passHash":"' + hashedValue + '"}')
+            })});}
     textFocus('adminPassword','adminPopupConfirm');}
 
 function addElement(aeType,aeClass='',aeId='') {
