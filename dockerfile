@@ -11,6 +11,10 @@ RUN npm install greenlock
 # Bundle app source
 COPY ./setup .
 
+#Link to external storage for Games storage
+VOLUME /usr/src/rchampions/games /usr/src/rchampions/logs
+
+# Expose web/websocket ports
 EXPOSE 80
 EXPOSE 443
 CMD [ "node", "server.js" ]

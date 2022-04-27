@@ -1,0 +1,15 @@
+#Exclusions pour construction de l'image Docker
+#Ne pas embarquer les parties de test
+setup/games/*
+
+#Ne pas embarquer le contenu "letsencrypt"
+setup/letsEncrypt/*
+
+#Ne pas embarquer les journaux de test
+setup/logs/*
+
+.greenlockrc
+package*.json
+.gitignore
+encours.md
+README.md

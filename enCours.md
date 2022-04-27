@@ -11,6 +11,7 @@
 
 ## Création d'une partie
  - Gestion des box / decks
+ - Nombre de méchants / joueurs
 
 ## Page d'accueil
  - Gérer la connexion à une partie en page d'accueil + Gérer l'affichage propre "**partie inconnue**" plutôt que rediriger ver la page game.html  
@@ -21,11 +22,14 @@
 
 ## Greelock
 
-## Setup
+## Setup ?
 
 ## Melodice
 
-## Compteur pour erreurs websocket : ```56```
+---
 
-## Docker
-docker build -t fouyou/rchampions . --no-cache
+| Anotations |
+| --- |
+| Compteur pour erreurs websocket  ```56``` |
+| docker build -t fouyou/rchampions:latest . --no-cache |
+ 

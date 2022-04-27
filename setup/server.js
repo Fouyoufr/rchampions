@@ -257,7 +257,7 @@ function adminOP(message,webSocket) {
                     logDown += '[' + (new Date(parseInt(mess.date))).toLocaleTimeString() + ']' + mess.message + '\n';
                 });
                 let today = new Date();
-                let fileName = 'logs/' + config.siteName !== undefined && config.siteName != '' ? config.siteName : '';
+                let fileName = 'logs/' + (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
                 fileName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.log';
                 fileName.replace(/\s/g, '');
                 fs.writeFileSync(__dirname + '/' + fileName,logDown);
