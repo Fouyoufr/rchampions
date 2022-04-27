@@ -1,16 +1,15 @@
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
+const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player','villain.html':'villain'};
+//Récupération du nom de la page en cours
+let pageName = pageNames[window.location.pathname.split("/").pop()] === undefined ? 'index' : pageNames[window.location.pathname.split("/").pop()];
 const urlParams = new URLSearchParams(location.search)
 if (urlParams.has('g')) {
     //Récupération et stockage en local de la clef de partie
     localStorage.setItem('rChampions-gameKey',urlParams.get('g').toUpperCase());
-if (pageTitle == 'TITadmin' || pageTitle == 'TITindex') location.href='game.html';}
-let rcConfig={}, lang={}, game={},
-boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={},nullElement={},
-loaded={"config":false,"lang":false,"boxes":false},
-webSocketId='',webSocketSalt='',hashedValue;
-popupDiv=addElement('div','','popup');
-adminMessageDiv = addElement('div','','adminMessagePopup');
+if (pageName == 'admin' || pageName == 'index') location.href='game.html';}
+let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false},
+webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash;
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 metaViewport = document.createElement('meta');
@@ -24,7 +23,7 @@ loadScript ('websockets');
 if (document.getElementById('villains')) loadScript('villains');
 if (document.getElementById('villain')) loadScript('villain');
 if (document.getElementById('players')) loadScript('players');
-if (pageTitle == 'TITadmin') loadScript('admin');
+if (pageName == 'admin') loadScript('admin');
 function loadScript(scriptName) {
     loaded[scriptName + 'Script'] = false;
     let script = document.createElement('script');
@@ -86,7 +85,7 @@ function configLoad(configJson) {
 function langLoad(langJson) {
     //Mise en place des chaines de caractère de la langue sur la page.
     lang=JSON.parse(langJson);
-    if (pageTitle!== null) document.title = lang[pageTitle];
+    if (lang['TIT' + pageName] !== undefined) document.title = lang['TIT' + pageName];
     if (rcConfig.siteName !== undefined && rcConfig.siteName != '') document.title += ' - ' + rcConfig.siteName;
     loaded.lang=true;
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));}
@@ -117,11 +116,15 @@ function mainLoad(gameJson='') {
         if (document.getElementById('villains')) for (let i=0; i < game.villains.length; i++) document.getElementById('villains').append(villainDisplay(i));
         if (document.getElementById('villain') && localStorage.getItem('rChampions-villain')) document.getElementById('villain').append(villainDisplay(localStorage.getItem('rChampions-villain')));
         if (document.getElementById('players')) for (let i=0; i < game.players.length; i++) document.getElementById('players').append(playerDisplay(i));
-        if (pageTitle == 'TITadmin') {
+        if (pageName == 'admin') {
             var adminInterval = setInterval(function() {if (loaded.adminScript == true){
+                //Chargement de l'interface de la page Admin
                 clearInterval(adminInterval);
-                adminLoad();}
-            },100);}
+                document.getElementById('tiles').append(
+                    adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
+                    adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
+                    adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole"></div><button id="adminTILEconsoleDownload" onclick="sendReq(\'{&quot;admin&quot;:&quot;consoleSave&quot;,&quot;passHash&quot;:&quot;\' + adminHash + \'&quot;}\');" title="' + lang.ADMINTILEconsoleLoad + '"></button>')
+                );}},100);}
         //Chargement des menus pleine page
         addMenu();
         addPopup();
@@ -129,7 +132,7 @@ function mainLoad(gameJson='') {
           },100);}
     
 
-  function load(fileLoad,functionLoad) {
+function load(fileLoad,functionLoad) {
       // Chargement de fichier distant (AJAX à refaire en webSocket !)
     let request = new XMLHttpRequest();
     request.open('GET', fileLoad);
@@ -147,7 +150,7 @@ function addHeadLink(rel,type,href) {
 
 function addMenu() {
     //Affichage de la clef de la partie
-    if (pageTitle == 'TITgame') {
+    if (pageName == 'game') {
         gamekey = addElement('button','','gameKey');
         gamekey.innerHTML=gameKey;
         gamekey.title = lang.BUTTONCopy
@@ -164,15 +167,13 @@ function addMenu() {
     settingsMenu.append(settingsButton);
     //Ajout des actions disponibles dans le menu des paramètres
     let settingsInside = addElement('div','inside','settingsMenu');
-    if (pageTitle !== 'TITindex') settingsInside.append(setMenu('home',function () {location.href = "/";}));
+    if (pageName !== 'index') settingsInside.append(setMenu('home',function () {location.href = "/";}));
     settingsInside.append(setMenu('lang',selecLang));
     let refreshMenu = setMenu('refresh',function () {localStorage.clear();location.href = "/";})
     refreshMenu.style.marginTop = '4px';
     settingsInside.append(refreshMenu);
     //Menu Administration
-    if (pageTitle != 'TITadmin') settingsInside.append(setMenu('admin',adminPopup,'adminMenu'));
-
-
+    if (pageName != 'admin') settingsInside.append(setMenu('admin',adminPopup,'adminMenu'));
 
     settingsMenu.append(settingsInside);
     document.getElementsByTagName('body')[0].append(melodiceMenu,settingsMenu);}
@@ -235,11 +236,11 @@ function adminPopup() {
     let intro=lang.POPUPAdminIntro, content = lang.popupAdminContent + '<br/><input type="password" id = "adminPassword">';
     let buttons='<button title="' + lang.BUTTONconfirm + '" id="adminPopupConfirm">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
     popupDisplay(lang.MENUadmin,intro,content,buttons);
-    let confirmButton = document.getElementById('adminPopupConfirm');
-    confirmButton.onclick = function () {
+    //Préparation du mot de passe pour vérification
+    document.getElementById('adminPopupConfirm').onclick = function () {
         hash(document.getElementById('adminPassword').value).then(function(hashedPass) {
+            sessionStorage.setItem('rChampions-adminHash',hashedPass);
             hash(webSocketSalt + hashedPass).then (function(hashedValue) {
-                sessionStorage.setItem('rChampions-adminHash',hashedValue);
                 sendReq('{"admin":"checkPass","passHash":"' + hashedValue + '"}')
             })});}
     textFocus('adminPassword','adminPopupConfirm');}
@@ -254,9 +255,10 @@ function addElement(aeType,aeClass='',aeId='') {
 function buttonDisplay (bdClass,bdReq,bdTitle,bdText='',bdId=''){
     //Affichage des boutons qui envoient des requètes au serveur
     let bd = addElement('button',bdClass);
-    bd.onclick=function () {sendReq(bdReq);}
-    bd.title=bdTitle;
-    if (bdText !='') bd.textContent = bdText;
+    bd.onclick = function () {sendReq(bdReq);}
+    bd.title = bdTitle;
+    bd.type = 'button';
+    if (bdText != '') bd.textContent = bdText;
     if (bdId != '') bd.id = bdId;
     return bd;}
 

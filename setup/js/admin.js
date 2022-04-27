@@ -1,16 +1,3 @@
-function adminLoad() {
-    //sessionStorage.setItem('rChampions-adminHash',passHash);
-    //Chargement des éléments de la page Admin
-    sendReq('{"admin":"getList","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
-    
-    document.getElementById('tiles').append(
-        adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
-        adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
-        adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole"></div>')
-    
-    )
-}
-
 function adminTile(tileId,tileTitle,tileContent='',tileIntro='',tileOutro='') {
     let tile = addElement('div','adminTile',tileId);
     let background = addElement('div','background');
@@ -96,7 +83,7 @@ function adminGameDisplay(game) {
         document.getElementById('deleteConfirm').onclick = function () {
             document.getElementById('popup').style.display='none';
             document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';
-            sendReq('{"admin":"deleteGame","id":"' + game.key + '","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');}
+            sendReq('{"admin":"deleteGame","id":"' + game.key + '","passHash":"' + adminHash + '"}');}
         document.getElementById('popup').getElementsByClassName('close')[0].onclick = function() {
             document.getElementById('popup').style.display='none';
             document.getElementById('adminGame-' + game.key).className ='adminGameDisplay';
@@ -131,27 +118,27 @@ function adminMessagePopup (gameKey='', all=false, admins=false) {
             document.getElementById('popup').style.display='none';
             document.getElementById('adminGame-' + gameKey).className ='adminGameDisplay';}
         document.getElementById('adminMessageConfirm').onclick = function() {
-            sendReq(JSON.stringify({"admin":"sendMessage","game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            sendReq(JSON.stringify({"admin":"sendMessage","game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('popup').style.display='none';
             document.getElementById('adminGame-' + gameKey).className ='adminGameDisplay';}
         document.getElementById('adminMessageTest').onclick = function() {
-            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('adminMessageConfirm').style.display = 'block';}}
     else if (all) {
         //envoi d'un message à tous les connectés
         document.getElementById('adminMessageConfirm').onclick = function() {
-            sendReq(JSON.stringify({"admin":"sendMessage","all":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            sendReq(JSON.stringify({"admin":"sendMessage","all":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('popup').style.display='none';}
         document.getElementById('adminMessageTest').onclick = function() {
-            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"all":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"all":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('adminMessageConfirm').style.display = 'block';}}
     else if (admins) {
         //envoi d'un message aux administrateurs
         document.getElementById('adminMessageConfirm').onclick = function() {
-            sendReq(JSON.stringify({"admin":"sendMessage","admins":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            sendReq(JSON.stringify({"admin":"sendMessage","admins":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('popup').style.display='none';}
         document.getElementById('adminMessageTest').onclick = function() {
-            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"admins":true,"message":document.getElementById('adminMessage').value,"passHash":sessionStorage.getItem('rChampions-adminHash')}));
+            sendReq(JSON.stringify({"admin":"sendMessage","test":1,"admins":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('adminMessageConfirm').style.display = 'block';}}        
     textFocus('adminMessage');}
 
@@ -162,5 +149,5 @@ function adminPlayerNamePopup(gameKey,player,oldName) {
     popupDisplay(lang.BUTTONplayerName,PNintro,PNcontent,PNbuttons,'');
     textFocus('newPlayerName','adminPlayerNameSubmit');}
 function adminPlayerNameSend(gameKey,player) {
-    sendReq('{"admin":"playerName","game":"' + gameKey + '","player":"' + player + '","newName":"' + document.getElementById('newPlayerName').value + '","passHash":"' + sessionStorage.getItem('rChampions-adminHash') + '"}');
+    sendReq('{"admin":"playerName","game":"' + gameKey + '","player":"' + player + '","newName":"' + document.getElementById('newPlayerName').value + '","passHash":"' + adminHash + '"}');
     document.getElementById('popup').style.display='none';}

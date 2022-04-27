@@ -89,12 +89,13 @@ function webRequest (req, res) {
     if (url.parse(req.url).pathname === '/') req.url = '/index.html';
     let contentType = 'text/html; charset=utf-8';
     if (url.parse(req.url).pathname.endsWith('.json')) contentType = 'application/json; charset=utf-8';
-    else if (url.parse(req.url).pathname.endsWith('.js')) contentType = 'text/javascript; charset=utf-8';
+    else if (url.parse(req.url).pathname.endsWith('.js')) contentType = 'application/javascript; charset=utf-8';
     else if (url.parse(req.url).pathname.endsWith('.png')) contentType = 'image/png';
     else if (url.parse(req.url).pathname.endsWith('.css')) contentType = 'text/css; charset=utf-8';
     else if (url.parse(req.url).pathname.endsWith('.pdf')) contentType = 'application/pdf';
     else if (url.parse(req.url).pathname.endsWith('.xml')) contentType = 'application/xml; charset=utf-8';
     else if (url.parse(req.url).pathname.endsWith('.ico')) contentType = 'image/x-icon';
+    else if (url.parse(req.url).pathname.endsWith('.log')) contentType = 'text/plain; charset=utf-8';
     if (contentType === 'text/html' || contentType === 'application/json') console.log('HTTP GET Request -> ' + req.url);
     fs.readFile(__dirname + url.parse(req.url).pathname,function (err, data) {
         if (err) {
@@ -128,7 +129,8 @@ function webSocketConnect(webSocket) {
         clientIndex ++;
         console.log(consoleGReen,'client ' + webSocket.clientId + ' , Opened');
         //Création d'une chaine aléatoire pour vérification des mots de passe
-        webSocket.salt = hash(Math.random().toString());}
+        webSocket.salt = hash(Math.random().toString());
+        if (webSocket._protocol == 'admin') hashes[webSocket.clientId] = webSocket.salt;}
     
     //Envoi des informations lors de la connexion d'un nouvel utilisateur
     wsclientSend(webSocket.clientId,'{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '"}');
@@ -176,10 +178,9 @@ function wsclientSend(clientId,data) {
 
 function wsGameSend(gameKey,data) {
     //envoi d'informations aux clients d'une partie spécifique
-    Object.keys(gamesPlayers[gameKey]).forEach(function(key) {gamesPlayers[gameKey][key].send(data);})}
+    if (gamesPlayers[gameKey] != undefined) Object.keys(gamesPlayers[gameKey]).forEach(function(key) {gamesPlayers[gameKey][key].send(data);})}
 
 function wsAdminSend(data) {
-    //if (Object.entries(adminWS).length != 0)  console.log(require('util').inspect(adminWS));
     //envoi d'informations aux clients connectés sur la page d'administration
     Object.keys(adminWS).forEach(function(key) {adminWS[key].send(data);})}
 
@@ -191,7 +192,6 @@ function adminOP(message,webSocket) {
     if (message.admin == 'checkPass') {
         //Vérification de la saisie du mot de passe admin
         if (hash(webSocket.salt + config.adminPassword) == message.passHash) {
-            hashes[webSocket.clientId] = webSocket.salt;
             webSocket.send('{"operation":"adminOK"}');}
         else webSocket.send('{"operation":"adminKO"}');}
     else {
@@ -200,11 +200,14 @@ function adminOP(message,webSocket) {
             webSocket.send('{"error":"wss::adminBadPass","errId":"40"}');}
         else {
             //Mot de passe admin correct : actions administratives (ajout de la socket aux admins à prévenir sur connexion/déconnexions par exemple)
-            if (adminWS[webSocket.clientId] === undefined) {
+             if (adminWS[webSocket.clientId] === undefined) {
                 adminWS[webSocket.clientId] = webSocket;
                 wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');}
             switch(message.admin) {
-                case 'getList' :
+                case 'connect' : 
+                webSocket.send('{"operation":"adminOK"}');
+                break;
+                case 'init' :
                     //Envoi de la liste des parties en cours sur le serveur
                     webSocket.send('{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');
                     //Envoi de la liste des connectés sur la page d'admin
@@ -247,8 +250,22 @@ function adminOP(message,webSocket) {
                         if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else wsAdminSend(textMessage);}
                     break;
 
+                case 'consoleSave' :
+                    let logJson = JSON.parse('[' + logFile + ']');
+                    let logDown = '';
+                    logJson.forEach(function(mess) {
+                    logDown += '[' + (new Date(parseInt(mess.date))).toLocaleTimeString() + ']' + mess.message + '\n';
+                });
+                let today = new Date();
+                let fileName = 'logs/' + config.siteName !== undefined && config.siteName != '' ? config.siteName : '';
+                fileName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.log';
+                fileName.replace(/\s/g, '');
+                fs.writeFileSync(__dirname + '/' + fileName,logDown);
+                webSocket.send('{"operation":"adminLogDL","logName":"' + fileName + '"}');
+                break;
+
                 default:
-                        wsclientSend(webSocket.clientId,'{"error":"wss::operationNotFound ' + message.admin + '","errId":"53"}');
+                    webSocket.send('{"error":"wss::operationNotFound ' + message.admin + '","errId":"53"}');
             }}}}
 
 function operation(message,gameKey,clientId) {

@@ -1,14 +1,15 @@
 let websocketString = (location.protocol == 'http:' ? 'ws' : 'wss') + '://' + location.host, websocket,websocketReconnect = true;
-openSocket();
+if (pageName == 'admin') openSocket('admin'); else openSocket();
 
 function openSocket(clientId=null) {
-    websocket = new WebSocket(websocketString,clientId == null ? 'open' : 'ref' + clientId);
+    let protocol = clientId == null ? 'open' : clientId == 'admin' ? 'admin' : 'ref' + clientId;
+    websocket = new WebSocket(websocketString,protocol);
 
     websocket.onopen = function() {
         //Envoi de la clef de partie à l'ouverture de session webSocket.
-        if (typeof gameKey != 'undefined' && gameKey !== '' && pageTitle != 'TITadmin') sendReq('{"gameKey":"'+ gameKey +'"}');
+        if (typeof gameKey != 'undefined' && gameKey !== '' && pageName != 'admin') sendReq('{"gameKey":"'+ gameKey +'"}');
         //masquer le message de connexion fermée sur récupération de la connexion.
-        if (document.getElementById('websocketError') && document.getElementById('websocketError').textContent == lang['ws::connectionLost']) document.getElementById('websocketError').remove();};
+        if (document.getElementById('webSocketLost')) document.getElementById('webSocketLost').remove();};
     
     websocket.onerror = function() {
         //erreur sur webSocket, si pendant essai d'ouverture, on arrete les frais...
@@ -17,9 +18,13 @@ function openSocket(clientId=null) {
     websocket.onclose = function (event) {
         //Détection de connexion perdue / reconnexion
         if (websocketReconnect) {
-            openSocket(webSocketId,(sessionStorage.getItem('rChampions-adminHash') !== null && pageTitle == 'TITadmin'));
-            webSockError('ws::connectionLost' + (event.reason != '' ? ' (' + event.reason + ')' : ''));}
-        else webSockError('ws::connectionClosed');}
+            let reconnectDiv = addElement('div','webSocketLost','webSocketLost');
+            let reconnectDivText = addElement('p');
+            reconnectDivText.textContent = lang['ws::connectionLost'];
+            reconnectDiv.append(reconnectDivText);
+            document.getElementsByTagName('body')[0].append(reconnectDiv);
+            openSocket(webSocketId,(sessionStorage.getItem('rChampions-adminHash') !== null && pageName == 'admin'));}
+        else document.getElementById('webSocketLost').getElementsByTagName('p')[0].textContent = lang['ws::connectionClosed'];}
 
     websocket.onmessage = function(event) {
         message=JSON.parse(event.data);
@@ -27,7 +32,14 @@ function openSocket(clientId=null) {
         if (message.clientId !== undefined) {
             //Informations récupérées à l'ouverture de la websocket
             webSocketId=message.clientId;
-            webSocketSalt=message.salt;}
+            webSocketSalt=message.salt;
+            //Vérification du mot de passe sur (re)connexion
+            if (pageName == 'admin' && sessionStorage.getItem('rChampions-adminHash')) {
+                hash(webSocketSalt + sessionStorage.getItem('rChampions-adminHash')).then (function(hashedValue) {
+                adminHash = hashedValue;
+                sendReq('{"admin":"connect","passHash":"' + adminHash + '"}');
+            })}
+        }
         if (message.error !== undefined) webSockError(message.error,message.errId !== undefined ? message.errId : 0);
         else if (message.operation !== undefined) switch (message.operation) {
             //Réalisation d'une opération commandée par la serveur
@@ -167,7 +179,10 @@ function openSocket(clientId=null) {
                 break;
                 
             case 'adminOK' :
-                window.location.href = "admin.html";
+                if (pageName == 'admin' && (!document.getElementById('gamesListTile-content') || document.getElementById('gamesListTile-content').innerHTML == '')) {
+                    //peupler la page admin après connexion.
+                    sendReq('{"admin":"init","passHash":"' + adminHash + '"}');}
+                else if (pageName != 'admin') window.location.href = "admin.html";
                 break;
         
             case 'adminGamesList' :
@@ -223,6 +238,15 @@ function openSocket(clientId=null) {
                     document.getElementById('adminTILEserverConsole').innerHTML = '<div class="messWrap"><p><span class="date">' + (new Date(parseInt(mess.date))).toLocaleTimeString() + '</span><span class="content ' + mess.color + '">' + mess.message + '</span></p></div>' + document.getElementById('adminTILEserverConsole').innerHTML;
                 })
                 break;
+            
+            case 'adminLogDL':
+                saveLink = document.createElement('a');
+                saveLink.href = message.logName;
+                saveLink.download = message.logName.replace(/^.*[\\\/]/, '');
+                saveLink.click();
+                saveLink.remove();
+                break;
+
             default:
         webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}}
 

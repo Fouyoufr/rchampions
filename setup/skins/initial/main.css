@@ -22,15 +22,12 @@ div#popup .title {width:100%;height:30px;line-height:30px;text-align:center;font
 div#popup .close, div#websocketError .close, div#adminMessagePopup .close {width:24px;height:24px;background-color:black;color:white;font-size:x-large;font-weight:normal;position:absolute;top:0px;right:0px;}
 div#popup .close::before , div#websocketError .close::before, div#adminMessagePopup .close::before {content: 'X';}
 div#popup .close:hover, div#websocketError .close:hover, div#adminMessagePopup .close:hover {background-color:crimson;}
-
-
-/* Bouton de "Hard Refresh" derrière l'icône Admin */
 div#popup .inside {height: calc(100% - 40px);background-color:honeydew;overflow-y:auto; padding:10px;padding-top:5px;padding-bottom:2px;}
 div#popup  p {padding:0px;margin:0px;}
 div#popup .inside button {padding:3px; background-color: grey; border: solid 1px black; color:white;font-size:medium;font-weight:normal;}
 div#popup .inside button:hover {background-color:lightgrey; border-color:grey;}
 div#popup .intro {text-align:justify;font-size:medium;color:#555;margin:0px;padding:4px;}
-div#popup .content {padding-left:10px;padding-right:display:flex;}
+div#popup .content {padding-left:10px;padding-right:0px;display:flex;}
 div#popup .buttons {width:100%;justify-content:space-evenly;display:flex;}
 div#popup .outro {text-align:center;font-size:medium;display:block;padding-top: 2px;}
 
@@ -64,6 +61,9 @@ div#settingsMenu button.setting:hover, div#settings button.adminMenu:hover {back
 
 /*Gestion des erreurs renvoyées en direct par le serveur */
 div#websocketError {display:inline-block;background-color:brown;padding:2px;color:yellow;font-weight:bold;position:fixed;bottom:2px;left:2px;border:2px solid red;padding-right:30px;height:20px;line-height: 20px;z-index: 12;}
+div#webSocketLost {background-color:rgba(0, 0, 0, 0.5);height:100%;width:100%;position:fixed;top:0px;left:0px;}
+div#webSocketLost p {margin:0px;padding:5px;display:block;width:100%;background-color: brown;color:yellow;font-weight:bold;position:fixed;bottom:0px;left:0px;border:2px solid red;box-sizing: border-box;}
+
 
 /* Affichage générique des erreurs (par exemple mauvais mot de passe) */
 .errorText {font-weight:bold;color:crimson;}
