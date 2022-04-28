@@ -1,7 +1,15 @@
+/* Mise en forme de l'accueil */
+div#websiteIntro {box-sizing:border-box;margin:10%;margin-bottom:5%;border: thick double darkolivegreen;background-color:antiquewhite;padding:10px;font-size:medium;}
+div#websiteIntro h1 {display:block;width:100%;text-align: center;margin-top:0px;}
+
 /* Mise en forme des tuiles de la page d'accueil */
-div.indexTile .background {box-sizing:border-box;position: relative;Width: calc(100% - 20px);margin:10px;border: thick double darkolivegreen;border-top:none;background-color:antiquewhite;}
-div.indexTile .title {margin:0px;width:100%;height:30px;line-height:30px;text-align:center;font-size:large;font-weight: bold;background-color: darkolivegreen;color:white}
-div.indexTile .inside {font-size: large;padding:2px;margin:0px;}
-div.indexTile .inside .intro, div.adminTile .inside .outro {font-size:medium;color:#555;margin:0px;padding:4px;}
-div.indexTile .inside .outro {display:block;text-align: center;border-top:#555 solid 1px;}
-div.indexTile .inside .content {padding-left:10px;padding-right:10px;}
+div.indexTile {box-sizing:border-box;position: relative;margin:10%;margin-bottom:5%;border: thick double darkolivegreen;background-color:antiquewhite;padding:10px;margin-top:0px;font-size:medium;}
+div.indexTile .title {font-size:x-large;font-weight: bold;}
+div.indexTile .intro {font-size:medium;color:#555;margin-bottom:5px;}
+div.indexTile .outro {display:block;width:100%;text-align: center;font-weight:bold;color:crimson;}
+div.indexTile .content {padding-left:10px;padding-right:10px;}
+div.indexTile#joinGame  div.content {display:block;width:100%;font-size: large;text-align: center;position:relative;}
+div.indexTile .keyInput {padding:5px;padding-left:2px;background-color:black;color:yellow;font-size:x-large;font-weight:bolder;margin:5px;text-transform:uppercase;text-align:center;}
+div.indexTile#joinGame button, div#newGame button {position: absolute;top: 50%;transform: translateY(-50%);padding: 1em;border-radius: 1em;color:white;text-transform:uppercase;font-weight: bold;transition: all .3s;background-color: green;}
+div.indexTile#joinGame button:hover, div#newGame button:hover {background-color: white;color:green;}
+div#newGame {display:block;width:100%;font-size: large;text-align: center;position:relative;}

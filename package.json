@@ -1,6 +1,6 @@
 {
   "name": "rchampions",
-  "version": "alpha37",
+  "version": "alpha44",
   "description": "rChampions server",
   "author": "renaud.wangler@gmail.com",
   "main": "server.js",

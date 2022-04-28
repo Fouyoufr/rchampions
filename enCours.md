@@ -3,26 +3,28 @@
 
 ## Page d'administration
  - Ajouter un journal administratif pour les messages des clients
- - Ajouter une option de "*push-refresh*" des clients pour que tous les connectés regénérent leur id (avec un simple refresh) après une panne serveur
  - Gestion du certifcat de serveur + mot de passe dans une tuile "serveur et sécurité"  
-   >Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)
+   ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
+ - Indiquer dans la config du serveur le port https pour la redirection
  - Sauvegarde globale et restauration
- - Nouvelle partie depuis la page admin ?
-
-## Création d'une partie
- - Gestion des box / decks
- - Nombre de méchants / joueurs
+ - (Nouvelle partie depuis la page admin ?)
 
 ## Page d'accueil
- - Gérer la connexion à une partie en page d'accueil + Gérer l'affichage propre "**partie inconnue**" plutôt que rediriger ver la page game.html  
+>    ### Création d'une partie
+>     - Nombre de méchants / joueurs
+>     - Gestion des box / decks
+>    ### Création d'un journal de campagne  
+>    ### Message du jour/du moment/astuce aléatoire ?
 
 ## Génériques
  - Ajouter les autres boites de jeu
  - Feedback utilisateur (email possible)
+ - Gestion des mots clef
 
-## Greelock
-
+## Greenlock ?
+ 
 ## Setup ?
+ - probabelment pas : le nouveau site est immédiatement exploitable après démarrage
 
 ## Melodice
 
@@ -30,6 +32,5 @@
 
 | Anotations |
 | --- |
-| Compteur pour erreurs websocket  ```56``` |
+| Compteur pour erreurs websocket  ```57``` |
 | docker build -t fouyou/rchampions:latest . --no-cache |
- 

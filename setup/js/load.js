@@ -4,12 +4,9 @@ const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player
 //Récupération du nom de la page en cours
 let pageName = pageNames[window.location.pathname.split("/").pop()] === undefined ? 'index' : pageNames[window.location.pathname.split("/").pop()];
 const urlParams = new URLSearchParams(location.search)
-if (urlParams.has('g')) {
-    //Récupération et stockage en local de la clef de partie
-    localStorage.setItem('rChampions-gameKey',urlParams.get('g').toUpperCase());
-if (pageName == 'admin' || pageName == 'index') location.href='game.html';}
+if (urlParams.has('g') && pageName != 'index') location.href = 'index.html' + location.search; 
 let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false},
-webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash;
+webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,serverBoot;
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 metaViewport = document.createElement('meta');
@@ -24,6 +21,7 @@ if (document.getElementById('villains')) loadScript('villains');
 if (document.getElementById('villain')) loadScript('villain');
 if (document.getElementById('players')) loadScript('players');
 if (pageName == 'admin') loadScript('admin');
+if (pageName == 'index') loadScript('index');
 function loadScript(scriptName) {
     loaded[scriptName + 'Script'] = false;
     let script = document.createElement('script');
@@ -125,6 +123,15 @@ function mainLoad(gameJson='') {
                     adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
                     adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole"></div><button id="adminTILEconsoleDownload" onclick="sendReq(\'{&quot;admin&quot;:&quot;consoleSave&quot;,&quot;passHash&quot;:&quot;\' + adminHash + \'&quot;}\');" title="' + lang.ADMINTILEconsoleLoad + '"></button>')
                 );}},100);}
+        if (pageName == 'index') {
+            var inddexInterval = setInterval(function() {if (loaded.indexScript == true && loaded.websocketsScript == true){
+                //Chargement de l'interface de la page d'accueil
+                clearInterval(inddexInterval);
+                loadIndexIntro();
+                loadIndexJoin();
+                loadIndexNew();
+
+            }},100)}
         //Chargement des menus pleine page
         addMenu();
         addPopup();

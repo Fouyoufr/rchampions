@@ -12,6 +12,24 @@
     "TTTplayer":"Player display",
     "TITadmin":"Administration",
 
+    "rChampionsIntro0":"'",
+    "rChampionsIntro1":"' website will help you managing \"Marvel Champions The Card Game\" games.<br/>Please be aware that '",
+    "rChampionsIntro2":"' website is not related in any way to the card game publisher and is a simple additiona tool created by fan players.<br/>Note also that, also the original goal of this tool is to ease remote playing through the Internet connecting all players live to its information, it can be used to managed a solo or local game by using it as a \"display panel\" for a local game. In any case you'll need an Internet connection to the '",
+    "rChampionsIntro3":"' website (no offline feature for games play).",
+
+    "indexJoinGameTitle":"Do you wanna join a game ?",
+    "indexJoinGameIntro":"Use the game key to join a game allready setup on the server.",
+    "indexJoinKey":"Game key",
+    "indexJoinBadKey":"This Game key was not found on the server, please check and try again.",
+    "indexJoinButton":"Join",
+
+    "indexNewGameTitle":"Do you wanna create a new game ?",
+    "indexNewGameIntro":"Use this feature to reate a new game on the site.",
+    "indexNewKey":"Game key",
+    "indexNewKeyButton":"Create",
+    "indexNewKeyLength":"A game game must be exactly 8 characters long.",
+    "indexNewBadKey":"The key you entered is currently not available on the site, please try again.",
+
     "STconfused":"Confused",
     "STstunned":"Stunned",
     "STtough":"Tough",
@@ -116,6 +134,7 @@
     "ws::serverOperationNotFound":"[CLient] Operation not found",
     "ws::connectionLost":"[Client] Server connection lost (retrying)",
     "ws::connectionClosed":"[Client] Server unreachable (Check network and refresh ?)",
+    "ws::serverRebooted":"[Client] Server did reboot since page load : please reload Index page",
     "wss::operationNotFound":"[Server] Operation not found",
     "wss::gameKeyNotFound":"[Serveur] Game key not found",
     "wss::villainNotFound":"[Serveur] Villain not found",

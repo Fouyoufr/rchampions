@@ -2,14 +2,15 @@
 //npm install selfsigned
 //npm install greenlock
 const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGReen = '\x1b[32m%s\x1b[0m',
+keyChars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ023456789',
 http = require('http'), https = require('https'), fs = require('fs'), url = require ('url'), wsServer = require ('ws'), selfsigned = require('selfsigned'), greenlock = require ('greenlock'),
 pkg = require('./package.json');
 let clientIndex = 0, games = {}, hashes ={},
-adminWS = {}, gamesPlayers = {}, logFile = '',
+adminWS = {}, gamesPlayers = {}, logFile = '', serverBoot = Date.now();
 config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
 //Mise en place du log existant en variable
-let today = new Date();
-let fileName = __dirname + '/logs/' +today.getFullYear() + today.getMonth() + today.getDate() + '.json';
+let today = new Date(),
+fileName = __dirname + '/logs/' +today.getFullYear() + today.getMonth() + today.getDate() + '.json';
 if (fs.existsSync(fileName)) logFile = fs.readFileSync(fileName);
 
 function serverLogFile (message) {
@@ -68,9 +69,9 @@ let heros=boxesFile.heros;
 let decks=boxesFile.decks;
 let sideSchemes=boxesFile.sideSchemes;
 //Construction de la liste des parties sur le serveur
-fs.readdirSync(__dirname + '/games').forEach (function(fileName) {
-    if (fileName != '.gitignore') {
-        let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + fileName));
+fs.readdirSync(__dirname + '/games').forEach (function(gameFileName) {
+    if (gameFileName != '.gitignore') {
+        let gameContent = JSON.parse(fs.readFileSync(__dirname + '/games/' + gameFileName));
         if (gameContent.wsClients !== undefined) delete gameContent.wsClients;
         games[gameContent.key] = gameContent;}});
 //Construction de la liste des langues prises en charge
@@ -133,13 +134,21 @@ function webSocketConnect(webSocket) {
         if (webSocket._protocol == 'admin') hashes[webSocket.clientId] = webSocket.salt;}
     
     //Envoi des informations lors de la connexion d'un nouvel utilisateur
-    wsclientSend(webSocket.clientId,'{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '"}');
+    wsclientSend(webSocket.clientId,'{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '","serverBoot":"' + serverBoot + '"}');
     wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + Object.keys(adminWS).length + '"}');
 
     webSocket.on('message',function (data) {
         console.log(consoleCyan,'client ' + webSocket.clientId + ' , received : \'' + data + '\'');
         message=JSON.parse(data);
         //Traitement de la clef de la partie reçu
+        if (message.pageName !== undefined && message.pageName == 'index') {
+            //Envoi d'une nouvelle clef de partie pour création en page d'accueil.
+            let newKey;
+            do {
+                newKey = '';
+                for ( let i = 0; i < 8; i++ ) { newKey += keyChars.charAt(Math.floor(Math.random() * keyChars.length));}}
+            while (games[newKey] !== undefined);
+            webSocket.send('{"operation":"newKey","key":"' + newKey + '"}');}
         if (message.gameKey !== undefined) {
             message.gameKey= message.gameKey.toUpperCase();
             if (games[message.gameKey] === undefined) webSocket.send('{"error":"wss::gameNotFound","errId":"55"}');
@@ -256,12 +265,11 @@ function adminOP(message,webSocket) {
                     logJson.forEach(function(mess) {
                     logDown += '[' + (new Date(parseInt(mess.date))).toLocaleTimeString() + ']' + mess.message + '\n';
                 });
-                let today = new Date();
-                let fileName = 'logs/' + (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
-                fileName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.log';
-                fileName.replace(/\s/g, '');
+                let saveFileName = 'logs/' + (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
+                saveFileName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.log';
+                saveFileName.replace(/\s/g, '');
                 fs.writeFileSync(__dirname + '/' + fileName,logDown);
-                webSocket.send('{"operation":"adminLogDL","logName":"' + fileName + '"}');
+                webSocket.send('{"operation":"adminLogDL","logName":"' + saveFileName + '"}');
                 break;
 
                 default:
@@ -621,6 +629,18 @@ function operation(message,gameKey,clientId) {
         case 'langList' :
             //Construction de la liste des langues disponibles sur le serveur
             wsclientSend(clientId,JSON.stringify({"operation":"langList","langList":langList}));
+            break;
+
+        case 'keyJoin' :
+            //Rejoindre une partie sur le serveur
+            message.key = message.key.toUpperCase();
+            if(games[message.key] === undefined) wsclientSend(clientId,'{"operation":"gameJoin"}'); else wsclientSend(clientId,'{"operation":"gameJoin","key":"' + message.key + '"}');
+            break;
+
+        case 'newKey' :
+            //validation de la clef d'une nouvelle partie
+            message.key = message.key.toUpperCase();
+            if (games[message.key] !== undefined) wsclientSend(clientId,'{"operation":"newKey"}'); else wsclientSend(clientId,'{"operation":"newKey","key":"' + message.key +'"}');
             break;
 
         default:

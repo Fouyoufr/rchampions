@@ -7,7 +7,9 @@ function openSocket(clientId=null) {
 
     websocket.onopen = function() {
         //Envoi de la clef de partie à l'ouverture de session webSocket.
-        if (typeof gameKey != 'undefined' && gameKey !== '' && pageName != 'admin') sendReq('{"gameKey":"'+ gameKey +'"}');
+        let openReq = '{';
+        if (typeof gameKey != 'undefined' && gameKey !== '' && pageName != 'admin') openReq+='"gameKey":"'+ gameKey +'",';
+        sendReq (openReq + '"pageName":"' + pageName + '"}');
         //masquer le message de connexion fermée sur récupération de la connexion.
         if (document.getElementById('webSocketLost')) document.getElementById('webSocketLost').remove();};
     
@@ -24,7 +26,7 @@ function openSocket(clientId=null) {
             reconnectDiv.append(reconnectDivText);
             document.getElementsByTagName('body')[0].append(reconnectDiv);
             openSocket(webSocketId,(sessionStorage.getItem('rChampions-adminHash') !== null && pageName == 'admin'));}
-        else document.getElementById('webSocketLost').getElementsByTagName('p')[0].textContent = lang['ws::connectionClosed'];}
+        else if (document.getElementById('webSocketLost')) document.getElementById('webSocketLost').getElementsByTagName('p')[0].textContent = lang['ws::connectionClosed'];}
 
     websocket.onmessage = function(event) {
         message=JSON.parse(event.data);
@@ -33,12 +35,24 @@ function openSocket(clientId=null) {
             //Informations récupérées à l'ouverture de la websocket
             webSocketId=message.clientId;
             webSocketSalt=message.salt;
+            //Vérification du dernier boot serveur savoir s'il faut poursuivre (ou si besoin refresh après reboot serveur).
+            if(serverBoot === undefined) serverBoot = message.serverBoot;
+            else if (serverBoot != message.serverBoot) {
+                websocketReconnect = false;
+                sessionStorage.clear();
+                if (document.getElementById('websocketError')) document.getElementById('websocketError').remove();
+                let websocketError=addElement('div','websocketError','websocketError');
+                websocketError.textContent=lang['ws::serverRebooted'];
+                websocketError.onclick = function () {location.href = '/index.html';}
+                websocketError.style.cursor = 'pointer';
+                document.getElementsByTagName('body')[0].append(websocketError);
+                throw new Error(lang['ws::serverRebooted']);
+            }
             //Vérification du mot de passe sur (re)connexion
             if (pageName == 'admin' && sessionStorage.getItem('rChampions-adminHash')) {
                 hash(webSocketSalt + sessionStorage.getItem('rChampions-adminHash')).then (function(hashedValue) {
                 adminHash = hashedValue;
-                sendReq('{"admin":"connect","passHash":"' + adminHash + '"}');
-            })}
+                sendReq('{"admin":"connect","passHash":"' + adminHash + '"}');})}
         }
         if (message.error !== undefined) webSockError(message.error,message.errId !== undefined ? message.errId : 0);
         else if (message.operation !== undefined) switch (message.operation) {
@@ -247,6 +261,26 @@ function openSocket(clientId=null) {
                 saveLink.remove();
                 break;
 
+            case 'gameJoin' :
+                if (message.key === undefined) document.getElementById('joinGame').getElementsByClassName('outro')[0].textContent = lang.indexJoinBadKey;
+                else {
+                    localStorage.setItem('rChampions-gameKey',message.key);
+                    location.href = 'game.html';}
+                break;
+
+            case 'newKey' :
+                if (message.key === undefined) document.getElementById('newGameTile').getElementsByClassName('outro')[0].textContent = lang.indexNewBadKey;
+                else if (message.key == document.getElementById('newGameKey').value.toUpperCase()) {
+                    document.getElementById('newGameTile').getElementsByClassName('outro')[0].textContent = '';
+                    document.getElementById('newGameKey').disabled = true;
+                    document.getElementById('newGameKeySubmit').remove();
+
+                    //poursuite de la saisie de la nouvelle partie
+
+                }
+                else document.getElementById('newGameKey').value = message.key;
+                break;
+            
             default:
         webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}}
 

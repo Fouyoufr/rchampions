@@ -11,6 +11,24 @@
     "TITplayer":"Affichage du joueur",
     "TITadmin":"Administration",
 
+    "rChampionsIntro0":"Le site '",
+    "rChampionsIntro1":"' vous aide dans la gestion des parties du jeu de cartes Marvel Champions.<br/>Notez que le site '",
+    "rChampionsIntro2":"' n'est en aucune manière affilié à l'éditeur du jeu de cartes et est un simple outil complémentaire développé par des joueurs fans du jeu.<br/>Notez également que, bien que le but original de ce site soit de rendre aisément le jeu jouable à plusieurs en connectant les joueurs en temps réel à travers Internet, vous pouvez également l'utiliser pour gérer une partie solitaire et/ou l'utiliser comme \"tableau d'affichage\" pour une partie locale. Dans tous les cas, vous aurez cependant besoin d'être connecté au site '",
+    "rChampionsIntro3":"' pour que la gestion de la partie soit fonctionnelle (pas d'utilisation possible sans connexion).",
+    
+    "indexJoinGameTitle":"Souhaitez-vous rejoindre une partie existante ?",
+    "indexJoinGameIntro":"Utilisez la clef de partie pour rejoindre une partie déjà créée sur le site.",
+    "indexJoinKey":"Clef de partie",
+    "indexJoinBadKey":"Cette partie n'existe pas sur le serveur, merci de vérifier et réessayer.",
+    "indexJoinButton":"Rejoindre",
+
+    "indexNewGameTitle":"Souhaitez-vous créer une nouvelle partie ?",
+    "indexNewGameIntro":"Utilisez l'interface suivante pour créer une nouvelle partie sur le site'.",
+    "indexNewKey":"Clef de partie",
+    "indexNewKeyButton":"Créer",
+    "indexNewKeyLength":"La clef d'une partie sur le site doit faire exactement 8 caractères",
+    "indexNewBadKey":"La clef choisie n'est actuellement pas utilisable sur le serveur, merci de réessayer.",
+
     "STconfused":"Désorienté",
     "STstunned":"Sonné",
     "STtough":"Tenace",
@@ -115,6 +133,7 @@
     "ws::serverOperationNotFound":"[CLient] Opération introuvable",
     "ws::connectionLost":"[Client] Connexion au serveur perdue (Reconnexion)",
     "ws::connectionClosed":"[Client] Serveur injoignable (Vérifier réseau + rafraichir ?)",
+    "ws::serverRebooted":"[Client] le serveur a redémarré depuis le chargement de la page: merci de recharger la page d'accueil.",
     "wss::operationNotFound":"[Serveur] Opération introuvable",
     "wss::gameKeyNotFound":"[Serveur] Clef de partie introuvable",
     "wss::villainNotFound":"[Serveur] Méchant introuvable",
