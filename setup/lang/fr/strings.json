@@ -33,6 +33,9 @@
     "indexNewBadKey":"La clef choisie n'est actuellement pas utilisable sur le serveur, merci de réessayer.",
     "indexNewVillains":"Nombre de méchants dans la nouvelle partie",
     "indexNewPlayers":"Nombre de joueurs dans la nouvelle partie",
+    "indexNewCreteExpl":"Vous pouvez créer votre nouvelle partie ou affiner ci-dessous la sélection des decks qui seront disponibles",
+    "indexNewCreateButton":"Créer",
+    "indexNewDecksAll":"Decks disponibles pour cette partie (Tout sélectionner)",
 
     "STconfused":"Désorienté",
     "STstunned":"Sonné",

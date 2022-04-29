@@ -1,4 +1,4 @@
-* {overflow-x: hidden;}
+/* * {overflow-x: hidden;} */
 /* Mise en forme de l'accueil */
 div#websiteIntro {box-sizing:border-box;margin:10%;margin-bottom:5%;border: thick double darkolivegreen;background-color:antiquewhite;padding:10px;font-size:medium;}
 div#websiteIntro h1 {display:block;width:100%;text-align: center;margin-top:0px;}
@@ -12,13 +12,22 @@ div.indexTile .content {padding-left:10px;padding-right:10px;}
 div.indexTile#joinGame  div.content {display:block;width:100%;font-size: large;text-align: center;position:relative;}
 div.indexTile .keyInput {padding:5px;padding-left:2px;background-color:black;color:yellow;font-size:x-large;font-weight:bolder;margin:5px;text-transform:uppercase;text-align:center;}
 div.indexTile#joinGame button, div#newGameKeyDiv button, div#newGamePass button {position: absolute;top: 50%;transform: translateY(-50%);padding: 1em;border-radius: 1em;color:white;text-transform:uppercase;font-weight: bold;transition: all .3s;background-color: green;}
-div.indexTile#joinGame button:hover, div#newGameKeyDiv button:hover, div#newGamePass button:hover {background-color: white;color:green;}
+div.indexTile#joinGame button:hover, div#newGameKeyDiv button:hover, div#newGamePass button:hover, #createGame:hover, button#selectAllDecks:hover {background-color: white;color:green;}
 div#newGame,div#newGamePass {display:block;width:100%;font-size: large;text-align: center;position:relative;}
 input#newGamePassword {margin:5px;font-size:large;}
 div#newGame input.ngNB {display:none;}
-div#newGame label.ngNB {  display: inline-block; padding: .5em 1em; margin: 0.5em; cursor: pointer; color: black; border-radius: 0.25em; background: white; box-shadow: 0 3px 10px rgba(0,0,0,0.2), inset 0 -3px 0 rgba(0,0,0,0.22); transition: 0.3s; user-select: none;font-weight: bolder;font-size: larger;}
+div#newGame label.ngNB {display: inline-block; padding: .5em 1em; margin: 0.5em; cursor: pointer; color: black; border-radius: 0.25em; background: white; box-shadow: 0 3px 10px rgba(0,0,0,0.2), inset 0 -3px 0 rgba(0,0,0,0.22); transition: 0.3s; user-select: none;font-weight: bolder;font-size: larger;}
 div#newGame input:disabled + .ngNB { background : lightgray; color:grey; cursor: default;}
-/* div#newGame input.ngNB:checked + .ngNB { background: darkolivegreen; color: white;} */
 div#newGame input.ngNB:checked + .ngNB { background: black; color: yellow;}
 div#newGameTable {text-align: justify;}
 div#newGameTable p {margin-bottom:0px;font-weight: bold;}
+button#createGame {padding: 1em;border-radius: 1em;color:white;text-transform:uppercase;font-weight: bold;transition: all .3s;background-color: green; float:right;}
+button#selectAllDecks {margin:10px;margin-left:0px;padding: 2px;color:white;font-weight: bold;transition: all .3s;background-color: darkolivegreen;width:calc(100% + 20px);}
+div#allDecks {display:flex;flex-direction: column;}
+div#allDecks button {background-color:transparent;height:1em;width:1em;font-size:large;margin:5px;background-size: contain;}
+div#allDecks div.newGameBox {padding:5px;border:solid 1px darkolivegreen;border-radius: 1em;display:inline-flex;margin:5px;margin-left:0px;flex-wrap:wrap;}
+div.newGameBox div {flex:1;}
+div#allDecks input + label.newGameDeck {display: inline-block; padding: 4px; margin: 4px; cursor: pointer; color: black; border-radius: 4px; background: white; box-shadow: 0 3px 10px rgba(0,0,0,0.2), inset 0 -3px 0 rgba(0,0,0,0.22); transition: 0.3s; user-select: none;font-weight: bold;font-size: large;}
+div#allDecks input:checked + label.newGameDeck {background: black; color: yellow;}
+div#allDecks input[type='checkbox'] {display:none;}
+div.newGameBox {display:flex;flex-direction: row;}

@@ -34,6 +34,9 @@
     "indexNewBadKey":"The key you entered is currently not available on the site, please try again.",
     "indexNewVillains":"Number of villains in the new game",
     "indexNewPlayers":"Number of players in the new game",
+    "indexNewCreteExpl":"You can create now your new game or click bellow to (un)select the decks available during the game",
+    "indexNewCreateButton":"Create",
+    "indexNewDecksAll":"Availaible decks during this game (Select all)",
 
     "STconfused":"Confused",
     "STstunned":"Stunned",

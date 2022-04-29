@@ -13,7 +13,6 @@
 
 ## Page d'accueil
 >    ### Création d'une partie
->     - Gestion des box / decks
 >     - Sélection aléatoire ?
 >    ### Création d'un journal de campagne  
 >    ### Message du jour/du moment/astuce aléatoire ?

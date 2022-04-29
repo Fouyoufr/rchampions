@@ -68,7 +68,7 @@ function loadIndexNew2() {
         if (i ==0) ngTab += ' disabled';
         else {
           if (i ==1) ngTab += ' checked';
-          ngTab += ' onclick="if (!document.getElementById(\'ngPlayNB1\')) {console.log(this.checked);loadIndexNew3();}"';
+          ngTab += ' onclick="if (!document.getElementById(\'ngPlayNB1\')) {loadIndexNew3();}"';
         }
         ngTab+= '><label for="ngVillNB' + i + '" class="ngNB">' + i + '</label>';}
     ngTabOut.innerHTML = ngTab;
@@ -83,7 +83,50 @@ function loadIndexNew3() {
         if (i ==1) ngTr += ' checked';
         ngTr += ' onclick="loadIndexNew4()"><label for="ngPlayNB' + i + '" class="ngNB">' + i + '</label>';}
     ngTab.insertAdjacentHTML('beforeend',ngTr);
-}
+    document.getElementById('ngPlayNB1').focus();}
+
+function loadIndexNew4() {
+    //Fin de la saisie de le nouvelle partie (decks et boxes)
+    let ngTab = document.getElementById('newGameTable');
+    let ngNxt = '<p>' + lang.indexNewCreteExpl +'<br/><button id="createGame" onclick ="indexCreateGame();" title="' + lang.indexNewCreateButton + '">' + lang.indexNewCreateButton + '</button></p>'
+    ngNxt += '<button id="selectAllDecks" onclick="selectAllDecks();" title="' + lang.indexNewDecksAll + '">' + lang.indexNewDecksAll + '</button><div id="allDecks"></div>';
+    //Création du tableau des boxes/deks pour sélection
+    let gameBoxes = [];
+    Object.keys(decks).forEach(function(deckId) {
+        if (deckId != 0) {
+            if (gameBoxes[decks[deckId].box] === undefined) {
+                //Ajout de la boite contenant les decks
+                gameBoxes[decks[deckId].box] = addElement('div','newGameBox','newGameBox' + decks[deckId].box);
+                let newBoxPic = addElement('input');
+                newBoxPic.type = 'image';
+                newBoxPic.title = boxes[decks[deckId].box];
+                newBoxPic.src = 'images/boxes/' + decks[deckId].box + '.png';
+                newBoxPic.onclick = function () {boxSelectDecks(this);}
+                gameBoxes[decks[deckId].box].append(newBoxPic);
+                gameBoxes[decks[deckId].box].append(addElement('div'));}
+            let deck = '<input type="checkbox" class= "newGameDeck" id="newGameDeck' + deckId + '" name="newGameDeck' + deckId +'" checked><label class="newGameDeck" for="newGameDeck' + deckId + '">' + decks[deckId].name + '</label>';
+            gameBoxes[decks[deckId].box].getElementsByTagName('div')[0].insertAdjacentHTML('beforeend',deck);}})
+    ngTab.insertAdjacentHTML('beforeend',ngNxt);
+    Object.keys(gameBoxes).forEach(function(boxKey){document.getElementById('allDecks').append(gameBoxes[boxKey]);})
+    document.getElementById('createGame').focus();}
+function boxSelectDecks(boxId) {
+    Checked = !boxId.parentNode.querySelector('.newGameDeck').checked;
+    toCheck = boxId.parentNode.querySelectorAll('.newGameDeck');
+    for(let i=0; i<toCheck.length; i++) { toCheck[i].checked = Checked; }}
+function selectAllDecks() {
+    Checked = !document.querySelector('.newGameDeck').checked;
+    toCheck = document.getElementById('allDecks').querySelectorAll('.newGameDeck');
+    for(let i=0; i<toCheck.length; i++) { toCheck[i].checked = Checked; }}
+
+function indexCreateGame() {
+    //Construction de la liste des decks
+    deckList='';
+    toCheck = document.getElementById('allDecks').querySelectorAll('input[type=\'checkbox\']');
+    for(let i=0; i<toCheck.length; i++) { if (toCheck[i].checked) deckList += ',' + toCheck[i].id.substring(11);}
+    if (deckList == '') {
+        //Afficher erreur : il faut au moins un deck pour créer la partie
+    }
+    else sendReq('{"operation":"newGame","key":"' + document.getElementById('newGameKey').value + '","villains":"' + document.querySelector('input[name="ngVillNB"]:checked').value + '","players":"' + document.querySelector('input[name="ngPlayNB"]:checked').value + '","decks":[' + deckList.substring(1) + '],"passHash":"' + publicHash + '"}');}
 
 function indexTile (id,title,intro,content,change=false) {
     //construction des tuiles de l'index
