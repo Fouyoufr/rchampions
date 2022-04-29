@@ -1,5 +1,9 @@
 let websocketString = (location.protocol == 'http:' ? 'ws' : 'wss') + '://' + location.host, websocket,websocketReconnect = true;
-if (pageName == 'admin') openSocket('admin'); else openSocket();
+let inddexInterval = setInterval(function() {if (loaded.page == true){
+    //Attente du chargement de la page avant de se connecter en webSocket
+    clearInterval(inddexInterval);
+    if (pageName == 'admin') openSocket('admin'); else if (pageName =='index') openSocket('index'); else openSocket();
+}},100)
 
 function openSocket(clientId=null) {
     let protocol = clientId == null ? 'open' : clientId == 'admin' ? 'admin' : 'ref' + clientId;
@@ -12,6 +16,7 @@ function openSocket(clientId=null) {
         sendReq (openReq + '"pageName":"' + pageName + '"}');
         //masquer le message de connexion fermée sur récupération de la connexion.
         if (document.getElementById('webSocketLost')) document.getElementById('webSocketLost').remove();};
+        document.getElementById('loading').style.display='none';
     
     websocket.onerror = function() {
         //erreur sur webSocket, si pendant essai d'ouverture, on arrete les frais...
@@ -36,7 +41,10 @@ function openSocket(clientId=null) {
             webSocketId=message.clientId;
             webSocketSalt=message.salt;
             //Vérification du dernier boot serveur savoir s'il faut poursuivre (ou si besoin refresh après reboot serveur).
-            if(serverBoot === undefined) serverBoot = message.serverBoot;
+            if (serverBoot === undefined) serverBoot = message.serverBoot;
+            if (message.public != 'on' && pageName == 'index') {
+                publicMode = false;
+                if (!document.getElementById('newGameTable')) loadIndexNew(true);}
             else if (serverBoot != message.serverBoot) {
                 websocketReconnect = false;
                 sessionStorage.clear();
@@ -51,8 +59,12 @@ function openSocket(clientId=null) {
             //Vérification du mot de passe sur (re)connexion
             if (pageName == 'admin' && sessionStorage.getItem('rChampions-adminHash')) {
                 hash(webSocketSalt + sessionStorage.getItem('rChampions-adminHash')).then (function(hashedValue) {
-                adminHash = hashedValue;
-                sendReq('{"admin":"connect","passHash":"' + adminHash + '"}');})}
+                    adminHash = hashedValue;
+                    sendReq('{"admin":"connect","passHash":"' + adminHash + '"}');})}
+            if (pageName == 'index' && sessionStorage.getItem('rChampions-publicHash')) {
+                hash(webSocketSalt + sessionStorage.getItem('rChampions-publicHash')).then (function(hashedValue) {
+                    publicHash = hashedValue;})
+            }
         }
         if (message.error !== undefined) webSockError(message.error,message.errId !== undefined ? message.errId : 0);
         else if (message.operation !== undefined) switch (message.operation) {
@@ -270,16 +282,19 @@ function openSocket(clientId=null) {
 
             case 'newKey' :
                 if (message.key === undefined) document.getElementById('newGameTile').getElementsByClassName('outro')[0].textContent = lang.indexNewBadKey;
-                else if (message.key == document.getElementById('newGameKey').value.toUpperCase()) {
-                    document.getElementById('newGameTile').getElementsByClassName('outro')[0].textContent = '';
-                    document.getElementById('newGameKey').disabled = true;
-                    document.getElementById('newGameKeySubmit').remove();
-
-                    //poursuite de la saisie de la nouvelle partie
-
-                }
-                else document.getElementById('newGameKey').value = message.key;
+                else if (message.key == document.getElementById('newGameKey').value.toUpperCase()) loadIndexNew2();
+                else if (document.getElementById('newGameKeySubmit') || document.getElementById('newGamePassSubmit')) document.getElementById('newGameKey').value = message.key;
                 break;
+
+            case 'newGamePassKO' :
+                document.getElementById('newGameTile').getElementsByClassName('outro')[0].textContent = lang.indexNewGamePassBas;
+                break;
+            
+            case 'newGamePassOK' :
+                newGameKey = document.getElementById('newGameKey').value;
+                loadIndexNew(true);
+                document.getElementById('newGameKey').value = newGameKey;
+            break;
             
             default:
         webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}}

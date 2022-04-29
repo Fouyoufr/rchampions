@@ -23,7 +23,7 @@ function adminTile(tileId,tileTitle,tileContent='',tileIntro='',tileOutro='') {
     return (tile);}
 
 function adminSecu() {
-    //Options possibkle : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)
+    //Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)
 
 }
 

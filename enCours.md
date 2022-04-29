@@ -8,11 +8,13 @@
  - Indiquer dans la config du serveur le port https pour la redirection
  - Sauvegarde globale et restauration
  - (Nouvelle partie depuis la page admin ?)
+ - Gestion du mode public et de son mot de passe
+ - Warning : mot de passe non changé (pour les 2, la valeur par défaut est "Marvel-Champions")
 
 ## Page d'accueil
 >    ### Création d'une partie
->     - Nombre de méchants / joueurs
 >     - Gestion des box / decks
+>     - Sélection aléatoire ?
 >    ### Création d'un journal de campagne  
 >    ### Message du jour/du moment/astuce aléatoire ?
 
@@ -20,6 +22,14 @@
  - Ajouter les autres boites de jeu
  - Feedback utilisateur (email possible)
  - Gestion des mots clef
+ - Modification de la partie
+ - Ecrans périphériques mobiles
+ - InfoPartie (réunion, url etc)
+
+## boxes.json
+ - fr : reste sideSchemes
+ - en : tout à faire
+ - fichier de translation de "Remote Champions" vers "rChampions" ?
 
 ## Greenlock ?
  
@@ -32,5 +42,5 @@
 
 | Anotations |
 | --- |
-| Compteur pour erreurs websocket  ```57``` |
+| Compteur pour erreurs websocket  ```59``` |
 | docker build -t fouyou/rchampions:latest . --no-cache |

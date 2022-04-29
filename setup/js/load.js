@@ -5,8 +5,8 @@ const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player
 let pageName = pageNames[window.location.pathname.split("/").pop()] === undefined ? 'index' : pageNames[window.location.pathname.split("/").pop()];
 const urlParams = new URLSearchParams(location.search)
 if (urlParams.has('g') && pageName != 'index') location.href = 'index.html' + location.search; 
-let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false},
-webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,serverBoot;
+let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false,"page":false},
+webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,publicHash,serverBoot,publicMode = true;
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 metaViewport = document.createElement('meta');
@@ -115,7 +115,7 @@ function mainLoad(gameJson='') {
         if (document.getElementById('villain') && localStorage.getItem('rChampions-villain')) document.getElementById('villain').append(villainDisplay(localStorage.getItem('rChampions-villain')));
         if (document.getElementById('players')) for (let i=0; i < game.players.length; i++) document.getElementById('players').append(playerDisplay(i));
         if (pageName == 'admin') {
-            var adminInterval = setInterval(function() {if (loaded.adminScript == true){
+            let adminInterval = setInterval(function() {if (loaded.adminScript == true){
                 //Chargement de l'interface de la page Admin
                 clearInterval(adminInterval);
                 document.getElementById('tiles').append(
@@ -124,18 +124,17 @@ function mainLoad(gameJson='') {
                     adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole"></div><button id="adminTILEconsoleDownload" onclick="sendReq(\'{&quot;admin&quot;:&quot;consoleSave&quot;,&quot;passHash&quot;:&quot;\' + adminHash + \'&quot;}\');" title="' + lang.ADMINTILEconsoleLoad + '"></button>')
                 );}},100);}
         if (pageName == 'index') {
-            var inddexInterval = setInterval(function() {if (loaded.indexScript == true && loaded.websocketsScript == true){
+            let inddexInterval = setInterval(function() {if (loaded.indexScript == true && loaded.websocketsScript == true){
                 //Chargement de l'interface de la page d'accueil
                 clearInterval(inddexInterval);
                 loadIndexIntro();
                 loadIndexJoin();
-                loadIndexNew();
-
+                loadIndexNewPublic();
             }},100)}
         //Chargement des menus pleine page
         addMenu();
         addPopup();
-        document.getElementById('loading').style.display='none';}
+        loaded.page = true;}
           },100);}
     
 

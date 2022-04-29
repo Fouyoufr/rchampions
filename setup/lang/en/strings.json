@@ -24,11 +24,16 @@
     "indexJoinButton":"Join",
 
     "indexNewGameTitle":"Do you wanna create a new game ?",
-    "indexNewGameIntro":"Use this feature to reate a new game on the site.",
+    "indexNewGamePassIntro":"The server is in 'public' mode, you need to use a password bellow in order to create a new game.",
+    "indexNewGamePass":"Password",
+    "indexNewGamePassBas":"Bas password, please verifyy your input.",
+    "indexNewGameIntro":"Use this feature to create a new game on the site.",
     "indexNewKey":"Game key",
     "indexNewKeyButton":"Create",
     "indexNewKeyLength":"A game game must be exactly 8 characters long.",
     "indexNewBadKey":"The key you entered is currently not available on the site, please try again.",
+    "indexNewVillains":"Number of villains in the new game",
+    "indexNewPlayers":"Number of players in the new game",
 
     "STconfused":"Confused",
     "STstunned":"Stunned",
@@ -150,6 +155,7 @@
     "wss::playerLifeNegative":"[server] Player's life can't be negative",
     "wss::newHeroNotFound":"[server] New hero not found",
     "wss::gameNotFound":"[Server] Game not found",
+    "wss::badPublicPass":"[Server] Bad 'Public mode' password",
 
     "ADMINTILEgamesListTitle":"Games list",
     "ADMINTILEgamesListIntro":"List of games currently hosted by the server (realtime update).",

@@ -23,11 +23,16 @@
     "indexJoinButton":"Rejoindre",
 
     "indexNewGameTitle":"Souhaitez-vous créer une nouvelle partie ?",
+    "indexNewGamePassIntro":"Le serveur est en mode 'public', vous devez saisir ci-desous le mot de passe qui vous permettra de créer une nouvelle partie.",
+    "indexNewGamePass":"Mot de passe",
+    "indexNewGamePassBas":"Mot de passe incorrect, merci de vérifier.",
     "indexNewGameIntro":"Utilisez l'interface suivante pour créer une nouvelle partie sur le site'.",
     "indexNewKey":"Clef de partie",
     "indexNewKeyButton":"Créer",
     "indexNewKeyLength":"La clef d'une partie sur le site doit faire exactement 8 caractères",
     "indexNewBadKey":"La clef choisie n'est actuellement pas utilisable sur le serveur, merci de réessayer.",
+    "indexNewVillains":"Nombre de méchants dans la nouvelle partie",
+    "indexNewPlayers":"Nombre de joueurs dans la nouvelle partie",
 
     "STconfused":"Désorienté",
     "STstunned":"Sonné",
@@ -149,6 +154,7 @@
     "wss::playerLifeNegative":"[Serveur] La vie du joueur ne peut être négative",
     "wss::newHeroNotFound":"[Serveur] Le nouveau héros est introuvable",
     "wss::gameNotFound":"[Serveur] Partie introuvable",
+    "wss::badPublicPass":"[Serveur] Mauvais mot de passe public",
 
     "ADMINTILEgamesListTitle":"Liste des parties",
     "ADMINTILEgamesListIntro":"Liste des parties hébergées par le serveur, mise à jour en temps-réel.",

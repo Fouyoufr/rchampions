@@ -1,12 +1,12 @@
 //npm install ws
 //npm install selfsigned
 //npm install greenlock
-const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGReen = '\x1b[32m%s\x1b[0m',
+const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGreen = '\x1b[32m%s\x1b[0m',
 keyChars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ023456789',
 http = require('http'), https = require('https'), fs = require('fs'), url = require ('url'), wsServer = require ('ws'), selfsigned = require('selfsigned'), greenlock = require ('greenlock'),
 pkg = require('./package.json');
 let clientIndex = 0, games = {}, hashes ={},
-adminWS = {}, gamesPlayers = {}, logFile = '', serverBoot = Date.now();
+adminWS = {}, gamesPlayers = {}, logFile = '', serverBoot = Date.now(),
 config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
 //Mise en place du log existant en variable
 let today = new Date(),
@@ -27,7 +27,7 @@ console.log = console.error = function (arg0,arg1='') {
     //Capture de la console Node.js
     let adminMessage = arg0.toString();
     let color = 'white';
-    if (arg0 == consoleCyan || arg0 == consoleRed || arg0 == consoleGReen) {
+    if (arg0 == consoleCyan || arg0 == consoleRed || arg0 == consoleGreen) {
         if (arg0.substring(2,4) == 36) color='cyan';
         if (arg0.substring(2,4) == 41) color='red';
         if (arg0.substring(2,4) == 32) color='green';
@@ -59,6 +59,9 @@ if (config.tls == 'self' || config.tls == 'test') TLSoptions = { key: selfCert.p
 //Premier lancement : mise en place du mot de passe administrateur
 if (config.adminPassword === undefined) {
     config.adminPassword = config.defaultAdminPassword;
+    fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));}
+if (config.publicPassword === undefined) {
+    config.publicPassword = config.defaultAdminPassword;
     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));}
 //import des données du jeu
 let boxesFile=JSON.parse(fs.readFileSync(__dirname + '/lang/fr/boxes.json'));
@@ -121,20 +124,19 @@ function webSocketConnect(webSocket) {
     if (webSocket._protocol.substring(0,3) == 'ref') {
         // Un client revient
         webSocket.clientId = webSocket._protocol.substring(3);
-        console.log(consoleGReen,'client ' + webSocket.clientId + ' , Refreshed');
+        console.log(consoleGreen,'client ' + webSocket.clientId + ' , Refreshed');
         //récupération/génération du hash pour mots de passe
         webSocket.salt = hashes[webSocket.clientId] !== undefined ? hashes[webSocket.clientId] : hash(Math.random().toString());}
     else {
         //Nouveau client (ou nouvelle page , pas un refresh)
         webSocket.clientId = clientIndex;
         clientIndex ++;
-        console.log(consoleGReen,'client ' + webSocket.clientId + ' , Opened');
+        console.log(consoleGreen,'client ' + webSocket.clientId + ' , Opened');
         //Création d'une chaine aléatoire pour vérification des mots de passe
         webSocket.salt = hash(Math.random().toString());
-        if (webSocket._protocol == 'admin') hashes[webSocket.clientId] = webSocket.salt;}
-    
+        if (webSocket._protocol == 'admin' || webSocket._protocol == 'index') hashes[webSocket.clientId] = webSocket.salt;}
     //Envoi des informations lors de la connexion d'un nouvel utilisateur
-    wsclientSend(webSocket.clientId,'{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '","serverBoot":"' + serverBoot + '"}');
+    webSocket.send('{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '","serverBoot":"' + serverBoot + '","public":"' + (config.public === undefined ? 'off' : 'on') + '"}');
     wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + Object.keys(adminWS).length + '"}');
 
     webSocket.on('message',function (data) {
@@ -162,7 +164,7 @@ function webSocketConnect(webSocket) {
                     wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[message.gameKey]) + '}');
                     gamesPlayers[message.gameKey][webSocket.clientId]=webSocket;}}}
 
-        if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId);
+        if (message.operation !== undefined) operation(message,webSocket.gameKey,webSocket.clientId,webSocket);
         if (message.admin !== undefined) adminOP(message,webSocket);});
 
     webSocket.on('close',function (event) {
@@ -276,7 +278,7 @@ function adminOP(message,webSocket) {
                     webSocket.send('{"error":"wss::operationNotFound ' + message.admin + '","errId":"53"}');
             }}}}
 
-function operation(message,gameKey,clientId) {
+function operation(message,gameKey,clientId,webSocket) {
     //Gestion des modifications apportées par les clients.
 
     //Sélection de 'opération
@@ -640,7 +642,17 @@ function operation(message,gameKey,clientId) {
         case 'newKey' :
             //validation de la clef d'une nouvelle partie
             message.key = message.key.toUpperCase();
-            if (games[message.key] !== undefined) wsclientSend(clientId,'{"operation":"newKey"}'); else wsclientSend(clientId,'{"operation":"newKey","key":"' + message.key +'"}');
+            if (config.public) {
+                //Validation en mode public
+                if (hash(webSocket.salt + config.publicPassword) == message.passHash) {
+                    if (games[message.key] !== undefined) wsclientSend(clientId,'{"operation":"newKey"}'); else wsclientSend(clientId,'{"operation":"newKey","key":"' + message.key +'"}');}
+                else wsclientSend(clientId,'{"error":"wss::badPublicPass","errId":"58"}');}
+            else if (games[message.key] !== undefined) wsclientSend(clientId,'{"operation":"newKey"}'); else wsclientSend(clientId,'{"operation":"newKey","key":"' + message.key +'"}');
+            break;
+
+        case 'checkPass' :
+            //Vérification de la saisie du mot de passe publique
+            if (hash(webSocket.salt + config.publicPassword) == message.passHash) webSocket.send('{"operation":"newGamePassOK"}'); else webSocket.send('{"operation":"newGamePassKO"}');
             break;
 
         default:
