@@ -112,7 +112,7 @@ function openSocket(clientId=null) {
                 
             case 'changeHero' :
                 isElem('player' + message.id + '-pic').style.backgroundImage = "url('./images/heros/" + message.hero + ".png')";
-                game.players[message.id].id=message.hero;
+                game.players[message.id].hero=message.hero;
                 break;
       
             case 'mainThreat' :

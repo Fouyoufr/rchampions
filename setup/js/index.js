@@ -49,9 +49,8 @@ function loadIndexNewPublic() {
         hash(document.getElementById('newGamePassword').value).then(function(hashedPass) {
             sessionStorage.setItem('rChampions-publicHash',hashedPass);
             hash(webSocketSalt + hashedPass).then (function(hashedValue) {
-                sendReq('{"operation":"checkPass","passHash":"' + hashedValue + '"}');})})}
-
-}
+                publicHash = hashedValue;
+                sendReq('{"operation":"checkPass","passHash":"' + hashedValue + '"}');})})}}
 
 
 function loadIndexNew2() {

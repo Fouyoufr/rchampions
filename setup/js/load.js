@@ -122,7 +122,8 @@ function mainLoad(gameJson='') {
                     adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
                     adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
                     adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole"></div><button id="adminTILEconsoleDownload" onclick="sendReq(\'{&quot;admin&quot;:&quot;consoleSave&quot;,&quot;passHash&quot;:&quot;\' + adminHash + \'&quot;}\');" title="' + lang.ADMINTILEconsoleLoad + '"></button>')
-                );}},100);}
+                );
+                loaded.page = true;}},100);}
         if (pageName == 'index') {
             let inddexInterval = setInterval(function() {if (loaded.indexScript == true && loaded.websocketsScript == true){
                 //Chargement de l'interface de la page d'accueil
@@ -130,12 +131,13 @@ function mainLoad(gameJson='') {
                 loadIndexIntro();
                 loadIndexJoin();
                 loadIndexNewPublic();
+                loaded.page = true;
             }},100)}
         //Chargement des menus pleine page
         addMenu();
         addPopup();
-        loaded.page = true;}
-          },100);}
+        if (pageName == 'villain' || pageName =='player' ||pageName =='villains' || pageName == 'players' || pageName == 'game') loaded.page = true;
+        }},100);}
     
 
 function load(fileLoad,functionLoad) {

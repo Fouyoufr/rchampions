@@ -16,6 +16,7 @@ if (fs.existsSync(fileName)) logFile = fs.readFileSync(fileName);
 function serverLogFile (message) {
     //Journalisation sur le serveur
     let today = new Date();
+    if (!fs.existsSync(__dirname + '/logs')) fs.mkdirSync(__dirname + '/logs');
     let fileName = __dirname + '/logs/' +today.getFullYear() + today.getMonth() + today.getDate() + '.json';
     if (!fs.existsSync(fileName)) {
         let logTitle= JSON.stringify({'date':Date.now(),'message':'NEW Dayly log','color':'white'});
@@ -459,7 +460,7 @@ function operation(message,gameKey,clientId,webSocket) {
                         wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(games[gameKey]) + '}');
                         //Désignation du premier joueur (si plusieurs joueurs présents et un seul méchant)
                         if (games[gameKey].players.length > 1 && games[gameKey].villains.length == 1) {
-                            games[gameKey].first = Math.random() * (games[gameKey].players.length -1);
+                            games[gameKey].first =  Math.floor(Math.random() * (games[gameKey].players.length -1));
                             wsGameSend(gameKey,'{"operation":"changeFirst","first":"' + games[gameKey].first + '"}');}
                         fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                     }}}
@@ -498,7 +499,7 @@ function operation(message,gameKey,clientId,webSocket) {
             else {
                 if (message.operation == 'villainMainMaxMinus') {
                     if (games[gameKey].villains[message.id].mainScheme.max < 1) wsclientSend(clientId,'{"error":"wss::threatNegative ' + gameKey + '/' + message.id + '","errId":"19"}'); else games[gameKey].villains[message.id].mainScheme.max--; }
-                else games[gameKey].villains[message.id].mainScheme.max--;
+                else games[gameKey].villains[message.id].mainScheme.max++;
                     wsGameSend(gameKey,'{"operation":"mainThreatMax","id":"' + message.id + '","value":"' + games[gameKey].villains[message.id].mainScheme.max + '"}');
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                 }
@@ -650,6 +651,18 @@ function operation(message,gameKey,clientId,webSocket) {
             else if (games[message.key] !== undefined) wsclientSend(clientId,'{"operation":"newKey"}'); else wsclientSend(clientId,'{"operation":"newKey","key":"' + message.key +'"}');
             break;
 
+        case 'newGame' :
+            //Création de la partie
+            message.key = message.key.toUpperCase();
+            if (config.public) {
+                //Validation en mode public
+                if (hash(webSocket.salt + config.publicPassword) == message.passHash) {
+                    if (games[message.key] !== undefined) wsclientSend(clientId,'{"error":"wss::keyAllreadyUsed","errId":"60"}');
+                    else  createGame(message.key,message.villains,message.players,message.decks,webSocket);}
+                else wsclientSend(clientId,'{"error":"wss::badPublicPass","errId":"59"}');}
+            else createGame(message.key,message.villains,message.players,message.decks,webSocket);
+            break;
+
         case 'checkPass' :
             //Vérification de la saisie du mot de passe publique
             if (hash(webSocket.salt + config.publicPassword) == message.passHash) webSocket.send('{"operation":"newGamePassOK"}'); else webSocket.send('{"operation":"newGamePassKO"}');
@@ -663,3 +676,10 @@ const { createHash } = require('crypto');
 //Hash pour mots de passe
 function hash(string) {
   return createHash('sha256').update(string).digest('hex');}
+function createGame(key,nbVillains,nbPlayers,decks,webSocket) {
+    let gameCreate = {"key":key,"date":Date.now(),"villains":[],"players":[],"decks":decks};
+    for (i=0;i<nbVillains;i++) gameCreate.villains.push({"id":"0","life":"0","phase":"0","mainScheme":{"id":"0","current":"0","max":"0","acceleration":"0"},"sideSchemes":{}});
+    for (i=1;i<=nbPlayers;i++) gameCreate.players.push({"name":"joueur " + i,"life":"0","alterHero":"a","hero":"0"});
+    if (nbPlayers>1) gameCreate.first = Math.floor(Math.random() * Number(nbPlayers-1));
+    games[key]=gameCreate;
+    fs.appendFile(__dirname + '/games/' + key + '.json',JSON.stringify(gameCreate),function() {webSocket.send('{"operation":"gameJoin","key":"'+ key + '"}');})}

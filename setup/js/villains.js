@@ -107,7 +107,6 @@ function counterDisplay (villainId,counterId) {
 function sideSchemeDisplay (villainIndex,villainSC) {
     let sideScheme = addElement('div','sideScheme','villain' + villainIndex + '-sideScheme' + villainSC);
     //Affichages du compteur de menace de la manigance annexe
-    //valuePlusMinus(vpmClass,vpmValue,vpmId,vpmOperationMinus,vpmOperationPlus) 
     sideScheme.append(valuePlusMinus('threat',game.villains[villainIndex].sideSchemes[villainSC].threat,sideScheme.id + '-value','"operation":"sideSchemeMinus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"','"operation":"sideSchemePlus","villain":"'+ villainIndex + '","sideScheme":"' + villainSC + '"'));
     //Affichage du nom de la manigance annexe
     let sideSchemeName = addElement('button','name');

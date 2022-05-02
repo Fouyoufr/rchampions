@@ -18,6 +18,7 @@
 >    ### Message du jour/du moment/astuce aléatoire ?
 
 ## Génériques
+ - Incorporer la gestion des decks disponibles !!!
  - Ajouter les autres boites de jeu
  - Feedback utilisateur (email possible)
  - Gestion des mots clef
@@ -41,5 +42,5 @@
 
 | Anotations |
 | --- |
-| Compteur pour erreurs websocket  ```59``` |
+| Compteur pour erreurs websocket  ```60``` |
 | docker build -t fouyou/rchampions:latest . --no-cache |
