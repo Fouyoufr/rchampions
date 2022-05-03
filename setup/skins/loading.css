@@ -1,3 +1,3 @@
 /*Masquer la page le temps de la charger */
-div#loading {background-color:#e74c3c;height:80%;width:80%;position:fixed;top:0px;left:0px;padding:10%;color:white;font-size:30px;font-weight:bold;text-align: center;z-index: 20;}
+div#loading {background-color:#e74c3c;height:100%;width:100%;position:fixed;top:0px;left:0px;padding:10%;color:white;font-size:30px;font-weight:bold;text-align: center;z-index: 20;}
 div#popup {background-color:rgba(0, 0, 0, 0.5);height:100%;width:100%;position:fixed;top:0px;left:0px;display:none;}

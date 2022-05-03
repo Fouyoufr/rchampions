@@ -4,7 +4,7 @@ window.addEventListener("load", () => {
   });
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
-const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player','villain.html':'villain'};
+const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player','villain.html':'villain','mobile.html':'mobile'};
 //Récupération du nom de la page en cours
 let pageName = pageNames[window.location.pathname.split("/").pop()] === undefined ? 'index' : pageNames[window.location.pathname.split("/").pop()];
 const urlParams = new URLSearchParams(location.search)
@@ -138,9 +138,10 @@ function mainLoad(gameJson='') {
                 loaded.page = true;
             }},100)}
         //Chargement des menus pleine page
-        addMenu();
-        addPopup();
-        if (pageName == 'villain' || pageName =='player' ||pageName =='villains' || pageName == 'players' || pageName == 'game') loaded.page = true;
+        if (pageName != 'mobile') {
+            addMenu();
+            addPopup();}
+        if (pageName == 'villain' || pageName =='player' ||pageName =='villains' || pageName == 'players' || pageName == 'game' || pageName =='mobile') loaded.page = true;
         }},100);}
     
 

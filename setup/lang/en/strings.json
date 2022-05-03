@@ -36,7 +36,11 @@
     "indexNewPlayers":"Number of players in the new game",
     "indexNewCreteExpl":"You can create now your new game or click bellow to (un)select the decks available during the game",
     "indexNewCreateButton":"Create",
-    "indexNewDecksAll":"Availaible decks during this game (Select all)",
+    "indexNewDecksAll":"Availaible decks during this game",
+    "indexNewPlayer":"Player",
+    "indexNewNoDeck":"Error : You can't create a new game if you don't select at least one deck...",
+    "indexNewSelectAll":"Select all",
+    "indexNewUnselectAll":"Unselect all",
 
     "STconfused":"Confused",
     "STstunned":"Stunned",

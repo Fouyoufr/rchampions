@@ -7,7 +7,7 @@ div#websiteIntro h1 {display:block;width:100%;text-align: center;margin-top:0px;
 div.indexTile {position: relative;margin:10%;margin-bottom:5%;border: thick double darkolivegreen;background-color:antiquewhite;padding:10px;margin-top:0px;font-size:medium;}
 div.indexTile .title {font-size:x-large;font-weight: bold;}
 div.indexTile .intro {font-size:medium;color:#555;margin-bottom:5px;}
-div.indexTile .outro {display:block;width:100%;text-align: center;font-weight:bold;color:crimson;}
+div.indexTile .outro, div#newGameNoDeck {display:block;width:100%;text-align: center;font-weight:bold;color:crimson;}
 div.indexTile .content {padding-left:10px;padding-right:10px;}
 div.indexTile#joinGame  div.content {display:block;width:100%;font-size: large;text-align: center;position:relative;}
 div.indexTile .keyInput {padding:5px;padding-left:2px;background-color:black;color:yellow;font-size:x-large;font-weight:bolder;margin:5px;text-transform:uppercase;text-align:center;}

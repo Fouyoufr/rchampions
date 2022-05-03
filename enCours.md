@@ -1,9 +1,8 @@
 # En cours de développement
 
-
 ## Page d'administration
  - Ajouter un journal administratif pour les messages des clients
- - Gestion du certifcat de serveur + mot de passe dans une tuile "serveur et sécurité"  
+ - Gestion du certificat de serveur + mot de passe dans une tuile "serveur et sécurité"  
    ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
  - Indiquer dans la config du serveur le port https pour la redirection
  - Sauvegarde globale et restauration
@@ -24,6 +23,7 @@
  - Modification de la partie
  - Ecrans périphériques mobiles
  - InfoPartie (réunion, url etc)
+ - Retravailler le contenu des popups...
 
 ## boxes.json
  - fr : reste sideSchemes

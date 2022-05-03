@@ -35,7 +35,11 @@
     "indexNewPlayers":"Nombre de joueurs dans la nouvelle partie",
     "indexNewCreteExpl":"Vous pouvez créer votre nouvelle partie ou affiner ci-dessous la sélection des decks qui seront disponibles",
     "indexNewCreateButton":"Créer",
-    "indexNewDecksAll":"Decks disponibles pour cette partie (Tout sélectionner)",
+    "indexNewDecksAll":"Decks disponibles pour cette partie",
+    "indexNewPlayer":"Joueur",
+    "indexNewNoDeck":"Erreur : il faut au moins un deck pour créer une partie...",
+    "indexNewSelectAll":"Tout sélectionner",
+    "indexNewUnselectAll":"Tout Déselectionner",
 
     "STconfused":"Désorienté",
     "STstunned":"Sonné",

@@ -89,7 +89,8 @@ const TLSserver = https.createServer(TLSoptions,webRequest);
 function webRequest (req, res) {
     //Redirection vers ssl/tls si actif
     if (config.tls != 'off' && config.tls != 'test' && req.connection.encrypted === undefined) {
-        res.writeHead(302,{'location':'https://' + req.headers.host + req.url});
+        if (config.tlsPort === undefined) config.tlsPort = '443';
+        res.writeHead(302,{'location':'https://' + req.headers.host + ':' + config.tlsPort + req.url});
         res.end();}
     if (url.parse(req.url).pathname === '/') req.url = '/index.html';
     let contentType = 'text/html; charset=utf-8';
@@ -657,9 +658,9 @@ function operation(message,gameKey,clientId,webSocket) {
                 //Validation en mode public
                 if (hash(webSocket.salt + config.publicPassword) == message.passHash) {
                     if (games[message.key] !== undefined) wsclientSend(clientId,'{"error":"wss::keyAllreadyUsed","errId":"60"}');
-                    else  createGame(message.key,message.villains,message.players,message.decks,webSocket);}
+                    else  createGame(message.key,message.villains,message.players,message.decks,message.playersName,webSocket);}
                 else wsclientSend(clientId,'{"error":"wss::badPublicPass","errId":"59"}');}
-            else createGame(message.key,message.villains,message.players,message.decks,webSocket);
+            else createGame(message.key,message.villains,message.players,message.decks,message.playersName,webSocket);
             break;
 
         case 'checkPass' :
@@ -675,10 +676,10 @@ const { createHash } = require('crypto');
 //Hash pour mots de passe
 function hash(string) {
   return createHash('sha256').update(string).digest('hex');}
-function createGame(key,nbVillains,nbPlayers,decks,webSocket) {
+function createGame(key,nbVillains,nbPlayers,decks,playersName,webSocket) {
     let gameCreate = {"key":key,"date":Date.now(),"villains":[],"players":[],"decks":decks};
     for (i=0;i<nbVillains;i++) gameCreate.villains.push({"id":"0","life":"0","phase":"0","mainScheme":{"id":"0","current":"0","max":"0","acceleration":"0"},"sideSchemes":{}});
-    for (i=1;i<=nbPlayers;i++) gameCreate.players.push({"name":"joueur " + i,"life":"0","alterHero":"a","hero":"0"});
+    for (i=1;i<=nbPlayers;i++) gameCreate.players.push({"name":playersName + " " + i,"life":"0","alterHero":"a","hero":"0"});
     if (nbPlayers>1) gameCreate.first = Math.floor(Math.random() * Number(nbPlayers-1));
     games[key]=gameCreate;
     fs.appendFile(__dirname + '/games/' + key + '.json',JSON.stringify(gameCreate),function() {webSocket.send('{"operation":"gameJoin","key":"'+ key + '"}');})}

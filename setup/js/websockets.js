@@ -229,6 +229,7 @@ function openSocket(clientId=null) {
             case 'deleteGame' :
                 document.getElementById('adminGame-' + message.id).remove();
                 if (document.getElementById('gamesListTile-content').getElementsByTagName('tr').length == 1) document.getElementById('gamesListTile-content').textContent = lang.ADMINTILEemptyList;
+                if (sessionStorage.getItem('rChampions-gameKey') && sessionStorage.getItem('rChampions-gameKey')==message.id) sessionStorage.clear('rChampions-gameKey');
                 break;
                 
             case 'changeFirst' :
@@ -322,8 +323,3 @@ function webSockError(errorText,id=0) {
     websocketErrorClose.onclick=function () {document.getElementById('websocketError').remove();}
     websocketError.append(websocketErrorClose);
     document.getElementsByTagName('body')[0].append(websocketError);}
-
-function stopRefresh(errorText,id=0) {
-    //Affichage du message de refresh nécessaire (sur connexion perdue par exemple)
-    
-}
