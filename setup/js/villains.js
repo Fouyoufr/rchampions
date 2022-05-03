@@ -213,7 +213,7 @@ function newSideScheme(villainId) {
     newDecks={};
     newSideSchemes={};
     for (let i in sideSchemes) if (i != 0) {
-        if (game.villains[villainId].sideSchemes[i] === undefined) {
+        if (game.villains[villainId].sideSchemes[i] === undefined && (game.decks.includes(Number(sideSchemes[i].deck)) || sideSchemes[i].hero !== undefined)) {
             newSideSchemes[i] = sideSchemes[i];
             if (sideSchemes[i].hero === undefined) newDecks[sideSchemes[i].deck] = decks[sideSchemes[i].deck];
              else {

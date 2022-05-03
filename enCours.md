@@ -18,7 +18,6 @@
 >    ### Message du jour/du moment/astuce aléatoire ?
 
 ## Génériques
- - Incorporer la gestion des decks disponibles !!!
  - Ajouter les autres boites de jeu
  - Feedback utilisateur (email possible)
  - Gestion des mots clef

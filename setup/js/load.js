@@ -1,3 +1,7 @@
+//Détéction (et redirection) de périphérique mobile
+window.addEventListener("load", () => {
+    if (navigator.userAgent.toLowerCase().match(/mobile/i) && location.href.split('/').pop() != 'mobile.html') location.href='mobile.html';
+  });
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
 const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player','villain.html':'villain'};

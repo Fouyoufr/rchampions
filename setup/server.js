@@ -245,8 +245,7 @@ function adminOP(message,webSocket) {
                     else {
                         delete games[message.id];
                         wsAdminSend('{"operation":"deleteGame","id":"' + message.id + '"}');
-                        //fs.writeFileSync(__dirname + '/games/' + message.game + '.json',JSON.stringify(games[message.game]));
-                    }
+                        fs.unlinkSync(__dirname + '/games/' + message.id + '.json');}
                     break;
 
                 case 'sendMessage' :
