@@ -2,13 +2,11 @@
 
 ## Page d'administration
  - Ajouter un journal administratif pour les messages des clients
- - Gestion du certificat de serveur + mot de passe dans une tuile "serveur et sécurité"  
+ - Gestion du certificat de serveur + mot de passe dans la tuile "serveur et sécurité"  
    ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
  - Indiquer dans la config du serveur le port https pour la redirection
  - Sauvegarde globale et restauration
  - (Nouvelle partie depuis la page admin ?)
- - Gestion du mode public et de son mot de passe
- - Warning : mot de passe non changé (pour les 2, la valeur par défaut est "Marvel-Champions")
 
 ## Page d'accueil
 >    ### Création d'une partie

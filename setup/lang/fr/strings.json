@@ -179,6 +179,13 @@
     "ADMINTileMessageCUsers":"Utilisateurs actuellement connectés",
     "ADMINTileMessageCAdmins":"Administrateurs actuellement connectés",
 
+    "ADMINSecuCert":"Sécurité réseau (certificat/tls)",
+    "ADMINSecuPass":"Mot de passe administratif",
+    "ADMINSecuPassBtnTitle":"changer le mot de passe",
+    "ADMINSecuPassBtn":"Changer",
+    "ADMINSecuPubMode":"Mode public",
+    "ADMINSecuDiffPass":"Le mot de passe saisi et sa confirmation sont différents",
+    "ADMINSecuPass8char":"Le mot de passe saisi ne comporte pas les 8 caractères requis",
 
     "ADMINTILEserverTitle":"Serveur et Sécurité",
     "ADMINTILEconsoleLoad":"Télécharger le journal d'activité du jour",

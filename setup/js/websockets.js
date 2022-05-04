@@ -205,8 +205,15 @@ function openSocket(clientId=null) {
                 break;
                 
             case 'adminOK' :
-                if (pageName == 'admin' && (!document.getElementById('gamesListTile-content') || document.getElementById('gamesListTile-content').innerHTML == '')) {
+                if (pageName == 'admin' && loaded.page) {
                     //peupler la page admin après connexion.
+                    document.getElementById('adminNetCert').textContent = message.tlsCert;
+                    document.getElementById('publicSlider').checked = message.publicMode == 'on';
+                    document.getElementById('tr1').getElementsByTagName('td')[1].style.backgroundColor = message.warningAdminPass == 'KO' ? 'crimson' : 'transparent';
+                    document.getElementById('tr2').getElementsByTagName('td')[1].style.backgroundColor = message.warningAdminPass == 'KO' ? 'crimson' : 'transparent';
+                    document.getElementById('tr3').getElementsByTagName('td')[1].style.backgroundColor = message.warningPublicPass == 'KO' ? 'crimson' : 'transparent';
+                    document.getElementById('tr4').getElementsByTagName('td')[1].style.backgroundColor = message.warningPublicPass == 'KO' ? 'crimson' : 'transparent';
+                    document.getElementById('adminPass1').value = document.getElementById('adminPass2').value = document.getElementById('publicPass1').value = document.getElementById('publicPass2').value = '';
                     sendReq('{"admin":"init","passHash":"' + adminHash + '"}');}
                 else if (pageName != 'admin') window.location.href = "admin.html";
                 break;
@@ -217,8 +224,9 @@ function openSocket(clientId=null) {
                 else {
                     let gamesListTable = addElement('table');
                     gamesListTable.innerHTML = '<tr><th>' + lang.ADMINTILEgamesListTH1 + '</th><th>' + lang.ADMINTILEgamesListTH2 + '</th><th>' + lang.ADMINTILEgamesListTH3 + '</th><th>' + lang.ADMINTILEgamesListTH4 + '</th><th>' + lang.ADMINTILEgamesListTH5 + '</th><th>' + lang.ADMINTILEgamesListTH6 + '</th></tr>';
-                    gamesListDiv.append(gamesListTable);
-                    Object.keys(message.gamesList).forEach(key => {gamesListTable.append(adminGameDisplay(message.gamesList[key]));})}
+                    Object.keys(message.gamesList).forEach(key => {gamesListTable.append(adminGameDisplay(message.gamesList[key]));});
+                    gamesListDiv.innerHTML = gamesListTable.outerHTML;
+                }
                 break;
         
             case 'adminGamesUpdate' :

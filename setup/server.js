@@ -218,7 +218,7 @@ function adminOP(message,webSocket) {
                 wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');}
             switch(message.admin) {
                 case 'connect' : 
-                webSocket.send('{"operation":"adminOK"}');
+                webSocket.send('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                 break;
                 case 'init' :
                     //Envoi de la liste des parties en cours sur le serveur
@@ -274,6 +274,20 @@ function adminOP(message,webSocket) {
                 fs.writeFileSync(__dirname + '/' + fileName,logDown);
                 webSocket.send('{"operation":"adminLogDL","logName":"' + saveFileName + '"}');
                 break;
+
+                case 'publicMode':
+                    if (message.publicMode != 'false') config.public = 'on'; else delete (config.public);
+                    fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
+                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    break;
+
+                case 'changePass':
+                    let wichPass = 'adminPassword';
+                    if (message.password == 'publicPass') wichPass = 'publicPassword';
+                    config[wichPass] = message.value;
+                    fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
+                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    break;
 
                 default:
                     webSocket.send('{"error":"wss::operationNotFound ' + message.admin + '","errId":"53"}');

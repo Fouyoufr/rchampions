@@ -180,6 +180,14 @@
     "ADMINTileMessageCUsers":"Currently connected users",
     "ADMINTileMessageCAdmins":"Currently connected administrtaors",
 
+    "ADMINSecuCert":"Network security (certificate/tls)",
+    "ADMINSecuPass":"Administrative password",
+    "ADMINSecuPassBtnTitle":"Change this password",
+    "ADMINSecuPassBtn":"Change",
+    "ADMINSecuPubMode":"Public mode",
+    "ADMINSecuDiffPass":"The password and its confirmation don't match",
+    "ADMINSecuPass8char":"The password is less than 8 characters long",
+
     "ADMINTILEserverTitle":"Server and Security",
     "ADMINTILEconsoleLoad":"Download today's server activity log",
     

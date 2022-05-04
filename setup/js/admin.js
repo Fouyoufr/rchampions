@@ -24,8 +24,25 @@ function adminTile(tileId,tileTitle,tileContent='',tileIntro='',tileOutro='') {
 
 function adminSecu() {
     //Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)
-
-}
+    adminSecuTile = '<div id="adminTILEserverSecu"><div>' + lang.ADMINSecuCert + ' : <button id="adminNetCert"></button></div>';
+    adminSecuTile += '<table><tr id="tr1"><td>' + lang.ADMINSecuPass + '</td><td><input type="password" id="adminPass1"></input></td></tr><tr id="tr2"><td></td><td><input type="password" id="adminPass2"></input><button title="' + lang.ADMINSecuPassBtnTitle + '" onclick="adminChangePass(\'adminPass\');">' + lang.ADMINSecuPassBtn + '</button></td></tr><tr class="spacer"><td></td><td></td></tr>';
+    adminSecuTile += '<tr id="tr3"><td><input type="checkbox" id="publicSlider" onclick="adminPublicSwitch(this.checked);">' + lang.ADMINSecuPubMode + '</td><td><input type="password" id="publicPass1"></input></td></tr><tr id="tr4"><td></td><td><input type="password" id="publicPass2"></input><button title="' + lang.ADMINSecuPassBtnTitle + '" onclick="adminChangePass(\'publicPass\');">' + lang.ADMINSecuPassBtn + '</button></td></tr></table><div class="error"></div></div>';
+    adminSecuTile += '<div id="adminTILEserverConsole"></div><button id="adminTILEconsoleDownload" onclick="sendReq(\'{&quot;admin&quot;:&quot;consoleSave&quot;,&quot;passHash&quot;:&quot;\' + adminHash + \'&quot;}\');" title="' + lang.ADMINTILEconsoleLoad + '"></button>';
+    return adminSecuTile;}
+function adminPublicSwitch(publicMode) {
+    //Modification du mode public sur le serveur
+    sendReq('{"admin":"publicMode","publicMode":"' + publicMode + '","passHash":"' + adminHash + '"}');}
+function adminChangePass(wichPass) {
+    //Changement de mot de passe
+    error = '';
+    if (document.getElementById(wichPass + '1').value != document.getElementById(wichPass + '2').value) error=lang.ADMINSecuDiffPass + '.';
+    else if (document.getElementById(wichPass + '1').value.length < 8) error=lang.ADMINSecuPass8char + '.';
+    if (error !== '') document.getElementById('adminTILEserverSecu').getElementsByClassName('error')[0].textContent = error;
+    else {
+        document.getElementById('adminTILEserverSecu').getElementsByClassName('error')[0].textContent = '';
+        hash(document.getElementById(wichPass + '1').value).then (function(hashedValue) {
+            sendReq('{"admin":"changePass","password":"' + wichPass + '","value":"' + hashedValue + '","passHash":"' + adminHash + '"}');});
+    }}
 
 function adminGameDisplay(game) {
     let gameTr = addElement('tr','adminGameDisplay','adminGame-'+game.key);

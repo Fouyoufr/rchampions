@@ -125,7 +125,7 @@ function mainLoad(gameJson='') {
                 document.getElementById('tiles').append(
                     adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
                     adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
-                    adminTile('serverSecurity','ADMINTILEserverTitle','<div id="adminTILEserverSecu"></div><div id="adminTILEserverConsole"></div><button id="adminTILEconsoleDownload" onclick="sendReq(\'{&quot;admin&quot;:&quot;consoleSave&quot;,&quot;passHash&quot;:&quot;\' + adminHash + \'&quot;}\');" title="' + lang.ADMINTILEconsoleLoad + '"></button>')
+                    adminTile('serverSecurity','ADMINTILEserverTitle',adminSecu())
                 );
                 loaded.page = true;}},100);}
         if (pageName == 'index') {
@@ -170,8 +170,10 @@ function addMenu() {
         gamekey.onclick = function () {navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + '?g=' + gameKey);}
         document.getElementsByTagName('body')[0].append(gamekey);}
     //Icone de la musique en jeu (MeloDice) et des parmètres
-    let melodiceMenu = addElement('button','melodiceMenu');
-    melodiceMenu.title=lang.MENUmelodice;
+    if (rcConfig.melodice !== undefined) {
+        let melodiceMenu = addElement('button','melodiceMenu');
+        melodiceMenu.title=lang.MENUmelodice;
+        document.getElementsByTagName('body')[0].append(melodiceMenu);}
     let settingsMenu = addElement('div','','settings');
     //Ajouter ici : aide(s), Chwazy, bug report, doc, box/decks de la partie
     let settingsButton = addElement('button','open');
@@ -189,7 +191,7 @@ function addMenu() {
     if (pageName != 'admin') settingsInside.append(setMenu('admin',adminPopup,'adminMenu'));
 
     settingsMenu.append(settingsInside);
-    document.getElementsByTagName('body')[0].append(melodiceMenu,settingsMenu);}
+    document.getElementsByTagName('body')[0].append(settingsMenu);}
 function setMenu (lib, onclick, menuClass='setting') {
     title = lang['MENU' + lib + '_'] !== undefined ? lang['MENU' + lib + '_'] : lang['MENU' + lib];
     let settingsEntry = addElement('button',menuClass);
