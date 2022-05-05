@@ -225,7 +225,8 @@ function openSocket(clientId=null) {
                     let gamesListTable = addElement('table');
                     gamesListTable.innerHTML = '<tr><th>' + lang.ADMINTILEgamesListTH1 + '</th><th>' + lang.ADMINTILEgamesListTH2 + '</th><th>' + lang.ADMINTILEgamesListTH3 + '</th><th>' + lang.ADMINTILEgamesListTH4 + '</th><th>' + lang.ADMINTILEgamesListTH5 + '</th><th>' + lang.ADMINTILEgamesListTH6 + '</th></tr>';
                     Object.keys(message.gamesList).forEach(key => {gamesListTable.append(adminGameDisplay(message.gamesList[key]));});
-                    gamesListDiv.innerHTML = gamesListTable.outerHTML;
+                    gamesListDiv.innerHTML='';
+                    gamesListDiv.append(gamesListTable);
                 }
                 break;
         
@@ -281,6 +282,10 @@ function openSocket(clientId=null) {
                 saveLink.click();
                 saveLink.remove();
                 break;
+            
+            case 'download' :
+                download(message.fileName,message.data)
+                break;
 
             case 'gameJoin' :
                 if (message.key === undefined) document.getElementById('joinGame').getElementsByClassName('outro')[0].textContent = lang.indexJoinBadKey;
@@ -305,6 +310,10 @@ function openSocket(clientId=null) {
                 document.getElementById('newGameKey').value = newGameKey;
             break;
             
+            case 'restore' :
+                if (message.result == 'ok') greenCheck('restoreOK'); else document.getElementById('saveTile-content').getElementsByClassName('error').textContent = message.result;
+            break;
+
             default:
         webSockError('ws::serverOperationNotFound ' + message.operation,'28');}}}
 
@@ -331,3 +340,12 @@ function webSockError(errorText,id=0) {
     websocketErrorClose.onclick=function () {document.getElementById('websocketError').remove();}
     websocketError.append(websocketErrorClose);
     document.getElementsByTagName('body')[0].append(websocketError);}
+
+function download(filename,content) {
+    //savedData = "data:application/octet-stream," + atob(message.data,);
+    var a = document.createElement('a');
+    var blob = new Blob([atob(content)], {'type':'application/octet-stream'});
+    a.href = window.URL.createObjectURL(blob);
+    a.download = filename;
+    a.click();
+    a.remove();}

@@ -5,7 +5,7 @@
  - Gestion du certificat de serveur + mot de passe dans la tuile "serveur et sécurité"  
    ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
  - Indiquer dans la config du serveur le port https pour la redirection
- - Sauvegarde globale et restauration
+ - Restauration : interface
  - (Nouvelle partie depuis la page admin ?)
 
 ## Page d'accueil
@@ -39,5 +39,5 @@
 
 | Anotations |
 | --- |
-| Compteur pour erreurs websocket  ```60``` |
+| Compteur pour erreurs websocket  ```61``` |
 | docker build -t fouyou/rchampions:latest . --no-cache |

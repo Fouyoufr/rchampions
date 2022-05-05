@@ -125,7 +125,8 @@ function mainLoad(gameJson='') {
                 document.getElementById('tiles').append(
                     adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
                     adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
-                    adminTile('serverSecurity','ADMINTILEserverTitle',adminSecu())
+                    adminTile('serverSecurity','ADMINTILEserverTitle',adminSecu()),
+                    adminTile('saveTile','ADMINTILEsave',adminSave(),'Ici, vous pouvez sauvegarder et restaurer les élements du serveur')
                 );
                 loaded.page = true;}},100);}
         if (pageName == 'index') {
@@ -334,6 +335,13 @@ function selecLangValid(lId) {
         rcConfig.refreshDate=refreshToday;
         localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
         location.reload();}}
+
+function greenCheck(id) {
+    //Affichage d'une coche verte d'action effectuée pendant 20 secondes
+    document.getElementById(id).style.display = 'inline-block';
+    setTimeout(function(){
+        document.getElementById(id).style.display = 'none';
+      },20000);}
 
     // Pour travailler sur l'import des anciennes sauvegardes :
     // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications

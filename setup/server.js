@@ -220,6 +220,7 @@ function adminOP(message,webSocket) {
                 case 'connect' : 
                 webSocket.send('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                 break;
+
                 case 'init' :
                     //Envoi de la liste des parties en cours sur le serveur
                     webSocket.send('{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');
@@ -231,7 +232,7 @@ function adminOP(message,webSocket) {
 
                 case 'playerName' :
                     //Changement du nom affiché d'un joueur
-                    if(games[message.game].players[message.player] === undefined) wsclientSend(clientId,'{"error":"wss::playerNotFound ' + message.game + '/' + message.player + '","errId":"51"}');
+                    if(games[message.game].players[message.player] === undefined) webSocket.send('{"error":"wss::playerNotFound ' + message.game + '/' + message.player + '","errId":"51"}');
                     else {
                         games[message.game].players[message.player].name = message.newName;
                         wsGameSend(message.game,'{"operation":"playerName","player":"' + message.player + '","newName":"' + message.newName + '"}');
@@ -268,11 +269,10 @@ function adminOP(message,webSocket) {
                     logJson.forEach(function(mess) {
                     logDown += '[' + (new Date(parseInt(mess.date))).toLocaleTimeString() + ']' + mess.message + '\n';
                 });
-                let saveFileName = 'logs/' + (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
+                let saveFileName = (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
                 saveFileName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.log';
                 saveFileName.replace(/\s/g, '');
-                fs.writeFileSync(__dirname + '/' + fileName,logDown);
-                webSocket.send('{"operation":"adminLogDL","logName":"' + saveFileName + '"}');
+                webSocket.send('{"operation":"download","fileName":"' + saveFileName +  '","data":"' + b64enCode(logDown) + '"}');
                 break;
 
                 case 'publicMode':
@@ -289,9 +289,59 @@ function adminOP(message,webSocket) {
                     wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                     break;
 
+                case 'saveAll' :
+                    saveData={'games':[],'serverConfig':config,'clientConfig':JSON.parse(fs.readFileSync(__dirname + '/config.json'))};
+                    Object.keys(games).forEach(function(key){
+                        saveData.games.push(games[key]);
+                    });
+                    let saveAllName = (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
+                    saveAllName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.bak';
+                    saveAllName.replace(/\s/g, '');
+                    webSocket.send('{"operation":"download","fileName":"' + saveAllName +  '","data":"' + b64enCode(JSON.stringify(saveData)) + '"}');
+                    break;
+
+                case 'restore' :
+                    let buffer = Buffer.from(message.data,'base64');  
+                    let text = buffer.toString('utf-8');
+                    let jsonRestore
+                    let restoreError = 'ok';             
+                    try {jsonRestore = JSON.parse(text);
+                        if (jsonRestore.key !== undefined) restoreGame(jsonRestore);
+                        else {
+                            //Restaurer les parties fournies dans le fichier
+                            if (jsonRestore.games != undefined) {
+                                jsonRestore.games.forEach(function(game2restore) {restoreGame(game2restore)});
+                                wsAdminSend();
+                            }
+                            //restaurer la configuration serveur
+                            if (jsonRestore.serverConfig !== undefined) {
+                                fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(jsonRestore.serverConfig));
+                                config = jsonRestore.serverConfig;
+                                wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                            }
+                            //restaurer la configuration des clients
+                            if (jsonRestore.clientConfig !== undefined) {
+                                fs.writeFileSync(__dirname + '/config.json',JSON.stringify(jsonRestore.clientConfig));
+                            }
+                    }}
+                    catch (err) {restoreError=err;}
+                        webSocket.send('{"operation":"restore","result":"' + restoreError + '"}');
+                    break;
+
                 default:
                     webSocket.send('{"error":"wss::operationNotFound ' + message.admin + '","errId":"53"}');
             }}}}
+function restoreGame(gameData) {
+    //restaurer une partie depuis le JSON d'un fichier
+    delete gameData.wsClients;
+    let restoreAdd = games[gameData.key] === undefined;
+    if (games[gameData.key] === undefined) restoreAdd = true;
+    games[gameData.key]=gameData;
+    fs.writeFileSync(__dirname + '/games/' + gameData.key + '.json',JSON.stringify(gameData));
+    if (restoreAdd) wsAdminSend('{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}'); else wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(gameData) + '}');
+    
+                    
+}
 
 function operation(message,gameKey,clientId,webSocket) {
     //Gestion des modifications apportées par les clients.
@@ -696,4 +746,10 @@ function createGame(key,nbVillains,nbPlayers,decks,playersName,webSocket) {
     for (i=1;i<=nbPlayers;i++) gameCreate.players.push({"name":playersName + " " + i,"life":"0","alterHero":"a","hero":"0"});
     if (nbPlayers>1) gameCreate.first = Math.floor(Math.random() * Number(nbPlayers-1));
     games[key]=gameCreate;
-    fs.appendFile(__dirname + '/games/' + key + '.json',JSON.stringify(gameCreate),function() {webSocket.send('{"operation":"gameJoin","key":"'+ key + '"}');})}
+    fs.appendFile(__dirname + '/games/' + key + '.json',JSON.stringify(gameCreate),function() {webSocket.send('{"operation":"gameJoin","key":"'+ key + '"}');})
+    wsAdminSend('{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}');}
+
+function b64enCode(data) {
+    //Encodage en base 64 de la donnée fournie.
+    let buff = Buffer.from(data, 'utf-8');
+    return buff.toString('base64');}

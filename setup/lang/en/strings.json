@@ -163,6 +163,7 @@
     "wss::newHeroNotFound":"[server] New hero not found",
     "wss::gameNotFound":"[Server] Game not found",
     "wss::badPublicPass":"[Server] Bad 'Public mode' password",
+    "wss::badSaveFile":"[Server] Bad Restore file",
 
     "ADMINTILEgamesListTitle":"Games list",
     "ADMINTILEgamesListIntro":"List of games currently hosted by the server (realtime update).",

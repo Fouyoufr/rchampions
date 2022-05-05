@@ -162,6 +162,7 @@
     "wss::newHeroNotFound":"[Serveur] Le nouveau héros est introuvable",
     "wss::gameNotFound":"[Serveur] Partie introuvable",
     "wss::badPublicPass":"[Serveur] Mauvais mot de passe public",
+    "wss::badSaveFile":"[Serveur] Fichier illisible",
 
     "ADMINTILEgamesListTitle":"Liste des parties",
     "ADMINTILEgamesListIntro":"Liste des parties hébergées par le serveur, mise à jour en temps-réel.",
