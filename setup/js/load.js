@@ -126,8 +126,9 @@ function mainLoad(gameJson='') {
                     adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
                     adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
                     adminTile('serverSecurity','ADMINTILEserverTitle',adminSecu()),
-                    adminTile('saveTile','ADMINTILEsave',adminSave(),'Ici, vous pouvez sauvegarder et restaurer les élements du serveur')
+                    adminTile('saveTile','ADMINTILEsaveTitle',adminSave(),lang.ADMINTilesaveIntro)
                 );
+                document.getElementById('adminrestoreLine').append(loadInterface('adminSave',lang.ADMINTilesaveButton2Title,adminRestore));
                 loaded.page = true;}},100);}
         if (pageName == 'index') {
             let inddexInterval = setInterval(function() {if (loaded.indexScript == true && loaded.websocketsScript == true){
@@ -342,6 +343,24 @@ function greenCheck(id) {
     setTimeout(function(){
         document.getElementById(id).style.display = 'none';
       },20000);}
+
+function loadInterface(id,title,funcToload) {
+    let returnDiv = addElement('div');
+    let uploadDiv = addElement('div','fileUpload',id);
+    uploadDiv.innerHTML = title;
+    let uploadButton = addElement('input','upload',id + '-btn');
+    uploadButton.type = 'file';
+    uploadButton.onchange = function () {
+        document.getElementById(id + '-file').value = this.value;funcToload();}
+    uploadDiv.append(uploadButton);
+    returnDiv.append(uploadDiv);
+    let fileUploadText = addElement('input');
+    fileUploadText.id = id + '-file';
+    fileUploadText.placeholder = lang.loadInterfaceFiles;
+    fileUploadText.disabled = true;
+    returnDiv.append(fileUploadText);
+    returnDiv.append(addElement('p','greenCheck',id + '-greenCheck'));
+    return returnDiv;}
 
     // Pour travailler sur l'import des anciennes sauvegardes :
     // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications

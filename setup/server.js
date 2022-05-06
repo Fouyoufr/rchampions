@@ -35,7 +35,7 @@ console.log = console.error = function (arg0,arg1='') {
         arg0 = arg0.replace('%s',arg1);
         adminMessage = arg1;}
      process.stdout.write(arg0 + '\n');
-     serverLogFile(JSON.stringify({'date':Date.now(),'message':adminMessage,'color':color}));
+     if (color != 'cyan' || config.debug !== undefined) serverLogFile(JSON.stringify({'date':Date.now(),'message':adminMessage,'color':color}));
      wsAdminSend(JSON.stringify({"operation":"console",'date':Date.now(),"message":adminMessage,"color":color}));};
 process.on('uncaughtException', function(err) {
     //Capture des erreurs bloquantes
@@ -218,7 +218,7 @@ function adminOP(message,webSocket) {
                 wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');}
             switch(message.admin) {
                 case 'connect' : 
-                webSocket.send('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                webSocket.send('{"operation":"adminOK","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                 break;
 
                 case 'init' :
@@ -278,7 +278,13 @@ function adminOP(message,webSocket) {
                 case 'publicMode':
                     if (message.publicMode != 'false') config.public = 'on'; else delete (config.public);
                     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
-                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    break;
+
+                case 'debugMode' :
+                    if (message.debugMode != 'false') config.debug = 'on'; else delete (config.debug);
+                    fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
+                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                     break;
 
                 case 'changePass':
@@ -286,7 +292,7 @@ function adminOP(message,webSocket) {
                     if (message.password == 'publicPass') wichPass = 'publicPassword';
                     config[wichPass] = message.value;
                     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
-                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                     break;
 
                 case 'saveAll' :
@@ -317,7 +323,7 @@ function adminOP(message,webSocket) {
                             if (jsonRestore.serverConfig !== undefined) {
                                 fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(jsonRestore.serverConfig));
                                 config = jsonRestore.serverConfig;
-                                wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                                wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                             }
                             //restaurer la configuration des clients
                             if (jsonRestore.clientConfig !== undefined) {

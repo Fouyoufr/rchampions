@@ -5,7 +5,6 @@
  - Gestion du certificat de serveur + mot de passe dans la tuile "serveur et sécurité"  
    ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
  - Indiquer dans la config du serveur le port https pour la redirection
- - Restauration : interface
  - (Nouvelle partie depuis la page admin ?)
 
 ## Page d'accueil
@@ -22,6 +21,7 @@
  - Ecrans périphériques mobiles
  - InfoPartie (réunion, url etc)
  - Retravailler le contenu des popups...
+ - Ajout du switch "debugMode" dans la configuration des clients...
 
 ## boxes.json
  - fr : reste sideSchemes

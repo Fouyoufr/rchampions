@@ -26,20 +26,21 @@ function adminSecu() {
     //Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)
     adminSecuTile = '<div id="adminTILEserverSecu"><div>' + lang.ADMINSecuCert + ' : <button id="adminNetCert"></button></div>';
     adminSecuTile += '<table><tr id="tr1"><td>' + lang.ADMINSecuPass + '</td><td><input type="password" id="adminPass1"></input><p class="greenCheck" id="adminPassOK"></p></td></tr><tr id="tr2"><td></td><td><input type="password" id="adminPass2"></input><button title="' + lang.ADMINSecuPassBtnTitle + '" onclick="adminChangePass(\'adminPass\');">' + lang.ADMINSecuPassBtn + '</button></td></tr><tr class="spacer"><td></td><td></td></tr>';
-    adminSecuTile += '<tr id="tr3"><td><input type="checkbox" id="publicSlider" onclick="adminPublicSwitch(this.checked);">' + lang.ADMINSecuPubMode + '<p class="greenCheck" id="adminPublicOK"></p></td><td><input type="password" id="publicPass1"></input><p class="greenCheck" id="publicPassOK"></p></td></tr><tr id="tr4"><td></td><td><input type="password" id="publicPass2"></input><button title="' + lang.ADMINSecuPassBtnTitle + '" onclick="adminChangePass(\'publicPass\');">' + lang.ADMINSecuPassBtn + '</button></td></tr></table><div class="error"></div></div>';
+    adminSecuTile += '<tr id="tr3"><td><input type="checkbox" id="publicSlider" class="slider" onclick="adminPublicSwitch(this.checked);">' + lang.ADMINSecuPubMode + '<p class="greenCheck" id="adminPublicOK"></p></td><td><input type="password" id="publicPass1"></input><p class="greenCheck" id="publicPassOK"></p></td></tr><tr id="tr4"><td></td><td><input type="password" id="publicPass2"></input><button title="' + lang.ADMINSecuPassBtnTitle + '" onclick="adminChangePass(\'publicPass\');">' + lang.ADMINSecuPassBtn + '</button></td></tr></table><div class="error"></div>';
+    adminSecuTile += '<div><input type="checkbox" id="debugSlider" class="slider" onclick="adminDebugSwitch(this.checked);">' + lang.ADMINSecuDebug + '<p class="greenCheck" id="adminDebugOK"></p></div></div>';
     adminSecuTile += '<div id="adminTILEserverConsole"></div><button id="adminTILEconsoleDownload" onclick="sendReq(\'{&quot;admin&quot;:&quot;consoleSave&quot;,&quot;passHash&quot;:&quot;\' + adminHash + \'&quot;}\');" title="' + lang.ADMINTILEconsoleLoad + '"></button>';
     return adminSecuTile;}
 function adminSave() {
     //Sauvegarde et restauration des parties et/ou de la configuration !
-    adminSaveTile = '<p><button title="Sauvegarder tous les éléments (parties et configuration)" onclick="adminSaveAll();">Sauvegarde totale</button></p>';
-    adminSaveTile += '<p><input type="file" id="restoreFile" name="restoreFile"><button title="Restaurer un fichier" onclick="adminRestore();">Restaurer</button><p class="greenCheck" id="restoreOK"></p></p><div class="error"></div>';
+    adminSaveTile = '<p><button title="' + lang.ADMINTilesaveButton1Title + '" onclick="adminSaveAll();">' + lang.ADMINTilesaveButton1 + '</button></p>';
+    adminSaveTile += '<p id="adminrestoreLine"></p>';
     return adminSaveTile;}
 function adminSaveAll() {
     //Requète de sauvegarde complète du serveur
     sendReq('{"admin":"saveAll","passHash":"' + adminHash + '"}');}
 function adminRestore() {
     let reader = new FileReader();
-    reader.readAsText(document.getElementById('restoreFile').files[0]);
+    reader.readAsText(document.getElementById('adminSave-btn').files[0]);
     reader.onload = function() {
         sendReq('{"admin":"restore","data":"' + btoa(reader.result) + '","passHash":"' + adminHash + '"}');
       };
@@ -49,6 +50,10 @@ function adminPublicSwitch(publicMode) {
     //Modification du mode public sur le serveur
     sendReq('{"admin":"publicMode","publicMode":"' + publicMode + '","passHash":"' + adminHash + '"}');
     greenCheck('adminPublicOK');}
+function adminDebugSwitch(debugMode) {
+    //Modification du mode verbeux de la console
+    sendReq('{"admin":"debugMode","debugMode":"' + debugMode + '","passHash":"' + adminHash + '"}');
+    greenCheck('adminDebugOK');}
 function adminChangePass(wichPass) {
     //Changement de mot de passe
     error = '';

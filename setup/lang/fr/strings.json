@@ -187,9 +187,18 @@
     "ADMINSecuPubMode":"Mode public",
     "ADMINSecuDiffPass":"Le mot de passe saisi et sa confirmation sont différents",
     "ADMINSecuPass8char":"Le mot de passe saisi ne comporte pas les 8 caractères requis",
+    "ADMINSecuDebug":"Mode Debug (log et console détaillés)",
 
     "ADMINTILEserverTitle":"Serveur et Sécurité",
     "ADMINTILEconsoleLoad":"Télécharger le journal d'activité du jour",
+
+    "ADMINTILEsaveTitle":"Sauvegarde et Restauration",
+    "ADMINTilesaveIntro":"Ici, vous pouvez sauvegarder et restaurer les élements du serveur",
+    "ADMINTilesaveButton1":"Sauvegarde totale",
+    "ADMINTilesaveButton1Title" : "Sauvegarder tous les éléments (parties et configuration)",
+    "ADMINTilesaveButton2Title" : "Restaurer",
+
+    "loadInterfaceFiles": "Nom du fichier à charger",
 
     "noItem":"Aucun"
 }

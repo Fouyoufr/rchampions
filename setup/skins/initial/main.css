@@ -85,3 +85,7 @@ div#languageSelection {display:flex; flex-wrap: wrap;margin:0px;padding:0px;row-
 
 /*Icone de retour "action effectuée */
 .greenCheck {margin:0px;height:1em;width:1em;padding:0px;background-color:transparent;background-image: url(./greenCheck.png);display:inline-block;margin-left:8px;background-size:contain;background-repeat: no-repeat;vertical-align: middle;display:none;}
+
+/* gestion des uploads*/
+.fileUpload {position: relative;overflow: hidden; display:inline-block;box-sizing:content-box; }
+.fileUpload input.upload {position: absolute;top: 0;right: 0;cursor: pointer;opacity: 0;}

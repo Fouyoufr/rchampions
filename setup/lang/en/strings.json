@@ -5,7 +5,6 @@
     "langSelectIntro":"When available, you may change the display language of the website on your device.",
     "langSelectOutro":"(Your choice won't change anything on other users' display)",
 
-
     "TITindex":"Wellcome",
     "TITgame":"Current game",
     "TITvillain":"Villain display",
@@ -179,7 +178,7 @@
     "ADMINTileMessagesIntro":"This feature allows seeing connected players and administrators and sending them Instant Messages.",
     "ADMINTileMessageOutro":"(You can also send a message to all players connected to a game by clicking on the number of online players in the diplauy of games list",
     "ADMINTileMessageCUsers":"Currently connected users",
-    "ADMINTileMessageCAdmins":"Currently connected administrtaors",
+    "ADMINTileMessageCAdmins":"Currently connected administrators",
 
     "ADMINSecuCert":"Network security (certificate/tls)",
     "ADMINSecuPass":"Administrative password",
@@ -188,10 +187,18 @@
     "ADMINSecuPubMode":"Public mode",
     "ADMINSecuDiffPass":"The password and its confirmation don't match",
     "ADMINSecuPass8char":"The password is less than 8 characters long",
+    "ADMINSecuDebug":"Debug Mode (Enhanced log and console)",
 
     "ADMINTILEserverTitle":"Server and Security",
     "ADMINTILEconsoleLoad":"Download today's server activity log",
+
+    "ADMINTILEsaveTitle":"Save and restore",
+    "ADMINTilesaveIntro":"Here, you can save and restaore various elements on this server",
+    "ADMINTilesaveButton1":"Global Save",
+    "ADMINTilesaveButton1Title" : "Save everything (games and configuration)",
+    "ADMINTilesaveButton2Title" : "Restore",
+
+    "loadInterfaceFiles": "File to load",
     
     "noItem":"None"
-
 }

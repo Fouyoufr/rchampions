@@ -209,6 +209,7 @@ function openSocket(clientId=null) {
                     //peupler la page admin après connexion.
                     document.getElementById('adminNetCert').textContent = message.tlsCert;
                     document.getElementById('publicSlider').checked = message.publicMode == 'on';
+                    document.getElementById('debugSlider').checked = message.debugMode == 'on';
                     document.getElementById('tr1').getElementsByTagName('td')[1].style.backgroundColor = message.warningAdminPass == 'KO' ? 'crimson' : 'transparent';
                     document.getElementById('tr2').getElementsByTagName('td')[1].style.backgroundColor = message.warningAdminPass == 'KO' ? 'crimson' : 'transparent';
                     document.getElementById('tr3').getElementsByTagName('td')[1].style.backgroundColor = message.warningPublicPass == 'KO' ? 'crimson' : 'transparent';
@@ -311,7 +312,7 @@ function openSocket(clientId=null) {
             break;
             
             case 'restore' :
-                if (message.result == 'ok') greenCheck('restoreOK'); else document.getElementById('saveTile-content').getElementsByClassName('error').textContent = message.result;
+                if (message.result == 'ok') greenCheck('adminSave-greenCheck'); else document.getElementById('saveTile-content').getElementsByClassName('error').textContent = message.result;
             break;
 
             default:
