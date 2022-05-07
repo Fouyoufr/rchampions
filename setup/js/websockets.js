@@ -7,7 +7,7 @@ let inddexInterval = setInterval(function() {if (loaded.page == true){
 
 function openSocket(clientId=null) {
     let protocol = clientId == null ? 'open' : clientId == 'admin' ? 'admin' : 'ref' + clientId;
-    websocket = new WebSocket(websocketString,protocol);
+    websocket = new WebSocket(websocketString,protocol,{perMessageDeflate : false});
 
     websocket.onopen = function() {
         //Envoi de la clef de partie à l'ouverture de session webSocket.

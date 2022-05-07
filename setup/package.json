@@ -1,5 +1,5 @@
 {
-  "dependencies": {
-    "greenlock": "^4.0.4"
+    "dependencies": {
+      "greenlock": "^4.0.4"
+    }
   }
-}

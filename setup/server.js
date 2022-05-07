@@ -6,7 +6,7 @@ keyChars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ023456789',
 http = require('http'), https = require('https'), fs = require('fs'), url = require ('url'), wsServer = require ('ws'), selfsigned = require('selfsigned'), greenlock = require ('greenlock'),
 pkg = require('./package.json');
 let clientIndex = 0, games = {}, hashes ={},
-adminWS = {}, gamesPlayers = {}, logFile = '', serverBoot = Date.now(),
+adminWS = {}, gamesPlayers = {}, logFile = '', serverBoot = Date.now(),TLSoptions,
 config = JSON.parse(fs.readFileSync(__dirname + '/serverConfig.json'));
 //Mise en place du log existant en variable
 let today = new Date(),
@@ -115,10 +115,10 @@ function webRequest (req, res) {
             res.write(data);
             res.end();}})};
 
-const ws = new wsServer.WebSocketServer({server:server});
+const ws = new wsServer.WebSocketServer({server:server,perMessageDeflate: false});
 ws.on('connection',webSocketConnect);
 
-const wss = new wsServer.WebSocketServer({server: TLSserver });
+const wss = new wsServer.WebSocketServer({server: TLSserver,perMessageDeflate: false});
 wss.on('connection',webSocketConnect);
 
 function webSocketConnect(webSocket) {
@@ -197,7 +197,8 @@ function wsAdminSend(data) {
     //envoi d'informations aux clients connectés sur la page d'administration
     Object.keys(adminWS).forEach(function(key) {adminWS[key].send(data);})}
 
-server.listen(80);
+//La variable process.en.PORT permet l'écoute du port utilisé dans Azure
+if (process.env.PORT !== undefined) server.listen(process.env.PORT); else server.listen(80);
 TLSserver.listen(443);
 
 function adminOP(message,webSocket) {

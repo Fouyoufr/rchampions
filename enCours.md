@@ -4,7 +4,7 @@
  - Ajouter un journal administratif pour les messages des clients
  - Gestion du certificat de serveur + mot de passe dans la tuile "serveur et sécurité"  
    ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
- - Indiquer dans la config du serveur le port https pour la redirection
+ - Indiquer dans la config du serveur les ports d'écoute (http et https)
  - (Nouvelle partie depuis la page admin ?)
 
 ## Page d'accueil
@@ -24,7 +24,7 @@
  - Ajout du switch "debugMode" dans la configuration des clients...
 
 ## boxes.json
- - fr : reste sideSchemes
+ - fr : reste sideSchemes (box faites : 1,2,3)
  - en : tout à faire
  - fichier de translation de "Remote Champions" vers "rChampions" ?
 
