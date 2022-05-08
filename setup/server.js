@@ -35,8 +35,9 @@ console.log = console.error = function (arg0,arg1='') {
         arg0 = arg0.replace('%s',arg1);
         adminMessage = arg1;}
      process.stdout.write(arg0 + '\n');
-     if (color != 'cyan' || config.debug !== undefined) serverLogFile(JSON.stringify({'date':Date.now(),'message':adminMessage,'color':color}));
-     wsAdminSend(JSON.stringify({"operation":"console",'date':Date.now(),"message":adminMessage,"color":color}));};
+     if (color != 'cyan' || config.debug !== undefined) {
+         serverLogFile(JSON.stringify({'date':Date.now(),'message':adminMessage,'color':color}));
+        wsAdminSend(JSON.stringify({"operation":"console",'date':Date.now(),"message":adminMessage,"color":color}));}}
 process.on('uncaughtException', function(err) {
     //Capture des erreurs bloquantes
     process.stdout.write((err && err.stack) ? err.stack : err);

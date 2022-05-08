@@ -24,7 +24,7 @@
  - Ajout du switch "debugMode" dans la configuration des clients...
 
 ## boxes.json
- - fr : reste sideSchemes (box faites : 1,2,3)
+ - fr : reste sideSchemes (box faites : 1,2,3,4,5)
  - en : tout à faire
  - fichier de translation de "Remote Champions" vers "rChampions" ?
 

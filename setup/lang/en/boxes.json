@@ -311,7 +311,24 @@
         "91":{"name":"Camps De Prisonniers","deck":"23","card":"25","init":"3","initX":"1","defeat":"75"},
         "92":{"name":"Réécrire Le Passé","deck":"23","card":"26","init":"3","initX":"1","acceleration":"1","defeat":"76"},
         "93":{"name":"Renforts D'Hydra","deck":"23","card":"27","init":"2","initX":"1","encounter":"1","defeat":"77"},
-        "94":{"name":"Chaos De Masse","deck":"23","card":"28","init":"0","crisis":"1","reveal":"78"}
+        "94":{"name":"Chaos De Masse","deck":"23","card":"28","init":"0","crisis":"1","reveal":"78"},
+        "95": {"name":"Ingérence En Cours","deck":"24","card":"1","init":"1","initX":"1","crisis":"1","reveal":"79"},
+        "96": {"name":"Absorption Électrique","deck":"25","card":"1","init":"2","initX":"1","acceleration":"1","defeat":"80"},
+        "97": {"name":"Un Immense Gâchis","deck":"26","card":"1","init":"2","encounter":"1","reveal":"81"},
+        "98": {"name":"Effondrement D'un Pont","deck":"28","card":"14","init":"2","initX":"1","crisis":"1"},
+        "99": {"name":"Production D'Oscorp","deck":"28","card":"15","init":"2","initX":"1","hinder":"1","reveal":"3"},
+        "100": {"name":"Production D'Oscorp","deck":"28","card":"16","init":"2","initX":"1","hinder":"1","reveal":"3"},
+        "101": {"name":"Pot-De-Vin","deck":"28","card":"17","init":"2","initX":"1","encounter":"1"},
+        "102": {"name":"Pot-De-Vin","deck":"28","card":"18","init":"2","initX":"1","encounter":"1"},
+        "103": {"name":"Renforts Du Bouffon","deck":"29","card":"21","init":"2","encounter":"1","reveal":"82"},
+        "104": {"name":"Renforts Du Bouffon","deck":"29","card":"22","init":"2","encounter":"1","reveal":"82"},
+        "105": {"name":"La Nation Bouffon","deck":"29","card":"23","init":"2","initX":"1","info":"83"},
+        "106": {"name":"Débordement","deck":"29","card":"24","init":"1","initX":"1","acceleration":"2","defeat":"84"},
+        "107": {"name":"Débordement","deck":"29","card":"25","init":"1","initX":"1","acceleration":"2","defeat":"84"},
+        "108":{"name":"Compression !","deck":"30","card":"3","init":"3","info":"85"},
+        "109":{"name":"L'Heure Des Comptes","deck":"31","card":"3","init":"6","info":"86"},
+        "110":{"name":"Dégager La Voie","deck":"32","card":"3","init":"4","info":"87"},
+        "111":{"name":"Envoyer Bouler","deck":"33","card":"3","init":"5","info":"88"}
     },
     "schemeTexts":{
         "0":"Les texte informatifs sur les manigances annexes.",
@@ -392,6 +409,16 @@
         "75":"Le joueur qui a déjoué cette manigance cherche un allié dans son deck ou sa pile de défausse, le met en jeu et mélange son deck.",
         "76":"Chaque joueur choisit jusqu'à 3 cartes de sa pile de défausse et les mélange dans son deck.",
         "77":"Le joueur qui a déjoué cette manigance défausse un sbire non ELITE.",
-        "78":"Chaque joueur défausse les 5 cartes du dessus de son deck et place 1 menace sur cette manigance pour chaque type de ressource différent ainsi défaussé."
+        "78":"Chaque joueur défausse les 5 cartes du dessus de son deck et place 1 menace sur cette manigance pour chaque type de ressource différent ainsi défaussé.",
+        "79":"Chaque joueur doit choisir : soit il dépense les ressources suivantes : SCIENCE et FORCE, soit il place 2 menaces sur cette carte.",
+        "80":"Défaussez 2 cartes du deck Rencontre. Pour chaque icône de boost défaussée par cet effet, chaque joueur doit choisir et défausser de sa main 1 ressource de n'importe quel type.",
+        "81":"Placez 2 menaces supplémentaires sur cette manigance pour chaque personnage ami sonné.",
+        "82":"Placez 1 menace supplémentaire sur cette carte pour chaque sbire BOUFFON en jeu.",
+        "83":"Chaque ennemi BOUFFON (Le Bouffon Vert inclus) gagne +1 ATQ",
+        "84":"Dans l'odre des joueurs, chaque joueur doit défausser 2 cartes du deck Rencontre et mettre en jeu, engagé avec lui, chaque sbire BOUFFON ainsi défaussé.",
+        "85":"Cette carte ne peut pas quitter le jeu tant que le Compresseur est en jeu.<BR/>Compresser - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, chaque joueur défausse l'amélioration ou le soutien qu'il contrôle ayant le cout le plus élevé. Retirez toutes les menaces de cette manigance sauf 3.",
+        "86":"Cette carte ne peut pas quitter le jeu tant que le Démolisseur est en jeu.<BR/>Cogneur - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, infligez 2 dégâts à chaque personnage ami. Retirez toutes les menaces de cette manigance sauf 3.",
+        "87":"Cette carte ne peut pas quitter le jeu tant que le Bulldozer est en jeu.<BR/>Charger! - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, chaque joueur doit défausser les 10 cartes du dessus de son deck.. Retirez toutes les menaces de cette manigance sauf 3.",
+        "88":"Cette carte ne peut pas quitter le jeu tant que le Boulet est en jeu.<BR/>Démomition Gamma - Réponse forcée : Après que de la menace a été plaçée sur cette carte, s'il y a au moins 10 menaces dessus, sonnez chaque personnage ami. Retirez toutes les menaces de cette manigance sauf 3."
     }
 }
