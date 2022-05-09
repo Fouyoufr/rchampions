@@ -14,7 +14,6 @@
 >    ### Message du jour/du moment/astuce aléatoire ?
 
 ## Génériques
- - Ajouter les autres boites de jeu
  - Feedback utilisateur (email possible)
  - Gestion des mots clef
  - Modification de la partie
@@ -24,8 +23,9 @@
  - Ajout du switch "debugMode" dans la configuration des clients...
 
 ## boxes.json
- - fr : reste sideSchemes (box faites : 1,2,3,4,5)
+ - fr : ok
  - en : tout à faire
+ - Ajout Sinistres motivations
  - fichier de translation de "Remote Champions" vers "rChampions" ?
 
 ## Greenlock ?
