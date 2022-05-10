@@ -276,6 +276,7 @@ function adminOP(message,webSocket) {
                     logDown += '[' + (new Date(parseInt(mess.date))).toLocaleTimeString() + ']' + mess.message + '\n';
                 });
                 let saveFileName = (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
+                today = new Date();
                 saveFileName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.log';
                 saveFileName.replace(/\s/g, '');
                 webSocket.send('{"operation":"download","fileName":"' + saveFileName +  '","data":"' + b64enCode(logDown) + '"}');
@@ -340,6 +341,7 @@ function adminOP(message,webSocket) {
                         saveData.games.push(games[key]);
                     });
                     let saveAllName = (config.siteName !== undefined && config.siteName != '' ? config.siteName : '');
+                    today = new Date();
                     saveAllName += '-log'+ today.getFullYear() + today.getMonth() + today.getDate() + '.bak';
                     saveAllName.replace(/\s/g, '');
                     webSocket.send('{"operation":"download","fileName":"' + saveAllName +  '","data":"' + b64enCode(JSON.stringify(saveData)) + '"}');
