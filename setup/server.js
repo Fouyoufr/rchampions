@@ -58,12 +58,15 @@ gl = greenlock.create({ packageRoot: __dirname, configDir : './letsEncrypt/', pa
 
 if (config.tls == 'self' || config.tls == 'test') TLSoptions = { key: selfCert.private,cert:selfCert.cert};
 
-//Premier lancement : mise en place du mot de passe administrateur
+//Premier lancement : mise en place du mot de passe administrateur et de la playlist MeloDice
 if (config.adminPassword === undefined) {
     config.adminPassword = config.defaultAdminPassword;
     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));}
 if (config.publicPassword === undefined) {
     config.publicPassword = config.defaultAdminPassword;
+    fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));}
+if (config.meloList === undefined) {
+    config.meloList = config.meloDefault;
     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));}
 //import des données du jeu
 let boxesFile=JSON.parse(fs.readFileSync(__dirname + '/lang/fr/boxes.json'));
@@ -73,6 +76,7 @@ let mainSchemes=boxesFile.mainSchemes;
 let heros=boxesFile.heros;
 let decks=boxesFile.decks;
 let sideSchemes=boxesFile.sideSchemes;
+delete boxesFile;
 //Construction de la liste des parties sur le serveur
 fs.readdirSync(__dirname + '/games').forEach (function(gameFileName) {
     if (gameFileName != '.gitignore') {
@@ -220,7 +224,7 @@ function adminOP(message,webSocket) {
                 wsAdminSend('{"operation":"adminConnected","total":"' + wss.clients.size + '","admins":"' + Object.keys(adminWS).length + '"}');}
             switch(message.admin) {
                 case 'connect' : 
-                webSocket.send('{"operation":"adminOK","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                webSocket.send('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                 break;
 
                 case 'init' :
@@ -280,13 +284,46 @@ function adminOP(message,webSocket) {
                 case 'publicMode':
                     if (message.publicMode != 'false') config.public = 'on'; else delete (config.public);
                     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
-                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    wsAdminSend('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                     break;
 
                 case 'debugMode' :
                     if (message.debugMode != 'false') config.debug = 'on'; else delete (config.debug);
                     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
-                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    wsAdminSend('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    break;
+
+                case 'melodice' :
+                    if (message.melodice != 'false') config.melodice = 'on'; else delete (config.melodice);
+                    fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
+                    if (message.melodice != 'false') message.playlist = config.meloList; else {
+                        clientConfig = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
+                        delete clientConfig.meloList;
+                        fs.writeFileSync(__dirname + '/config.json',JSON.stringify(clientConfig));
+                        wsAdminSend('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                        break;}
+
+                case 'meloList':
+                    newList = message.playlist;
+                    require('axios').get('https://melodice.org/playlist/' + newList).then (melodicePage => {
+                        let link = melodicePage.data.match(/songs\s=\s\[(.*)\s\]/sd);
+                        meloMusics = [];
+                        if (link !== null) {
+                            link=link[1].replaceAll("'",'"').replace(/,\n.*}/gm, "\n}");
+                            meloMusics = JSON.parse('[' + link + '{}]');}
+                        let meloList = [];
+                        for(let line in meloMusics){if (meloMusics[line].eid !== undefined) meloList.push(meloMusics[line].eid);}
+                        if (meloList.length == 0) webSocket.send('{"error":"wss::adminBadMelodice","errId":"62"}');
+                        else {
+                            config.meloList = message.playlist;
+                            config.melodice = 'on';
+                            fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
+                            clientConfig = JSON.parse(fs.readFileSync(__dirname + '/config.json'));
+                            clientConfig.meloList = meloList;
+                            fs.writeFileSync(__dirname + '/config.json',JSON.stringify(clientConfig));}
+                        wsAdminSend('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+
+                    });
                     break;
 
                 case 'changePass':
@@ -294,7 +331,7 @@ function adminOP(message,webSocket) {
                     if (message.password == 'publicPass') wichPass = 'publicPassword';
                     config[wichPass] = message.value;
                     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
-                    wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    wsAdminSend('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                     break;
 
                 case 'saveAll' :
@@ -325,7 +362,7 @@ function adminOP(message,webSocket) {
                             if (jsonRestore.serverConfig !== undefined) {
                                 fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(jsonRestore.serverConfig));
                                 config = jsonRestore.serverConfig;
-                                wsAdminSend('{"operation":"adminOK","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                                wsAdminSend('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
                             }
                             //restaurer la configuration des clients
                             if (jsonRestore.clientConfig !== undefined) {
@@ -761,3 +798,11 @@ function b64enCode(data) {
     //Encodage en base 64 de la donnée fournie.
     let buff = Buffer.from(data, 'utf-8');
     return buff.toString('base64');}
+
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];}
+    return array;}

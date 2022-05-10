@@ -210,6 +210,8 @@ function openSocket(clientId=null) {
                     document.getElementById('adminNetCert').textContent = message.tlsCert;
                     document.getElementById('publicSlider').checked = message.publicMode == 'on';
                     document.getElementById('debugSlider').checked = message.debugMode == 'on';
+                    document.getElementById('melodiceSlider').checked = message.melodice == 'on';
+                    document.getElementById('melodiceList').value = message.meloList;
                     document.getElementById('tr1').getElementsByTagName('td')[1].style.backgroundColor = message.warningAdminPass == 'KO' ? 'crimson' : 'transparent';
                     document.getElementById('tr2').getElementsByTagName('td')[1].style.backgroundColor = message.warningAdminPass == 'KO' ? 'crimson' : 'transparent';
                     document.getElementById('tr3').getElementsByTagName('td')[1].style.backgroundColor = message.warningPublicPass == 'KO' ? 'crimson' : 'transparent';

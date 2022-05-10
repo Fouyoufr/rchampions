@@ -163,6 +163,7 @@
     "wss::gameNotFound":"[Server] Game not found",
     "wss::badPublicPass":"[Server] Bad 'Public mode' password",
     "wss::badSaveFile":"[Server] Bad Restore file",
+    "wss::adminBadMelodice":"[Server]Unable to find/import this playlist",
 
     "ADMINTILEgamesListTitle":"Games list",
     "ADMINTILEgamesListIntro":"List of games currently hosted by the server (realtime update).",
@@ -197,6 +198,12 @@
     "ADMINTilesaveButton1":"Global Save",
     "ADMINTilesaveButton1Title" : "Save everything (games and configuration)",
     "ADMINTilesaveButton2Title" : "Restore",
+
+    "ADMINmelodiceTitle":"Melodice",
+    "ADMINmelodiceIntro":"You can select and import a music playlist on rChampions from the melodice.org to enable it's reading during parties on the website. (An 'Hard Refresh' is needed on clients after change)",
+    "ADMINmelodicePlayer":"Melodice Music Player",
+    "ADMINmelodiceList":"Import a Playlist",
+    "ADMINmelodiceUrl":"https://melodice.org/playlist/",
 
     "loadInterfaceFiles": "File to load",
     

@@ -35,8 +35,6 @@ div#adminTILEserverSecu {width:46%;margin-left:2%;margin-right:4%;}
 div#adminTILEserverSecu button {border-radius: 4px;border: 2px solid black;color:black;font-weight:bold;font-size: large;height:20px;line-height: 20px;margin:0px;vertical-align: middle;padding-left:5px;padding-right:5px;margin-left:5px;}
 div#adminTILEserverSecu button:hover {border-color: white;color:white;background-color: black;}
 div#adminTILEserverSecu div.error {width:100%;color:crimson;font-weight:bold;margin-top:2em;}
-
-
 div#adminTILEserverSecu > div, div#adminTILEserverSecu > table {width:100%;text-align:left;}
 div#adminTILEserverSecu div:first-of-type {height:2em;line-height: 2em;margin-bottom: .5em;}
 div#adminTILEserverSecu table {border-collapse: collapse;}
@@ -62,3 +60,9 @@ button#adminTILEconsoleDownload {background-color:transparent;background-image: 
 #saveTile-content p {margin:0px;margin-top:5px;margin-bottom:2px;padding:0px;}
 #saveTile-content button, .fileUpload {border-radius: 4px;border: 2px solid black;color:black;font-weight:bold;font-size: large;height:20px;line-height: 20px;margin:0px;vertical-align: middle;padding-left:5px;padding-right:5px;margin-left:5px;background-color: white;margin-right:5px;}
 #saveTile-content button:hover, .fileUpload:hover {border-color: white;color:white;background-color: black;}
+
+/* Mise en forme de la tuile MeloDice */
+#meloDice-content > div{display:flex;}
+#meloDice-content button {border-radius: 4px;border: 2px solid black;color:black;font-weight:bold;font-size: large;height:20px;line-height: 20px;margin:0px;vertical-align: middle;padding-left:5px;padding-right:5px;margin-left:5px;}
+#meloDice-content button:hover {border-color: white;color:white;background-color: black;}
+#melodiceList {flex-grow: 1}

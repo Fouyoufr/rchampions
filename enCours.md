@@ -21,6 +21,7 @@
  - InfoPartie (réunion, url etc)
  - Retravailler le contenu des popups...
  - Ajout du switch "debugMode" dans la configuration des clients...
+ - Purger les parties non accédées depuis plus d'un mois...
 
 ## boxes.json
  - fr : ok
@@ -31,7 +32,7 @@
 ## Greenlock ?
  
 ## Setup ?
- - probabelment pas : le nouveau site est immédiatement exploitable après démarrage
+ - probablement pas : le nouveau site est immédiatement exploitable après démarrage
 
 ## Melodice
 
@@ -39,5 +40,5 @@
 
 | Anotations |
 | --- |
-| Compteur pour erreurs websocket  ```61``` |
+| Compteur pour erreurs websocket  ```62``` |
 | docker build -t fouyou/rchampions:latest . --no-cache |

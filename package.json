@@ -7,6 +7,7 @@
     "start": "node setup/server.js"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "greenlock": "^4.0.4",
     "selfsigned": "^2.0.1",
     "ws": "^8.6.0"

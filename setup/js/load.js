@@ -126,7 +126,8 @@ function mainLoad(gameJson='') {
                     adminTile('adminMessages','ADMINTileMessagesTitle','<table><tr><td>' + lang.ADMINTileMessageCUsers + '</td><td><button class="total" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', true )"></button></td></tr><tr><td>' + lang.ADMINTileMessageCAdmins + '</td><td><button class="admins" title="' + lang.BUTTONAdminMessage + '" onclick = "adminMessagePopup (\'\', false, true )"></button></td></tr></table>',lang.ADMINTileMessagesIntro,lang.ADMINTileMessageOutro),
                     adminTile('gamesListTile','ADMINTILEgamesListTitle','',lang.ADMINTILEgamesListIntro),
                     adminTile('serverSecurity','ADMINTILEserverTitle',adminSecu()),
-                    adminTile('saveTile','ADMINTILEsaveTitle',adminSave(),lang.ADMINTilesaveIntro)
+                    adminTile('saveTile','ADMINTILEsaveTitle',adminSave(),lang.ADMINTilesaveIntro),
+                    adminTile('meloDice','ADMINmelodiceTitle','<input type="checkbox" id="melodiceSlider" class="slider" onclick="adminMeloDiceSwitch(this.checked);">' + lang.ADMINmelodicePlayer + '<p class="greenCheck" id="adminMelodiceOK"></p><div>' + lang.ADMINmelodiceList + ' : <input type="text" disabled value = "' + lang.ADMINmelodiceUrl + '"/><input type="text" id="melodiceList"/><button title="' + lang.ADMINSecuPassBtn + '" onclick="adminChangeMeloList();">' + lang.ADMINSecuPassBtn + '</button><p class="greenCheck" id="adminMeloListOK"></p></div>',lang.ADMINmelodiceIntro)
                 );
                 document.getElementById('adminrestoreLine').append(loadInterface('adminSave',lang.ADMINTilesaveButton2Title,adminRestore));
                 loaded.page = true;}},100);}
@@ -172,7 +173,7 @@ function addMenu() {
         gamekey.onclick = function () {navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + '?g=' + gameKey);}
         document.getElementsByTagName('body')[0].append(gamekey);}
     //Icone de la musique en jeu (MeloDice) et des parmètres
-    if (rcConfig.melodice !== undefined) {
+    if (rcConfig.meloList !== undefined) {
         let melodiceMenu = addElement('button','melodiceMenu');
         melodiceMenu.title=lang.MENUmelodice;
         document.getElementsByTagName('body')[0].append(melodiceMenu);}

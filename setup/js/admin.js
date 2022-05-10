@@ -54,6 +54,11 @@ function adminDebugSwitch(debugMode) {
     //Modification du mode verbeux de la console
     sendReq('{"admin":"debugMode","debugMode":"' + debugMode + '","passHash":"' + adminHash + '"}');
     greenCheck('adminDebugOK');}
+function adminMeloDiceSwitch(melodice) {
+    //Modification du mode MeloDice sur le serveur
+    sendReq('{"admin":"melodice","melodice":"' + melodice + '","passHash":"' + adminHash + '"}');
+    greenCheck('adminMelodiceOK');
+}
 function adminChangePass(wichPass) {
     //Changement de mot de passe
     error = '';
@@ -65,6 +70,11 @@ function adminChangePass(wichPass) {
         hash(document.getElementById(wichPass + '1').value).then (function(hashedValue) {
             sendReq('{"admin":"changePass","password":"' + wichPass + '","value":"' + hashedValue + '","passHash":"' + adminHash + '"}');});
         greenCheck(wichPass + 'OK');}}
+
+function adminChangeMeloList () {
+    //Changement de la playlist meloDice du serveur
+    sendReq('{"admin":"meloList","playlist":"' + document.getElementById('melodiceList').value + '","passHash":"' + adminHash + '"}');
+    greenCheck('adminMeloListOK');}
 
 function adminGameDisplay(game) {
     let gameTr = addElement('tr','adminGameDisplay','adminGame-'+game.key);

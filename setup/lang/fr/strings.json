@@ -163,6 +163,7 @@
     "wss::gameNotFound":"[Serveur] Partie introuvable",
     "wss::badPublicPass":"[Serveur] Mauvais mot de passe public",
     "wss::badSaveFile":"[Serveur] Fichier illisible",
+    "wss::adminBadMelodice":"[Serveur]La playlist n'a pu être importée",
 
     "ADMINTILEgamesListTitle":"Liste des parties",
     "ADMINTILEgamesListIntro":"Liste des parties hébergées par le serveur, mise à jour en temps-réel.",
@@ -197,6 +198,12 @@
     "ADMINTilesaveButton1":"Sauvegarde totale",
     "ADMINTilesaveButton1Title" : "Sauvegarder tous les éléments (parties et configuration)",
     "ADMINTilesaveButton2Title" : "Restaurer",
+
+    "ADMINmelodiceTitle":"Melodice",
+    "ADMINmelodiceIntro":"Vous pouvez activer sur rChampions l'import d'une playlist sélectionnée sur le site melodice.org et en permettre la lecture aléatoire en fond sonore pendant une partie de jeu. (Il faudra ensuite effectuer un rechargement forçé sur les clients...)",
+    "ADMINmelodicePlayer":"Lecteur Melodice",
+    "ADMINmelodiceList":"Playlist à importer",
+    "ADMINmelodiceUrl":"https://melodice.org/playlist/",
 
     "loadInterfaceFiles": "Nom du fichier à charger",
 
