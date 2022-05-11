@@ -378,10 +378,12 @@ function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('ytPlayer',{videoId:rcConfig.meloList[0],events: {'onReady': ytPlayerStateChange,'onStateChange': ytPlayerStateChange}});}
 function ytPlayerStateChange(event) {
     if (ytPlayer.getPlayerState() == YT.PlayerState.PLAYING) {
+        document.getElementById('melodiceMenu').title = lang.MENUmelodice + ' - ' + ytPlayer.getVideoData().title;
         document.getElementById('meloPlay').style.display='none';
         document.getElementById('meloStop').style.display='block';
         document.getElementById('meloNext').style.display='block';}
     else {
+        document.getElementById('melodiceMenu').title = lang.MENUmelodice;
         document.getElementById('meloPlay').style.display='block';
         document.getElementById('meloStop').style.display='none';
         document.getElementById('meloNext').style.display='none';}}
