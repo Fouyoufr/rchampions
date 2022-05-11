@@ -7,6 +7,7 @@ WORKDIR /usr/src/rchampions
 RUN npm install ws
 RUN npm install selfsigned
 RUN npm install greenlock
+RUN npm install axios
 
 # Bundle app source
 COPY ./setup .

@@ -2,7 +2,7 @@
 
 ## Page d'administration
  - Ajouter un journal administratif pour les messages des clients
- - Gestion du certificat de serveur + mot de passe dans la tuile "serveur et sécurité"  
+ - Gestion du certificat de serveur dans la tuile "serveur et sécurité"  
    ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
  - Indiquer dans la config du serveur les ports d'écoute (http et https)
  - (Nouvelle partie depuis la page admin ?)
@@ -33,8 +33,6 @@
  
 ## Setup ?
  - probablement pas : le nouveau site est immédiatement exploitable après démarrage
-
-## Melodice
 
 ---
 

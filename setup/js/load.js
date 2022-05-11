@@ -9,7 +9,7 @@ const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player
 let pageName = pageNames[window.location.pathname.split("/").pop()] === undefined ? 'index' : pageNames[window.location.pathname.split("/").pop()];
 const urlParams = new URLSearchParams(location.search)
 if (urlParams.has('g') && pageName != 'index') location.href = 'index.html' + location.search; 
-let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false,"page":false},
+let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false,"page":false},ytPlayer,
 webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,publicHash,serverBoot,publicMode = true;
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
@@ -82,7 +82,13 @@ function configLoad(configJson) {
     loaded.config=true;
     //(re)stockage de la configuration en local.
     rcConfig.refreshDate=refreshToday;
-    localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));}
+    localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
+    if (pageName != 'mobile' && rcConfig.meloList !== undefined) {
+        //Mise en place du lecteur de playlist Youtube pour fonctionnalité meloDice
+        let ytTag = document.createElement('script');
+        ytTag.src = "https://www.youtube.com/iframe_api";
+        let firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(ytTag, firstScriptTag);}}
 
 function langLoad(langJson) {
     //Mise en place des chaines de caractère de la langue sur la page.
@@ -173,10 +179,15 @@ function addMenu() {
         gamekey.onclick = function () {navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + '?g=' + gameKey);}
         document.getElementsByTagName('body')[0].append(gamekey);}
     //Icone de la musique en jeu (MeloDice) et des parmètres
-    if (rcConfig.meloList !== undefined) {
-        let melodiceMenu = addElement('button','melodiceMenu');
+    if (rcConfig.meloList !== undefined && pageName != 'mobile') {
+        let ytList = shuffle(rcConfig.meloList).join();
+        let melodiceDiv = addElement('div','melodiceDiv','melodice');
+        document.getElementsByTagName('body')[0].append(melodiceDiv);
+        melodiceDiv.innerHTML = '<div id="meloCommands"><a href="javascript:ytPlayer.playVideo();" id="meloPlay">&#x23f5;</a><a  href="javascript:ytPlayer.pauseVideo();" id="meloStop">&#x23f8;</a><a href="javascript:ytPlayer.nextVideo();" id="meloNext">&#x23Ed;</a><button id="melodiceMenu"></button></div>';
+        melodiceDiv.innerHTML += '<div id="meloDisplay"><a id="meloLink" href="https://melodice.org" target="_blank">MELODICE</a><iframe id="ytPlayer" title="melodice" type="text/html" src="https://www.youtube.com/embed/' + ytList[0] + '?enablejsapi=1&playsinline=1&autoplay=0&showinfo=0&controls=0&disablekb=1&playlist=' + ytList + '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"></iframe></div>';
+        melodiceMenu = document.getElementById('melodiceMenu');
         melodiceMenu.title=lang.MENUmelodice;
-        document.getElementsByTagName('body')[0].append(melodiceMenu);}
+        melodiceMenu.onclick = function () {document.getElementById('meloDisplay').style.display = document.getElementById('meloDisplay').style.display != 'flex' ? 'flex':'none';}}
     let settingsMenu = addElement('div','','settings');
     //Ajouter ici : aide(s), Chwazy, bug report, doc, box/decks de la partie
     let settingsButton = addElement('button','open');
@@ -363,5 +374,22 @@ function loadInterface(id,title,funcToload) {
     returnDiv.append(addElement('p','greenCheck',id + '-greenCheck'));
     return returnDiv;}
 
-    // Pour travailler sur l'import des anciennes sauvegardes :
-    // https://developer.mozilla.org/en-US/docs/Web/API/File/Using_files_from_web_applications
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('ytPlayer',{videoId:rcConfig.meloList[0],events: {'onReady': ytPlayerStateChange,'onStateChange': ytPlayerStateChange}});}
+function ytPlayerStateChange(event) {
+    if (ytPlayer.getPlayerState() == YT.PlayerState.PLAYING) {
+        document.getElementById('meloPlay').style.display='none';
+        document.getElementById('meloStop').style.display='block';
+        document.getElementById('meloNext').style.display='block';}
+    else {
+        document.getElementById('meloPlay').style.display='block';
+        document.getElementById('meloStop').style.display='none';
+        document.getElementById('meloNext').style.display='none';}}
+
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];}
+    return array;}

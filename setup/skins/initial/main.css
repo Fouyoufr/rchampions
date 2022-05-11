@@ -50,12 +50,10 @@ div.status button.stunned {background-color:#afcd53;padding:2px;}
 div.status button.tough {background-color:#feb848;padding:2px;}
 
 /*Gestion des menus */
-button.settingsMenu,button.melodiceMenu {position:fixed;right:0px;width:30px;height:30px;cursor:pointer;background-color: transparent;}
-button.melodiceMenu {top:calc(50% - 15px);background-image: url(./melodice.png);background-color:rgba(255, 255, 255, 0.5)}
-button.melodiceMenu:hover, div#settings button.open:hover {width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}
 div#settings {position:fixed;right:0px;top:2px;display:flex;}
 div#settings button.open {width:30px;height:30px;cursor:pointer;background-color: transparent;background-image: url(./settings.png);}
 div#settingsMenu {flex-wrap: wrap;display:none;flex-direction:column;background:grey;}
+div#settings button.open:hover {width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}
 div#settings button.setting, div#settings button.adminMenu {padding:2px;border:solid 2px white;background:black;color:white;font-size:large;font-weight: bold;width:100%;text-align: left;}
 div#settings button.adminMenu {background-color:darkred;}
 div#settingsMenu button.setting:hover, div#settings button.adminMenu:hover {background-color: white;border-color: black;color:black;}
@@ -89,3 +87,16 @@ div#languageSelection {display:flex; flex-wrap: wrap;margin:0px;padding:0px;row-
 /* gestion des uploads*/
 .fileUpload {position: relative;overflow: hidden; display:inline-block;box-sizing:content-box; }
 .fileUpload input.upload {position: absolute;top: 0;right: 0;cursor: pointer;opacity: 0;}
+
+/* Lecteur MeloDice */
+div#melodice {position:fixed;top:calc(50% - 100px);right:0px;z-index:10;display:flex;flex-direction: row;}
+div#meloDisplay {display:none;flex-direction: column;border:solid 2px darkolivegreen; border-top:none;background-color:black;}
+a#meloLink {width: 100%;display:block;text-align:center;background-color:darkolivegreen;color:white;font-weight:bold;font-size:large;text-decoration: none;}
+#meloCommands {height:180px;width:40px;}
+#meloCommands a, #melodiceMenu {background-color:rgba(255, 255, 255, 0.5);position:absolute;left:0px;width:40px;height:40px;border:solid 2px darkolivegreen;text-align:center;font-weight:bold;text-decoration:none;color:darkolivegreen;font-size:25px;display:none;}
+#meloCommands a:visited {color:darkolivegreen;}
+#meloCommands a:hover {background-color: white;color:mediumslateblue;}
+#meloPlay,#meloStop {top:0px;}
+#meloNext {bottom:0px;}
+#melodiceMenu {left:10px;width:30px;height:30px;cursor:pointer;background-color: transparent;top:calc(50% - 15px);background-image: url(./melodice.png);display:block;border:none;}
+#melodiceMenu:hover {left:0px;width:40px;height:40px;background-color:rgba(255, 255, 255, 0.7);}

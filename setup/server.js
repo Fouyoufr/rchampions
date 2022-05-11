@@ -1,6 +1,7 @@
 //npm install ws
 //npm install selfsigned
 //npm install greenlock
+//npm install axios
 const consoleCyan = '\x1b[36m%s\x1b[0m', consoleRed = '\x1b[41m%s\x1b[0m',consoleGreen = '\x1b[32m%s\x1b[0m',
 keyChars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ023456789',
 http = require('http'), https = require('https'), fs = require('fs'), url = require ('url'), wsServer = require ('ws'), selfsigned = require('selfsigned'), greenlock = require ('greenlock'),
@@ -56,7 +57,7 @@ gl = greenlock.create({ packageRoot: __dirname, configDir : './letsEncrypt/', pa
 //gl.add({ subject: 'rctest.fouy.net', altnames: ['rctest.fouy.net']});
 //gl.get({servername:'rctest.fouy.net'});
 
-if (config.tls == 'self' || config.tls == 'test') TLSoptions = { key: selfCert.private,cert:selfCert.cert};
+if (config.tls != 'auto' ) TLSoptions = { key: selfCert.private,cert:selfCert.cert};
 
 //Premier lancement : mise en place du mot de passe administrateur et de la playlist MeloDice
 if (config.adminPassword === undefined) {
@@ -385,10 +386,7 @@ function restoreGame(gameData) {
     if (games[gameData.key] === undefined) restoreAdd = true;
     games[gameData.key]=gameData;
     fs.writeFileSync(__dirname + '/games/' + gameData.key + '.json',JSON.stringify(gameData));
-    if (restoreAdd) wsAdminSend('{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}'); else wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(gameData) + '}');
-    
-                    
-}
+    if (restoreAdd) wsAdminSend('{"operation":"adminGamesList","gamesList":' + JSON.stringify(games) + '}'); else wsAdminSend('{"operation":"adminGamesUpdate","game":' + JSON.stringify(gameData) + '}');}
 
 function operation(message,gameKey,clientId,webSocket) {
     //Gestion des modifications apportées par les clients.
@@ -800,11 +798,3 @@ function b64enCode(data) {
     //Encodage en base 64 de la donnée fournie.
     let buff = Buffer.from(data, 'utf-8');
     return buff.toString('base64');}
-
-function shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
-    while (currentIndex != 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];}
-    return array;}
