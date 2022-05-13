@@ -103,7 +103,7 @@ function loadIndexNew4() {
                 newBoxPic.onclick = function () {boxSelectDecks(this);}
                 gameBoxes[decks[deckId].box].append(newBoxPic);
                 gameBoxes[decks[deckId].box].append(addElement('div'));}
-            let deck = '<input type="checkbox" class= "newGameDeck" id="newGameDeck' + deckId + '" name="newGameDeck' + deckId +'"><label class="newGameDeck" for="newGameDeck' + deckId + '">' + decks[deckId].name + '</label>';
+            let deck = '<input type="checkbox" class= "newGameDeck" id="newGameDeck' + deckId + '" name="newGameDeck' + deckId +'" onclick = "document.getElementById(\'newGameNoDeck\').textContent = \'\';"><label class="newGameDeck" for="newGameDeck' + deckId + '">' + decks[deckId].name + '</label>';
             gameBoxes[decks[deckId].box].getElementsByTagName('div')[0].insertAdjacentHTML('beforeend',deck);}})
     ngTab.insertAdjacentHTML('beforeend',ngNxt);
     Object.keys(gameBoxes).forEach(function(boxKey){document.getElementById('allDecks').append(gameBoxes[boxKey]);})
@@ -112,11 +112,13 @@ function loadIndexNew4() {
     }
     document.getElementById('createGame').focus();}
 function boxSelectDecks(boxId) {
+    document.getElementById('newGameNoDeck').textContent = '';
     Checked = !boxId.parentNode.querySelector('.newGameDeck').checked;
     toCheck = boxId.parentNode.querySelectorAll('.newGameDeck');
     for(let i=0; i<toCheck.length; i++) { toCheck[i].checked = Checked;} 
     if (boxId.parentNode.id == 'newGameBox1') selectAllDecksTitle();}
 function selectAllDecks() {
+    document.getElementById('newGameNoDeck').textContent = '';
     Checked = !document.querySelector('.newGameDeck').checked;
     toCheck = document.getElementById('allDecks').querySelectorAll('.newGameDeck');
     for(let i=0; i<toCheck.length; i++) { toCheck[i].checked = Checked; }

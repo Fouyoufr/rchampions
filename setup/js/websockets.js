@@ -16,7 +16,7 @@ function openSocket(clientId=null) {
         sendReq (openReq + '"pageName":"' + pageName + '"}');
         //masquer le message de connexion fermée sur récupération de la connexion.
         if (document.getElementById('webSocketLost')) document.getElementById('webSocketLost').remove();};
-        document.getElementById('loading').style.display='none';
+        document.getElementById('loading').remove();
     
     websocket.onerror = function() {
         //erreur sur webSocket, si pendant essai d'ouverture, on arrete les frais...

@@ -155,7 +155,7 @@ function mainLoad(gameJson='') {
     
 
 function load(fileLoad,functionLoad) {
-      // Chargement de fichier distant (AJAX à refaire en webSocket !)
+      // Chargement de fichier distant (AJAX)
     let request = new XMLHttpRequest();
     request.open('GET', fileLoad);
     request.onreadystatechange = function() {

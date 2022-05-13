@@ -207,5 +207,8 @@
 
     "loadInterfaceFiles": "Nom du fichier à charger",
 
+    "MOBfullScreen":"Merci de cliquer pour passer le site en plein écran.",
+    "MOBlandscape":"Ce site a été conçu pour être utilisé horizontalement.",
+
     "noItem":"Aucun"
 }

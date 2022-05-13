@@ -206,6 +206,9 @@
     "ADMINmelodiceUrl":"https://melodice.org/playlist/",
 
     "loadInterfaceFiles": "File to load",
+
+    "MOBfullScreen":"Please click to set this website to fullscreen.",
+    "MOBlandscape":"This website was designed to be displayed in landscape mode.",
     
     "noItem":"None"
 }
