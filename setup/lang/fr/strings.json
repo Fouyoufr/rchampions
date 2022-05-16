@@ -209,6 +209,9 @@
 
     "MOBfullScreen":"Merci de cliquer pour passer le site en plein écran.",
     "MOBlandscape":"Ce site a été conçu pour être utilisé horizontalement.",
+    "MOBjoinIntro0":"Merci de cliquer ci-dessus pour saisir la clef de la partie à rejoindre.",
+    "MOBjoinIntro1":"Merci de saisir ci-dessus la clef de la partie à rejoindre.",
+    "MOBjoinIntroButton":"Rejoindre",
 
     "noItem":"Aucun"
 }

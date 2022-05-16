@@ -16,7 +16,7 @@ function openSocket(clientId=null) {
         sendReq (openReq + '"pageName":"' + pageName + '"}');
         //masquer le message de connexion fermée sur récupération de la connexion.
         if (document.getElementById('webSocketLost')) document.getElementById('webSocketLost').remove();};
-        document.getElementById('loading').remove();
+        if (document.getElementById('loading')) document.getElementById('loading').remove();
     
     websocket.onerror = function() {
         //erreur sur webSocket, si pendant essai d'ouverture, on arrete les frais...
@@ -25,8 +25,10 @@ function openSocket(clientId=null) {
     websocket.onclose = function (event) {
         //Détection de connexion perdue / reconnexion
         if (websocketReconnect) {
-            let reconnectDiv = addElement('div','webSocketLost','webSocketLost');
-            let reconnectDivText = addElement('p');
+            let reconnectDiv = document.createElement('div');
+            reconnectDiv.className = 'webSocketLost';
+            reconnectDiv.id = 'webSocketLost';
+            let reconnectDivText = document.createElement('p');
             reconnectDivText.textContent = lang['ws::connectionLost'];
             reconnectDiv.append(reconnectDivText);
             document.getElementsByTagName('body')[0].append(reconnectDiv);
@@ -297,10 +299,21 @@ function openSocket(clientId=null) {
                     location.href = 'game.html';}
                 break;
 
+            case 'mobileJoin' :
+                if (message.villains === undefined) {
+                    document.getElementById('line3').innerHTML = lang.indexJoinBadKey;
+                    document.getElementById('line3').className = 'error';}
+                    else {
+                        sessionStorage.setItem('rChampions-gameKey',message.key);
+                        selectScreen();
+                    }
+                break;
+
             case 'newKey' :
-                if (message.key === undefined) document.getElementById('newGameTile').getElementsByClassName('outro')[0].textContent = lang.indexNewBadKey;
-                else if (message.key == document.getElementById('newGameKey').value.toUpperCase()) loadIndexNew2();
-                else if (document.getElementById('newGameKeySubmit') || document.getElementById('newGamePassSubmit')) document.getElementById('newGameKey').value = message.key;
+                if (pageName == 'index') {
+                  if (message.key === undefined) document.getElementById('newGameTile').getElementsByClassName('outro')[0].textContent = lang.indexNewBadKey;
+                  else if (message.key == document.getElementById('newGameKey').value.toUpperCase()) loadIndexNew2();
+                  else if (document.getElementById('newGameKeySubmit') || document.getElementById('newGamePassSubmit')) document.getElementById('newGameKey').value = message.key;}
                 break;
 
             case 'newGamePassKO' :
@@ -338,7 +351,8 @@ function webSockError(errorText,id=0) {
     if (lang[errorText] !== undefined) errorText = lang[errorText];
     if (id !== 0) errorText += ' (' + id + ')';
     websocketError.textContent=errorText;
-    websocketErrorClose=addElement('button','close');
+    let websocketErrorClose=document.createElement('button');
+    websocketErrorClose.className='close';
     websocketErrorClose.title=lang.BUTTONclose;
     websocketErrorClose.onclick=function () {document.getElementById('websocketError').remove();}
     websocketError.append(websocketErrorClose);

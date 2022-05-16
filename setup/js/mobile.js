@@ -54,6 +54,36 @@ function boxesLoad(boxesJson) {
     fullScreenDiv();
     landScapeDiv();
 
+    let line1 = document.getElementById('line1'),
+    line2 = document.getElementById('line2'),
+    line3 = document.getElementById('line3'),
+    line4 = document.getElementById('line4');
+    if (sessionStorage.getItem('rChampions-gameKey')) selectScreen();
+    else {
+        //La clef de partie n'a pas été saisie
+        line2.innerHTML = lang.MOBjoinIntro0;
+        let input = line1.getElementsByTagName('input')[0];
+        line1.onclick = function () {
+            line1.onclick = undefined;
+            input = line1.getElementsByTagName('input')[0];
+            input.disabled = false;
+            line2.innerHTML = lang.MOBjoinIntro1;
+            let goButton = document.createElement('button');
+            goButton.textContent = lang.MOBjoinIntroButton;
+            goButton.title = lang.MOBjoinIntroButton;
+            goButton.onclick = function () {
+                //Vérification (locale puis distante) de la clef saisie
+                line3.className = '';
+                line3.innerHTML = '';
+                newKey = input.value.toUpperCase();
+                input.value = newKey;
+                if (newKey.length != 8) {
+                    line3.innerHTML = lang.indexNewKeyLength;
+                    line3.className = 'error';}
+                else sendReq('{"operation":"join","key":"' + newKey + '"}');}
+            line1.append(goButton);
+            input.focus();}}
+
     
     
     
@@ -61,6 +91,14 @@ function boxesLoad(boxesJson) {
     document.body.addEventListener('touchstart', function(event) { touchstartX = event.changedTouches[0].screenX; touchstartY = event.changedTouches[0].screenY;}, false);
     document.body.addEventListener('touchend', function(event) {touchendX = event.changedTouches[0].screenX; touchendY = event.changedTouches[0].screenY; handleGesture();}, false); 
     loaded.page = true;}
+
+function selectScreen() {
+    //La clef a été saisie et vérifiée, choisir quoi afficher de la partie
+    let gameKey = sessionStorage.getItem('rChampions-gameKey');
+    let input = line1.getElementsByTagName('input')[0];
+    input.value = gameKey;
+
+}
 
 function fullScreen() {
     document.documentElement.requestFullscreen();
@@ -90,8 +128,6 @@ function landScapeDiv() {
         document.body.appendChild(lsDiv);}
     else if (document.getElementById('landScape')) document.getElementById('landScape').remove();
     }
-
-
 
 function handleGesture() {
     //Gestion des mouvements tactiles
