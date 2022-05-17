@@ -305,8 +305,10 @@ function openSocket(clientId=null) {
                     document.getElementById('line3').className = 'error';}
                     else {
                         sessionStorage.setItem('rChampions-gameKey',message.key);
-                        selectScreen();
-                    }
+                        game.villains = message.villains;
+                        game.players = message.players;
+                        game.key = message.key;
+                        selectScreen();}
                 break;
 
             case 'newKey' :
