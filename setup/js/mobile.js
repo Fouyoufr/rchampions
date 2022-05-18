@@ -1,4 +1,4 @@
-let loaded={"config":false,"lang":false,"boxes":false,"page":false}, rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, webSocketId='', serverBoot;
+let loaded={"config":false,"lang":false,"boxes":false,"page":false}, rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, webSocketId='', serverBoot,nullElement={};
 let touchstartX = 0, touchstartY = touchendX = touchendY = 0, cssRoot = document.querySelector(':root');
 const refreshToday = Math.round((new Date()).getTime()/86400000),
 urlParams = new URLSearchParams(location.search);
@@ -43,6 +43,11 @@ function boxesLoad(boxesJson) {
     boxesFile=JSON.parse(boxesJson);
     villains=boxesFile.villains;
     heros=boxesFile.heros;
+    boxes=boxesFile.boxes;
+    mainSchemes=boxesFile.mainSchemes;
+    decks=boxesFile.decks;
+    sideSchemes=boxesFile.sideSchemes;
+    loaded.boxes=true;
     //Sauvegarde du contenu en local
     saveBoxes='{"boxes":' + JSON.stringify(boxesFile.boxes) +',"villains":' + JSON.stringify(villains) + ', "mainSchemes":' + JSON.stringify(boxesFile.mainSchemes) + ', "heros":' + JSON.stringify(heros) + ', "decks":' + JSON.stringify(boxesFile.decks) + ', "sideSchemes":' + JSON.stringify(boxesFile.sideSchemes) + ', "schemeTexts":' + JSON.stringify(boxesFile.schemeTexts) + '}';
     if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) localStorage.setItem('rChampionsBoxes',saveBoxes);
@@ -56,7 +61,7 @@ function boxesLoad(boxesJson) {
     line2 = document.getElementById('line2'),
     line3 = document.getElementById('line3'),
     line4 = document.getElementById('line4');
-    if (sessionStorage.getItem('rChampions-gameKey')) sendReq('{"operation":"join","key":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');
+    if (sessionStorage.getItem('rChampions-gameKey')) sendReq('{"operation":"join","gameKey":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');
     else {
         //La clef de partie n'a pas été saisie
         line2.innerHTML = lang.MOBjoinIntro0;
@@ -78,7 +83,7 @@ function boxesLoad(boxesJson) {
                 if (newKey.length != 8) {
                     line3.innerHTML = lang.indexNewKeyLength;
                     line3.className = 'error';}
-                else sendReq('{"operation":"join","key":"' + newKey + '"}');}
+                else sendReq('{"operation":"join","gameKey":"' + newKey + '"}');}
             line1.append(goButton);
             input.focus();}}
     //Gestion du tactile
@@ -87,10 +92,11 @@ function boxesLoad(boxesJson) {
     loaded.page = true;}
 
 function selectScreen() {
+    if (document.getElementsByClassName('villain')[0]) document.getElementsByClassName('villain')[0].remove();
+    if (document.getElementsByClassName('player')[0]) document.getElementsByClassName('player')[0].remove();
+    document.getElementById('mobileContent').style.display='block';
     //La clef a été saisie et vérifiée, choisir quoi afficher de la partie
     cssRoot.style.setProperty('--main-border','darkolivegreen');
-    cssRoot.style.setProperty('--main-background','antiquewhite');
-    cssRoot.style.setProperty('--main-color','black');
     line2.innerHTML = line3.innerHTML = line4.innerHTML = line5.innerHTML = line6.innerHTML = '';
     if (line1.getElementsByTagName('button')[0]) line1.getElementsByTagName('button')[0].remove();
     let input = line1.getElementsByTagName('input')[0];
@@ -149,16 +155,30 @@ function handleGesture() {
     let swiped = 'witness, touchstartX = ' + touchstartX + ', touchstartY = ' + touchstartY + ', touchendX = ' + touchendX + ', touchendY = ' + touchendY + '; event : ';
     if (touchstartY - touchendY > screen.availHeight * .33) {
         //Swipe up = retour à la sélection initiale
-        sendReq('{"operation":"join","key":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');
-    }
-}
+        sendReq('{"operation":"join","gameKey":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');}
+    if (touchstartX - touchendX > screen.availWidth *.25) {
+        //Swipe gauche : diminuer la vie
+        if (document.getElementsByClassName('villain')[0]) {
+            let id = document.getElementsByClassName('villain')[0].id;
+            id = id.charAt(id.length - 1);
+            sendReq('{"operation":"villainLifeMinus","id":"' + id + '"}');}
+        else if (document.getElementsByClassName('player')[0]) {
+            let id = document.getElementsByClassName('player')[0].id;
+            id = id.charAt(id.length - 1);
+            sendReq('{"operation":"playerLifeMinus","id":"' + id + '"}');}}
+    if (touchendX - touchstartX > screen.availWidth *.25) {
+        //Swipe droite : augmenter la vie
+        if (document.getElementsByClassName('villain')[0]) {
+            let id = document.getElementsByClassName('villain')[0].id;
+            id = id.charAt(id.length - 1);
+            sendReq('{"operation":"villainLifePlus","id":"' + id + '"}');}
+        else if (document.getElementsByClassName('player')[0]) {
+            let id = document.getElementsByClassName('player')[0].id;
+            id = id.charAt(id.length - 1);
+             sendReq('{"operation":"playerLifePlus","id":"' + id + '"}');}}}
 
 function displayVillain(id) {
     cssRoot.style.setProperty('--main-border','white');
-    cssRoot.style.setProperty('--main-background','radial-gradient(black,gray)');
-    cssRoot.style.setProperty('--main-color','white');
-    //line2.innerHTML = line3.innerHTML = line4.innerHTML = line5.innerHTML = line6.innerHTML = '';
-    //line1.style.display = 'none';
     document.getElementById('mobileContent').style.display = 'none';
     if (document.getElementsByClassName('villain')[0]) document.getElementsByClassName('villain')[0].remove();
     let villainDiv = document.createElement('div');
@@ -179,32 +199,35 @@ function displayVillain(id) {
     let villainPhase = document.createElement('button');
     villainPhase.className = 'phase';
     villainPhase.id = 'villain' + id + '-phase';
-    villainPhase.disables = true;
+    villainPhase.disabled = true;
     villainPhase.textContent = game.villains[id].phase;
     villainDiv.append(villainPhase);
-    villainDiv.append(valuePlusMinus('life',game.villains[id].life,id + '-life','"operation":"villainLifeMinus","id":"' + id + '"','"operation":"villainLifePlus","id":"' + id + '"'));
-    
-    //<div class="life">
-    //    <button class="minus" title="Décrémenter" type="button" id="villain0-life-minus"></button>
-    //    <div class="value" id="villain0-life">00</div>
-    //    <button class="plus" title="incrémenter" type="button" id="villain0-life-plus"></button>
-    //</div>
-    //<div class="status">
-    //    <button class="confused off" title="Désorienté" type="button" id="villain0-confused">Désorienté</button>
-    //    <button class="stunned off" title="Sonné" type="button" id="villain0-stunned">Sonné</button>
-    //    <button class="tough off" title="Tenace" type="button" id="villain0-tough">Tenace</button>
-    //    <button class="retaliate off" title="Riposte" type="button" id="villain0-retaliate">Riposte</button>
-    //    <button class="piercing off" title="Perçant" type="button" id="villain0-piercing">Perçant</button>
-    //    <button class="ranged off" title="A distance" type="button" id="villain0-ranged">A distance</button>
-    //</div>
-    
-
-}
+    villainDiv.append(valuePlusMinus('life',game.villains[id].life,'villain' + id + '-life','"operation":"villainLifeMinus","id":"' + id + '"','"operation":"villainLifePlus","id":"' + id + '"'));
+    let villainStatus1 = document.createElement('div');
+    villainStatus1.className = 'statusLine';
+    villainStatus1.id = 'statusLine1';
+    villainDiv.append(villainStatus1);
+    ['confused','stunned','tough'].forEach((statusName) => {
+        let statusButton = document.createElement('button');
+        statusButton.className = statusName + (game.villains[id][statusName] === undefined ? ' off':'');
+        statusButton.onclick = function () { sendReq('{"operation":"villainStatus","id":"' + id + '","status":"' + statusName + '"}');}
+        statusButton.textContent = lang['ST' + statusName];
+        statusButton.id = 'villain' + id + '-' + statusName;
+        villainStatus1.append(statusButton);});
+    let villainStatus2 = document.createElement('div');
+    villainStatus2.className = 'statusLine';
+    villainStatus2.id = 'statusLine2';
+    villainDiv.append(villainStatus2);
+    ['retaliate','piercing','ranged'].forEach((statusName) => {
+        let statusButton = document.createElement('button');
+        statusButton.className = statusName + (game.villains[id][statusName] === undefined ? ' off':'');
+        statusButton.onclick = function () { sendReq('{"operation":"villainStatus","id":"' + id + '","status":"' + statusName + '"}');}
+        statusButton.textContent = lang['ST' + statusName];
+        statusButton.id = 'villain' + id + '-' + statusName;
+        villainStatus2.append(statusButton);});}
 
 function displayPlayer(id) {
     cssRoot.style.setProperty('--main-border','white');
-    cssRoot.style.setProperty('--main-background','radial-gradient(black,red)');
-    cssRoot.style.setProperty('--main-color','white');
     line2.innerHTML = line3.innerHTML = line4.innerHTML = line5.innerHTML = line6.innerHTML = '';
     line1.style.display = 'none';
 
@@ -231,3 +254,6 @@ function valuePlusMinus(vpmClass,vpmValue,vpmId,vpmOperationMinus,vpmOperationPl
     btnPlus.id = vpmId + '-plus';
     vpm.append(btnPlus);
     return vpm;}
+function isElem (element) {
+    let targetElem=document.getElementById(element);
+        if (typeof(targetElem) != 'undefined' && targetElem != null) return targetElem; else return nullElement;}

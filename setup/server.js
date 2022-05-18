@@ -751,11 +751,12 @@ function operation(message,gameKey,clientId,webSocket) {
 
         case 'join' :
             //Rejoindre une partie sur le serveur (version mobile)
-            message.key = message.key.toUpperCase();
-            if (games[message.key] === undefined) wsclientSend(clientId,'{"operation":"mobileJoin"}'); else {
-                if (games[message.key].players === undefined) wsclientSend(clientId,'{"operation":"mobileJoin","key":"' + message.key + '","villains":' + JSON.stringify(games[message.key].villains) + '}');
-                else wsclientSend(clientId,'{"operation":"mobileJoin","key":"' + message.key + '","villains":' + JSON.stringify(games[message.key].villains) + ',"players":' + JSON.stringify(games[message.key].players) + '}');
+            message.gameKey = message.gameKey.toUpperCase();
+            if (games[message.gameKey] === undefined) wsclientSend(clientId,'{"operation":"mobileJoin"}'); else {
+                if (games[message.gameKey].players === undefined) wsclientSend(clientId,'{"operation":"mobileJoin","key":"' + message.gameKey + '","villains":' + JSON.stringify(games[message.gameKey].villains) + '}');
+                else wsclientSend(clientId,'{"operation":"mobileJoin","key":"' + message.gameKey + '","villains":' + JSON.stringify(games[message.gameKey].villains) + ',"players":' + JSON.stringify(games[message.gameKey].players) + '}');
             }
+            break;
 
         case 'newKey' :
             //validation de la clef d'une nouvelle partie

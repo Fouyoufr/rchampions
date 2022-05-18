@@ -248,7 +248,7 @@ function openSocket(clientId=null) {
                 
             case 'changeFirst' :
                 document.querySelectorAll('button.firstPlayer').forEach(element => {element.className = 'firstPlayer off'});
-                document.getElementById('firstplayer' + message.first).className = 'firstPlayer';
+                if (document.getElementById('firstplayer' + message.first)) document.getElementById('firstplayer' + message.first).className = 'firstPlayer';
                 game.first = message.first;
                 break;
         
