@@ -248,7 +248,10 @@ function openSocket(clientId=null) {
                 
             case 'changeFirst' :
                 document.querySelectorAll('button.firstPlayer').forEach(element => {element.className = 'firstPlayer off'});
-                if (document.getElementById('firstplayer' + message.first)) document.getElementById('firstplayer' + message.first).className = 'firstPlayer';
+                if (document.getElementById('firstplayer' + message.first)) {
+                    document.getElementById('firstplayer' + message.first).className = 'firstPlayer';
+                    //Vibration si périphérique mobile
+                    if (pageName == 'mobile') window.navigator.vibrate([300, 100, 300, 100, 300]);}
                 game.first = message.first;
                 break;
         
@@ -308,6 +311,7 @@ function openSocket(clientId=null) {
                         game.villains = message.villains;
                         game.players = message.players;
                         game.key = message.key;
+                        game.first = message.first;
                         selectScreen();}
                 break;
 

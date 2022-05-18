@@ -92,8 +92,9 @@ function boxesLoad(boxesJson) {
     loaded.page = true;}
 
 function selectScreen() {
-    if (document.getElementsByClassName('villain')[0]) document.getElementsByClassName('villain')[0].remove();
-    if (document.getElementsByClassName('player')[0]) document.getElementsByClassName('player')[0].remove();
+    if (document.querySelectorAll('div.villain')[0]) document.querySelectorAll('div.villain')[0].remove();
+    if (document.querySelectorAll('div.player')[0]) document.querySelectorAll('div.player')[0].remove();
+    document.getElementById('mobileSettings').style.display='none';
     document.getElementById('mobileContent').style.display='block';
     //La clef a été saisie et vérifiée, choisir quoi afficher de la partie
     cssRoot.style.setProperty('--main-border','darkolivegreen');
@@ -155,31 +156,37 @@ function handleGesture() {
     let swiped = 'witness, touchstartX = ' + touchstartX + ', touchstartY = ' + touchstartY + ', touchendX = ' + touchendX + ', touchendY = ' + touchendY + '; event : ';
     if (touchstartY - touchendY > screen.availHeight * .33) {
         //Swipe up = retour à la sélection initiale
-        sendReq('{"operation":"join","gameKey":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');}
+        if (document.getElementById('mobileSettings').style.display != 'none') document.getElementById('mobileSettings').style.display = 'none';
+        else if (document.querySelectorAll('div.villain')[0] || document.querySelectorAll('div.player')[0]) sendReq('{"operation":"join","gameKey":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');}
+    if (touchendY - touchstartY > screen.availHeight * .33) {
+        //swipe down = settings
+        settingScreen();
+    }
     if (touchstartX - touchendX > screen.availWidth *.25) {
         //Swipe gauche : diminuer la vie
-        if (document.getElementsByClassName('villain')[0]) {
-            let id = document.getElementsByClassName('villain')[0].id;
+        if (document.querySelectorAll('div.villain')[0]) {
+            let id = document.querySelectorAll('div.villain')[0].id;
             id = id.charAt(id.length - 1);
             sendReq('{"operation":"villainLifeMinus","id":"' + id + '"}');}
-        else if (document.getElementsByClassName('player')[0]) {
-            let id = document.getElementsByClassName('player')[0].id;
+        else if (document.querySelectorAll('div.player')[0]) {
+            let id = document.querySelectorAll('div.player')[0].id;
             id = id.charAt(id.length - 1);
             sendReq('{"operation":"playerLifeMinus","id":"' + id + '"}');}}
     if (touchendX - touchstartX > screen.availWidth *.25) {
         //Swipe droite : augmenter la vie
-        if (document.getElementsByClassName('villain')[0]) {
-            let id = document.getElementsByClassName('villain')[0].id;
+        if (document.querySelectorAll('div.villain')[0]) {
+            let id = document.querySelectorAll('div.villain')[0].id;
             id = id.charAt(id.length - 1);
             sendReq('{"operation":"villainLifePlus","id":"' + id + '"}');}
-        else if (document.getElementsByClassName('player')[0]) {
-            let id = document.getElementsByClassName('player')[0].id;
+        else if (document.querySelectorAll('div.player')[0]) {
+            let id = document.querySelectorAll('div.player')[0].id;
             id = id.charAt(id.length - 1);
              sendReq('{"operation":"playerLifePlus","id":"' + id + '"}');}}}
 
 function displayVillain(id) {
     cssRoot.style.setProperty('--main-border','white');
     document.getElementById('mobileContent').style.display = 'none';
+    document.getElementById('mobileSettings').style.display = 'none';
     if (document.getElementsByClassName('villain')[0]) document.getElementsByClassName('villain')[0].remove();
     let villainDiv = document.createElement('div');
     villainDiv.className = 'villain';
@@ -228,10 +235,48 @@ function displayVillain(id) {
 
 function displayPlayer(id) {
     cssRoot.style.setProperty('--main-border','white');
-    line2.innerHTML = line3.innerHTML = line4.innerHTML = line5.innerHTML = line6.innerHTML = '';
-    line1.style.display = 'none';
-
-}
+    document.getElementById('mobileContent').style.display = 'none';
+    document.getElementById('mobileSettings').style.display = 'none';
+    if (document.getElementsByClassName('player')[0]) document.getElementsByClassName('player')[0].remove();
+    let playerDiv = document.createElement('div');
+    playerDiv.className = 'player';
+    playerDiv.id = 'player' + id;
+    document.getElementsByTagName('body')[0].append(playerDiv);
+    let playerPic = document.createElement('button');
+    playerPic.id = 'player' + id + '-pic';
+    playerPic.className = 'picture';
+    playerPic.style.backgroundImage = 'url("./images/heros/' + game.players[id].hero + '.png")';
+    playerDiv.append(playerPic);
+    let playerName = document.createElement('div');
+    playerName.className = 'name';
+    playerName.id = 'player' + id + '-name';
+    playerName.textContent = game.players[id].name;
+    playerDiv.append(playerName);
+    if (game.players.length > 1) {
+        let firstPlayer = document.createElement('button');
+        firstPlayer.className = 'firstPlayer' + (game.first != id ?' off':'');
+        firstPlayer.id = 'firstplayer' + id;
+        firstPlayer.onclick = function () {
+            //On clique sur le bouton premier joueur actif : passage au suivant, sinon on envoie l'ID
+            if (game.first == id) sendReq('{"operation":"changeFirst","first":"next"}');}
+        playerDiv.append(firstPlayer);}
+    playerDiv.append(valuePlusMinus('life',game.players[id].life,'player' + id + '-life','"operation":"playerLifeMinus","id":"' + id + '"','"operation":"playerLifePlus","id":"' + id + '"'));
+    let playerStatus = document.createElement('div');
+    playerStatus.className = 'statusLine';
+    playerDiv.append(playerStatus);
+    ['confused','stunned','tough'].forEach((statusName) => {
+        let statusButton = document.createElement('button');
+        statusButton.className = statusName + (game.players[id][statusName] === undefined ? ' off':'');
+        statusButton.onclick = function () { sendReq('{"operation":"playerStatus","id":"' + id + '","status":"' + statusName + '"}');}
+        statusButton.textContent = lang['ST' + statusName];
+        statusButton.id = 'player' + id + '-' + statusName;
+        playerStatus.append(statusButton);});
+    let alterHero = document.createElement('button');
+    alterHero.className = 'alterHero';
+    alterHero.id = 'alterHero' + id;
+    alterHero.textContent = game.players[id].alterHero == 'h' ? lang.PLhero:lang.PLalter;
+    alterHero.onclick = function () {sendReq('{"operation":"alterHero","player":"' + id + '"}')};
+    playerDiv.append(alterHero);}
 
 function valuePlusMinus(vpmClass,vpmValue,vpmId,vpmOperationMinus,vpmOperationPlus) {
     //Construction d'un div avec compteur (vie etc et bouton minus et plus)
@@ -257,3 +302,7 @@ function valuePlusMinus(vpmClass,vpmValue,vpmId,vpmOperationMinus,vpmOperationPl
 function isElem (element) {
     let targetElem=document.getElementById(element);
         if (typeof(targetElem) != 'undefined' && targetElem != null) return targetElem; else return nullElement;}
+
+function settingScreen() {
+    document.getElementById('mobileSettings').style.display='block';
+}

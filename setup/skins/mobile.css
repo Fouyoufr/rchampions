@@ -4,8 +4,9 @@ body {background:var(--main-border); height:100%;margin:0;padding:0;}
 div {margin: 0;padding: 0;}
 button {margin:0px;padding:0px;box-shadow: none;box-sizing: unset;background-size:contain;cursor:pointer;border:none;text-align:center;justify-content: center;cursor: pointer;}
 
-#mobileContent,div.villain, div.player {position:absolute;top:0px;left:0px;padding: 0;margin: 2%;border-radius: 10%;height: 90%; width:95%; overflow: hidden; border:solid 1px black;}
-#mobileContent {color: black;background: antiquewhite;}
+#mobileContent,div.villain, div.player,#mobileSettings {position:absolute;top:0px;left:0px;padding: 0;margin: 2%;border-radius: 10%;height: 90%; width:95%; overflow: hidden; border:solid 1px black;}
+#mobileContent{color: black;background: antiquewhite;}
+#mobileSettings {display:none;z-index: 10;color:white;background-color: black;}
 #mobileContent div {width:94%;margin:2%;padding:0;height:12%;line-height:12%;display:flex;justify-content: space-around;}
 #line1 input[type = "text"] {background-color: black;color:yellow;font-size:100%;font-weight:bolder;text-transform:uppercase;text-align:center;}
 #mobileContent div.error {font-weight:bold;color:crimson;}
@@ -14,15 +15,26 @@ button.villain {background:radial-gradient(black,gray);}
 button.player {background:radial-gradient(black,red);}
 
 /* Affichage d'un méchant */
-.villain {font-size : 5vw;background : radial-gradient(black,gray);color : white;font-weight:bolder;text-transform:uppercase;}
-.villain button.picture {border:solid 1px black;position:absolute;left:5%;top:5%;background-image:none;width:10vw;height:10vw;}
-.villain .name {width:100%;text-align: center;position: absolute;left:0px; top: 10%;font-weight:bold;}
-.villain .phase {font-size : 4vw;position:absolute;font-style: italic;font-weight: bolder;right:5%;top:5%;background-color:black;color:white;border: solid 2px white;padding:2%;}
-.villain .life {font-size:5vw;position:absolute;top:30%;left:0;width:100%;display:flex; flex-direction: column;display : flex;flex-direction: row;justify-content: center;}
-.villain div.value {background-color: darkred;}
-.villain #statusLine1 {display:flex;flex-direction: row;position:absolute;top:60%;left:0;width:100%;justify-content: space-around;}
-.villain #statusLine2 {display:flex;flex-direction: row;position:absolute;top:85%;left:0;width:100%;justify-content: space-around;}
+div.villain {font-size : 5vw;background : radial-gradient(black,gray);color : white;font-weight:bolder;text-transform:uppercase;}
+div.villain button.picture {border:solid 1px black;position:absolute;left:5%;top:5%;background-image:none;width:10vw;height:10vw;}
+div.villain .name {width:100%;text-align: center;position: absolute;left:0px; top: 10%;font-weight:bold;}
+div.villain .phase {font-size : 4vw;position:absolute;font-style: italic;font-weight: bolder;right:5%;top:5%;background-color:black;color:white;border: solid 2px white;padding:2%;}
+div.villain .life {font-size:5vw;position:absolute;top:30%;left:0;width:100%;display:flex; flex-direction: column;display : flex;flex-direction: row;justify-content: center;}
+div.villain div.value {background-color: darkred;}
+div.villain #statusLine1 {display:flex;flex-direction: row;position:absolute;top:60%;left:0;width:100%;justify-content: space-around;}
+div.villain #statusLine2 {display:flex;flex-direction: row;position:absolute;top:85%;left:0;width:100%;justify-content: space-around;}
 #statusLine2 button {font-size: 3vw;padding:1%;}
+
+/* Affichage d'un joueur */
+div.player {font-size : 5vw;background : radial-gradient(black,red);color : white;font-weight:bolder;text-transform:uppercase;display:flex;justify-content: center;}
+div.player button.picture {border:solid 1px black;position:absolute;left:5%;top:5%;background-image:none;width:10vw;height:10vw;}
+div.player .name {width:100%;text-align: center;position: absolute;left:0px; top: 10%;font-weight:bold;}
+div.player button.firstPlayer {background-color:transparent;background-image: url('../images/first.png');background-repeat: no-repeat; width:20vw;height: 15vw;position:absolute; top:1%;right:1%;}
+div.player button.firstPlayer.off {opacity: 0.5;}
+div.player .life {font-size:5vw;position:absolute;top:30%;left:0;width:100%;display:flex; flex-direction: column;display : flex;flex-direction: row;justify-content: center;}
+div.player div.value {background-color:lightcyan;color:black;}
+div.player .statusLine {display:flex;flex-direction: row;position:absolute;top:60%;left:0;width:100%;justify-content: space-around;}
+div.player .alterHero {color:yellow;font-size:5vw;font-weight:bold;background:transparent;position:absolute; bottom:2%;}
 
 /* Affichage plein écran */
 #fullScreen, #landScape {position:absolute;width:100%;height:100%;border-radius:0%; background:black; color:white;font-size:xx-large;font-weight: bolder;display:flex;justify-content: center;align-items: center;margin:0;z-index: 10;}

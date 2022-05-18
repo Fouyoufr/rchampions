@@ -121,9 +121,16 @@ function mainLoad(gameJson='') {
         clearInterval(interval);
         //Insertion des skins dans l'en-tête
         ['main','playerDisplay','villainDisplay','admin','index'].forEach((cssName) => addHeadLink('stylesheet','text/css; charset=utf-8','./skins/' + rcConfig.skin+ '/' + cssName + '.css'));
-        if (document.getElementById('villains')) for (let i=0; i < game.villains.length; i++) document.getElementById('villains').append(villainDisplay(i));
+        if (document.getElementById('villains')) {
+            let villainsInterval = setInterval(function() { if (loaded.villainsScript == true) {
+                clearInterval(villainsInterval);
+                for (let i=0; i < game.villains.length; i++) document.getElementById('villains').append(villainDisplay(i));}},100);}
         if (document.getElementById('villain') && localStorage.getItem('rChampions-villain')) document.getElementById('villain').append(villainDisplay(localStorage.getItem('rChampions-villain')));
-        if (document.getElementById('players')) for (let i=0; i < game.players.length; i++) document.getElementById('players').append(playerDisplay(i));
+        if (document.getElementById('players')) {
+            let playersInterval = setInterval(function() { if (loaded.playersScript == true) {
+                clearInterval(playersInterval);
+                for (let i=0; i < game.players.length; i++) document.getElementById('players').append(playerDisplay(i));}},100);}
+        
         if (pageName == 'admin') {
             let adminInterval = setInterval(function() {if (loaded.adminScript == true){
                 //Chargement de l'interface de la page Admin

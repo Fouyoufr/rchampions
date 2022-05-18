@@ -17,7 +17,7 @@
  - Feedback utilisateur (email possible)
  - Gestion des mots clef
  - Modification de la partie
- - !! Ecrans périphériques mobiles !!
+ - !! Ecrans périphériques mobiles !! : settings
  - InfoPartie (réunion, url etc)
  - Retravailler le contenu des popups...
  - Ajout du switch "debugMode" dans la configuration des clients...

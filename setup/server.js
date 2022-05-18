@@ -754,7 +754,7 @@ function operation(message,gameKey,clientId,webSocket) {
             message.gameKey = message.gameKey.toUpperCase();
             if (games[message.gameKey] === undefined) wsclientSend(clientId,'{"operation":"mobileJoin"}'); else {
                 if (games[message.gameKey].players === undefined) wsclientSend(clientId,'{"operation":"mobileJoin","key":"' + message.gameKey + '","villains":' + JSON.stringify(games[message.gameKey].villains) + '}');
-                else wsclientSend(clientId,'{"operation":"mobileJoin","key":"' + message.gameKey + '","villains":' + JSON.stringify(games[message.gameKey].villains) + ',"players":' + JSON.stringify(games[message.gameKey].players) + '}');
+                else wsclientSend(clientId,'{"operation":"mobileJoin","key":"' + message.gameKey + '","first":"' + games[message.gameKey].first + '","villains":' + JSON.stringify(games[message.gameKey].villains) + ',"players":' + JSON.stringify(games[message.gameKey].players) + '}');
             }
             break;
 
