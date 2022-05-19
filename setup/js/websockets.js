@@ -1,5 +1,5 @@
 let websocketString = (location.protocol == 'http:' ? 'ws' : 'wss') + '://' + location.host, websocket,websocketReconnect = true;
-let inddexInterval = setInterval(function() {if (loaded.page == true){
+let inddexInterval = setInterval(function() {if (typeof loaded != 'undefined' && loaded.page == true){
     //Attente du chargement de la page avant de se connecter en webSocket
     clearInterval(inddexInterval);
     if (pageName == 'admin') openSocket('admin'); else if (pageName =='index') openSocket('index'); else openSocket();
@@ -44,6 +44,8 @@ function openSocket(clientId=null) {
             webSocketSalt=message.salt;
             //Vérification du dernier boot serveur savoir s'il faut poursuivre (ou si besoin refresh après reboot serveur).
             if (serverBoot === undefined) serverBoot = message.serverBoot;
+            //Récupération des langues disponibles
+            if (message.langList !== undefined) availableLangsList = message.langList;
             if (message.public != 'on' && pageName == 'index') {
                 publicMode = false;
                 if (!document.getElementById('newGameTable')) loadIndexNew(true);}

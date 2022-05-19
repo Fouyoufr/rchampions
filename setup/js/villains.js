@@ -35,7 +35,7 @@ function villainDisplay(index) {
     //Ajout du bouton mobile
     let vilDMob = addElement('button','mobile');
     vilDMob.title = lang.BUTTONmobile;
-    vilDMob.onclick = function () {localStorage.setItem('rChampions-villain',index);window.location.href = "villain.html";}
+    vilDMob.onclick = function () {window.open('mobile.html?villain=' + index,'','titlebar=no,toolbar=no,status=no,menubar=no,scrollbars=no,height=170px,width=400px')}
     vilFrame.append(vilDMob);
     //Ajout de la manigance principale
     vilDMain = addElement('div',game.villains[index].mainScheme.current >= game.villains[index].mainScheme.max ? 'mainSchemeLost' : 'mainScheme',vilId + '-mainScheme');

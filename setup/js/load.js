@@ -1,7 +1,5 @@
 //Détéction (et redirection) de périphérique mobile
-window.addEventListener("load", () => {
-    if (navigator.userAgent.toLowerCase().match(/mobile/i) && location.href.split('/').pop() != 'mobile.html') location.href='mobile.html';
-  });
+if (navigator.userAgent.toLowerCase().match(/mobile/i) && location.href.split('/').pop() != 'mobile.html') location.href='mobile.html';
 //Déclaration des variables globales
 const refreshToday = Math.round((new Date()).getTime()/86400000);
 const pageNames = {'admin.html':'admin','game.html':'game','player.html':'player','villain.html':'villain','mobile.html':'mobile'};
@@ -10,7 +8,7 @@ let pageName = pageNames[window.location.pathname.split("/").pop()] === undefine
 const urlParams = new URLSearchParams(location.search)
 if (urlParams.has('g') && pageName != 'index') location.href = 'index.html' + location.search; 
 let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false,"page":false},ytPlayer,
-webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,publicHash,serverBoot,publicMode = true;
+webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,publicHash,serverBoot,publicMode = true,availableLangsList;
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 metaViewport = document.createElement('meta');
@@ -83,7 +81,7 @@ function configLoad(configJson) {
     //(re)stockage de la configuration en local.
     rcConfig.refreshDate=refreshToday;
     localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
-    if (pageName != 'mobile' && rcConfig.meloList !== undefined) {
+    if (rcConfig.meloList !== undefined) {
         //Mise en place du lecteur de playlist Youtube pour fonctionnalité meloDice
         let ytTag = document.createElement('script');
         ytTag.src = "https://www.youtube.com/iframe_api";
@@ -154,10 +152,9 @@ function mainLoad(gameJson='') {
                 loaded.page = true;
             }},100)}
         //Chargement des menus pleine page
-        if (pageName != 'mobile') {
-            addMenu();
-            addPopup();}
-        if (pageName == 'villain' || pageName =='player' ||pageName =='villains' || pageName == 'players' || pageName == 'game' || pageName =='mobile') loaded.page = true;
+        addMenu();
+        addPopup();
+        if (pageName == 'villain' || pageName =='player' ||pageName =='villains' || pageName == 'players' || pageName == 'game') loaded.page = true;
         }},100);}
     
 
@@ -186,7 +183,7 @@ function addMenu() {
         gamekey.onclick = function () {navigator.clipboard.writeText(location.protocol + '//' + location.host + location.pathname + '?g=' + gameKey);}
         document.getElementsByTagName('body')[0].append(gamekey);}
     //Icone de la musique en jeu (MeloDice) et des parmètres
-    if (rcConfig.meloList !== undefined && pageName != 'mobile') {
+    if (rcConfig.meloList !== undefined) {
         let ytList = shuffle(rcConfig.meloList).join();
         let melodiceDiv = addElement('div','melodiceDiv','melodice');
         document.getElementsByTagName('body')[0].append(melodiceDiv);

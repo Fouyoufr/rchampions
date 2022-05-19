@@ -1,5 +1,5 @@
-let loaded={"config":false,"lang":false,"boxes":false,"page":false}, rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, webSocketId='', serverBoot,nullElement={};
-let touchstartX = 0, touchstartY = touchendX = touchendY = 0, cssRoot = document.querySelector(':root');
+let loaded={"config":false,"lang":false,"boxes":false,"page":false}, rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, webSocketId='', serverBoot,nullElement={},availableLangsList;
+let touchstartX = 0, touchstartY = touchendX = touchendY = 0, cssRoot = document.querySelector(':root'),ytList,ytFrame = document.createElement('iframe');
 const refreshToday = Math.round((new Date()).getTime()/86400000),
 urlParams = new URLSearchParams(location.search);
 document.getElementById('loading').innerHTML='<svg version="1.1" id="L7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 100 100" xml:space="preserve"><path fill="#fff" d="M31.6,3.5C5.9,13.6-6.6,42.7,3.5,68.4c10.1,25.7,39.2,38.3,64.9,28.1l-3.1-7.9c-21.3,8.4-45.4-2-53.8-23.3c-8.4-21.3,2-45.4,23.3-53.8L31.6,3.5z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite"/></path><path fill="#fff" d="M42.3,39.6c5.7-4.3,13.9-3.1,18.1,2.7c4.3,5.7,3.1,13.9-2.7,18.1l4.1,5.5c8.8-6.5,10.6-19,4.1-27.7c-6.5-8.8-19-10.6-27.7-4.1L42.3,39.6z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="1s" from="0 50 50" to="-360 50 50" repeatCount="indefinite" /></path><path fill="#fff" d="M82,35.7C74.1,18,53.4,10.1,35.7,18S10.1,46.6,18,64.3l7.6-3.4c-6-13.5,0-29.3,13.5-35.3s29.3,0,35.3,13.5L82,35.7z"><animateTransform attributeName="transform" attributeType="XML" type="rotate" dur="2s" from="0 50 50" to="360 50 50" repeatCount="indefinite" /></path></svg>';
@@ -26,6 +26,17 @@ function configLoad(configJson) {
     //(re)stockage de la configuration en local.
     rcConfig.refreshDate=refreshToday;
     localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
+    
+    //Interface youtube/melodice
+    if (rcConfig.meloList !== undefined) {
+        ytList = shuffle(rcConfig.meloList).join();
+        ytFrame.id = 'ytPlayerFrame';
+        ytFrame.type = 'text/html';
+        ytFrame.src= 'https://www.youtube.com/embed/' + ytList[0] + '?enablejsapi=1&playsinline=1&autoplay=0&showinfo=0&controls=0&disablekb=1&playlist=' + ytList;
+        ytFrame.frameBorder = 0;
+        ytFrame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;';
+        document.getElementsByTagName('body')[0].append(ytFrame);}
+
     //Mise en place des chaines de caractères "lang".
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) load('./lang/' + rcConfig.lang + '/strings.json',langLoad); else langLoad(localStorage.getItem('rChampionsLangStrings'));}
 
@@ -33,6 +44,7 @@ function langLoad(langJson) {
     //Mise en place des chaines de caractère de la langue sur la page.
     lang=JSON.parse(langJson);
     document.title = lang.TITgame;
+    document.getElementById('adminMessagePopup').getElementsByClassName('titleIn')[0].textContent = lang.POPUPAdminMessageTitle;
     if (rcConfig.siteName !== undefined && rcConfig.siteName != '') document.title += ' - ' + rcConfig.siteName;
     if (localStorage.getItem('rChampionsLangStrings') === null || rcConfig.refreshDate !== refreshToday) localStorage.setItem('rChampionsLangStrings',JSON.stringify(lang));
     //Récupération du contenu des boites
@@ -53,9 +65,11 @@ function boxesLoad(boxesJson) {
     if (localStorage.getItem('rChampionsBoxes') === null || rcConfig.refreshDate !== refreshToday) localStorage.setItem('rChampionsBoxes',saveBoxes);
     //Début de construction de la page sur périphérique mobile
     pageName = 'mobile';
-    document.addEventListener('fullscreenchange',fullScreenDiv,false);
+    //Obligation plein écran si périphérique mobile
+    if (navigator.userAgent.toLowerCase().match(/mobile/i)) {
+        document.addEventListener('fullscreenchange',fullScreenDiv,false);
+        fullScreenDiv();}
     window.addEventListener("orientationchange", landScapeDiv, false);
-    fullScreenDiv();
     landScapeDiv();
     initScreen();
     //Gestion du tactile
@@ -72,7 +86,7 @@ function initScreen() {
     line4 = document.getElementById('line4');
     line3.className = '';
     line2.innerHTML = line3.innerHTML = line4.innerHTML = line5.innerHTML = line6.innerHTML = '';
-    if (sessionStorage.getItem('rChampions-gameKey')) sendReq('{"operation":"join","gameKey":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');
+    if (localStorage.getItem('rChampions-gameKey')) sendReq('{"operation":"join","gameKey":"' + localStorage.getItem('rChampions-gameKey') + '"}');
     else {
         //La clef de partie n'a pas été saisie
         line2.innerHTML = lang.MOBjoinIntro0;
@@ -119,7 +133,11 @@ function selectScreen() {
     if (game.players.length > 0) line5.append(selecButton('player0','player',game.players[0].name,displayPlayer,0));
     if (game.players.length > 1) line5.append(selecButton('player1','player',game.players[1].name,displayPlayer,1));
     if (game.players.length > 2) line6.append(selecButton('player2','player',game.players[2].name,displayPlayer,2));
-    if (game.players.length > 3) line6.append(selecButton('player3','player',game.players[3].name,displayPlayer,3));}
+    if (game.players.length > 3) line6.append(selecButton('player3','player',game.players[3].name,displayPlayer,3));
+    //Branchements automatiques sur appel depuis la page d'index
+    if (urlParams.has('villain')) displayVillain(urlParams.get('villain'));
+    if (urlParams.has('player')) displayPlayer(urlParams.get('player'));
+}
 
 function selecButton (sbId,sbClass,sbTitle,sbAction,actionId) {
     let sButton = document.createElement('button');
@@ -312,12 +330,8 @@ function isElem (element) {
 function settingScreen() {
     let setDiv = document.getElementById('mobileSettings');
     setDiv.style.height='90%';
-    setDiv.innerHTML = '';
-    let setTitle = document.createElement('h1');
-    setTitle.textContent = lang.MENUsettings
-    setDiv.append(setTitle);
-
-    let setHome = document.createElement('button');
+    setDiv.getElementsByTagName('h1')[0].textContent = lang.MENUsettings
+    let setHome = document.getElementById('mobSetHome')
     setHome.textContent = lang.MENUhome;
     setHome.onclick = function () {
         sessionStorage.removeItem('rChampions-gameKey');
@@ -326,28 +340,63 @@ function settingScreen() {
         setDiv.style.height='0';
         document.getElementById('mobileContent').getElementsByTagName('input')[0].value='';
         initScreen();}
-    setDiv.append(setHome);
-
-    let setRefresh = document.createElement('button');
+    let setRefresh = document.getElementById('mobSetReload');
     setRefresh.textContent = lang.MENUrefresh;
     setRefresh.onclick = function () {
         sessionStorage.removeItem('rChampions-gameKey');
-        localStorage.clear();location.reload();}
-    setDiv.append(setRefresh);
+        localStorage.clear();location.reload(true);}
 
-    let setLang = document.createElement('button');
+    let setLang = document.getElementById('mobSetLang');
     setLang.textContent = lang.MENUlang;
-    setLang.disabled = true;
-    setDiv.append(setLang);
+    setLang.onclick = function () {
+        let setLang = document.getElementById('mobSetLang');
+        let langMenu = document.createElement('select');
+        langMenu.id = 'mobMenulang';
+        langMenu.onchange = function () {
+            let setLang = document.getElementById('mobSetLang');
+            setLang.style.display = 'block';
+            let langMenu = document.getElementById('mobMenulang');
+            //Changement de la langue d'affichage
+            localStorage.removeItem('rChampionsLangStrings');
+            localStorage.removeItem('rChampionsBoxes');
+            rcConfig.lang = langMenu.value;
+            //restockage de la configuration en local.
+            rcConfig.refreshDate=refreshToday-1;
+            localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
+            location.reload(true);}
+        Object.keys(availableLangsList).forEach(key => {
+            langMenu.innerHTML += '<option value = "' + key + '"' + (key == rcConfig.lang ? ' selected':'')+ '>' + availableLangsList[key] + '</option>';
+        });
+        setLang.parentNode.insertBefore(langMenu,setLang.nextSibling);
+        setLang.style.display = 'none';
+    }
 
-    let setMusic = document.createElement('button');
-    setMusic.textContent = lang.MENUmelodice;
-    setMusic.disabled = true;
-    setDiv.append(setMusic);
-
-    let setClose = document.createElement('button');
+    //Musique en jeu
+    let setMusic = document.getElementById('meloButton');
+    if (rcConfig.meloList !== undefined) {
+        setMusic.textContent = lang.MOBMusicOff;
+        setMusic.onclick = function() {ytPlayer.playVideo();}}
+    else setMusic.style.display = 'none';
+    let setClose = document.getElementById('mobSetClose');
     setClose.textContent = lang.BUTTONclose;
-    setClose.onclick = function () {setDiv.style.height='0';};
-    setDiv.append(setClose);
+    setClose.onclick = function () {setDiv.style.height='0';};}
 
-}
+function shuffle(array) {
+    let currentIndex = array.length,  randomIndex;
+    while (currentIndex != 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];}
+    return array;}
+
+function onYouTubeIframeAPIReady() {
+    ytPlayer = new YT.Player('ytPlayerFrame',{videoId:'blank',events: {'onReady': ytPlayerStateChange,'onStateChange': ytPlayerStateChange}});}
+function ytPlayerStateChange(event) {
+    ytButton = document.getElementById('meloButton');
+    if (ytPlayer.getPlayerState() == YT.PlayerState.PLAYING) {
+        ytButton.textContent = lang.MOBMusicOn;
+        ytButton.onclick = function() {ytPlayer.pauseVideo();}}
+    else if (rcConfig.meloList !== undefined && ytButton) {
+        ytButton.textContent = lang.MOBMusicOff;
+        ytButton.style.display = 'inline-block';
+        ytButton.onclick = function() {ytPlayer.playVideo();}}}

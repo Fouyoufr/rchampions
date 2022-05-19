@@ -144,7 +144,7 @@ function webSocketConnect(webSocket) {
         webSocket.salt = hash(Math.random().toString());
         if (webSocket._protocol == 'admin' || webSocket._protocol == 'index') hashes[webSocket.clientId] = webSocket.salt;}
     //Envoi des informations lors de la connexion d'un nouvel utilisateur
-    webSocket.send('{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '","serverBoot":"' + serverBoot + '","public":"' + (config.public === undefined ? 'off' : 'on') + '"}');
+    webSocket.send('{"clientId":"' + webSocket.clientId + '","salt":"' + webSocket.salt + '","serverBoot":"' + serverBoot + '","public":"' + (config.public === undefined ? 'off' : 'on') + '","langList":' + JSON.stringify(langList) + '}');
     wsAdminSend('{"operation":"adminConnected","total":"' + (wss.clients.size + ws.clients.size) + '","admins":"' + Object.keys(adminWS).length + '"}');
 
     webSocket.on('message',function (data) {

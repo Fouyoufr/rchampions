@@ -29,7 +29,7 @@ function playerDisplay(index) {
     //Ajout du bouton mobile
     let playerMob = addElement('button','mobile');
     playerMob.title = lang.BUTTONmobile;
-    playerMob.onclick = function () {localStorage.setItem('rChampions-player',index);window.location.href = "player.html";}
+    playerMob.onclick = function () {window.open('mobile.html?player=' + index,'','titlebar=no,toolbar=no,status=no,menubar=no,scrollbars=no,height=170px,width=400px')}
     playerFrame.append(playerMob);
     //Ajout du bouton Premier joueur
     if (game.players.length > 1) {

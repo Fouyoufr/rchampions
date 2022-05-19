@@ -169,7 +169,8 @@ function adminMessagePopup (gameKey='', all=false, admins=false) {
         document.getElementById('adminMessageConfirm').onclick = function() {
             sendReq(JSON.stringify({"admin":"sendMessage","game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('popup').style.display='none';
-            document.getElementById('adminGame-' + gameKey).className ='adminGameDisplay';}
+            document.getElementById('adminGame-' + gameKey).className ='adminGameDisplay';
+            document.getElementById('adminMessagePopup').style.display='none';}
         document.getElementById('adminMessageTest').onclick = function() {
             sendReq(JSON.stringify({"admin":"sendMessage","test":1,"game":gameKey,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('adminMessageConfirm').style.display = 'block';}}
@@ -177,7 +178,8 @@ function adminMessagePopup (gameKey='', all=false, admins=false) {
         //envoi d'un message à tous les connectés
         document.getElementById('adminMessageConfirm').onclick = function() {
             sendReq(JSON.stringify({"admin":"sendMessage","all":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
-            document.getElementById('popup').style.display='none';}
+            document.getElementById('popup').style.display='none';
+            document.getElementById('adminMessagePopup').style.display='none';}
         document.getElementById('adminMessageTest').onclick = function() {
             sendReq(JSON.stringify({"admin":"sendMessage","test":1,"all":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('adminMessageConfirm').style.display = 'block';}}
@@ -185,7 +187,8 @@ function adminMessagePopup (gameKey='', all=false, admins=false) {
         //envoi d'un message aux administrateurs
         document.getElementById('adminMessageConfirm').onclick = function() {
             sendReq(JSON.stringify({"admin":"sendMessage","admins":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
-            document.getElementById('popup').style.display='none';}
+            document.getElementById('popup').style.display='none';
+            document.getElementById('adminMessagePopup').style.display='none';}
         document.getElementById('adminMessageTest').onclick = function() {
             sendReq(JSON.stringify({"admin":"sendMessage","test":1,"admins":true,"message":document.getElementById('adminMessage').value,"passHash":adminHash}));
             document.getElementById('adminMessageConfirm').style.display = 'block';}}        

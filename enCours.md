@@ -8,8 +8,7 @@
  - (Nouvelle partie depuis la page admin ?)
 
 ## Page d'accueil
->    ### Création d'une partie
->     - Sélection aléatoire ?
+>    ### Création d'une partie ==> Sélection aléatoire ?
 >    ### Création d'un journal de campagne  
 >    ### Message du jour/du moment/astuce aléatoire ?
 
@@ -17,9 +16,9 @@
  - Feedback utilisateur (email possible)
  - Gestion des mots clef
  - Modification de la partie
- - !! Ecrans périphériques mobiles !! : settings
  - InfoPartie (réunion, url etc)
  - Retravailler le contenu des popups...
+ - Retravailler la sélection de langue
  - Ajout du switch "debugMode" dans la configuration des clients...
  - Purger les parties non accédées depuis plus d'un mois...
  - wsClientSend ==> webSocket.send

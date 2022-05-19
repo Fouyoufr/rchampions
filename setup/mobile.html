@@ -6,6 +6,7 @@
     <meta charset='UTF-8'>
     <script type="application/javascript" defer src="js/websockets.js"></script>
     <script type='application/javascript' defer src='js/mobile.js'></script>
+    <script type='application/javascript' defer src='https://www.youtube.com/iframe_api'></script>
     <link rel="stylesheet" type="text/css; charset=utf-8" href="./skins/loading.css">
     <link rel="stylesheet" type="text/css; charset-utf-8" href="./skins/mobile.css">
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
@@ -23,6 +24,21 @@
         <div id="line1"><input type="text" disabled maxlength = "8" size = "8"></div>
         <div id="line2"></div><div id="line3"></div><div id="line4"></div><div id="line5"></div><div id="line6"></div>
     </div>
-    <div id="mobileSettings"></div>
+    <div id="mobileSettings">
+        <h1>Paramètres</h1>
+        <button id="mobSetHome">Accueil</button>
+        <button id="mobSetReload">Rechargement forçé</button>
+        <button id="mobSetLang">Langue</button>
+        <button id="meloButton">play</button>
+        <button id="mobSetClose">Fermer</button>
+    </div>
+    <div id ="adminMessagePopup">
+        <div class="title">
+            <div class="titleIn"></div>
+            <button class="close" onclick="document.getElementById('adminMessagePopup').style.display='none';"></button>
+        </div>
+        <div class="inside"></div>
+        <div class="foot"></div>
+    </div>
 </body>
 </html>
