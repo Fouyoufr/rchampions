@@ -6,13 +6,17 @@ button {margin:0px;padding:0px;box-shadow: none;box-sizing: unset;background-siz
 
 #mobileContent,div.villain, div.player,#mobileSettings {position:absolute;top:0px;left:0px;padding: 0;margin: 2%;border-radius: 10%;height: 90%; width:95%; overflow: hidden; border:solid 1px black;}
 #mobileContent{color: black;background: antiquewhite;}
-#mobileSettings {display:none;z-index: 10;color:white;background-color: black;}
 #mobileContent div {width:94%;margin:2%;padding:0;height:12%;line-height:12%;display:flex;justify-content: space-around;}
 #line1 input[type = "text"] {background-color: black;color:yellow;font-size:100%;font-weight:bolder;text-transform:uppercase;text-align:center;}
 #mobileContent div.error {font-weight:bold;color:crimson;}
 button.villain, button.player {height:100%;font-size: 100%;padding-left:1em;padding-right:1em;font-weight:bold;border-radius: 1em;color:white;}
 button.villain {background:radial-gradient(black,gray);}
 button.player {background:radial-gradient(black,red);}
+
+/* Paramètrage */
+#mobileSettings {height:0;z-index: 10;color:white;background-color: black;display:flex;flex-wrap: wrap;justify-content: space-around;border:none;margin:calc(2% + 1px);transition: height .2s}
+#mobileSettings button {font-size: 5vw;background-color: antiquewhite;color:black;font-weight:bold;padding:1%;margin:2%;border-radius: 4px;border: 2px solid white;}
+#mobileSettings h1 {display:block;width:100%;text-align: center;text-transform: uppercase;margin:0;padding:0;}
 
 /* Affichage d'un méchant */
 div.villain {font-size : 5vw;background : radial-gradient(black,gray);color : white;font-weight:bolder;text-transform:uppercase;}

@@ -57,10 +57,21 @@ function boxesLoad(boxesJson) {
     window.addEventListener("orientationchange", landScapeDiv, false);
     fullScreenDiv();
     landScapeDiv();
+    initScreen();
+    //Gestion du tactile
+    document.body.addEventListener('touchstart', function(event) { touchstartX = event.changedTouches[0].screenX; touchstartY = event.changedTouches[0].screenY;}, false);
+    document.body.addEventListener('touchend', function(event) {touchendX = event.changedTouches[0].screenX; touchendY = event.changedTouches[0].screenY; handleGesture();}, false); 
+    loaded.page = true;}
+
+function initScreen() {
+    //construction de la page sur périphérique mobile
+    document.getElementById('mobileContent').style.display= 'block';
     let line1 = document.getElementById('line1'),
     line2 = document.getElementById('line2'),
     line3 = document.getElementById('line3'),
     line4 = document.getElementById('line4');
+    line3.className = '';
+    line2.innerHTML = line3.innerHTML = line4.innerHTML = line5.innerHTML = line6.innerHTML = '';
     if (sessionStorage.getItem('rChampions-gameKey')) sendReq('{"operation":"join","gameKey":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');
     else {
         //La clef de partie n'a pas été saisie
@@ -85,16 +96,12 @@ function boxesLoad(boxesJson) {
                     line3.className = 'error';}
                 else sendReq('{"operation":"join","gameKey":"' + newKey + '"}');}
             line1.append(goButton);
-            input.focus();}}
-    //Gestion du tactile
-    document.body.addEventListener('touchstart', function(event) { touchstartX = event.changedTouches[0].screenX; touchstartY = event.changedTouches[0].screenY;}, false);
-    document.body.addEventListener('touchend', function(event) {touchendX = event.changedTouches[0].screenX; touchendY = event.changedTouches[0].screenY; handleGesture();}, false); 
-    loaded.page = true;}
+            input.focus();}}}
 
 function selectScreen() {
     if (document.querySelectorAll('div.villain')[0]) document.querySelectorAll('div.villain')[0].remove();
     if (document.querySelectorAll('div.player')[0]) document.querySelectorAll('div.player')[0].remove();
-    document.getElementById('mobileSettings').style.display='none';
+    document.getElementById('mobileSettings').style.height='0';
     document.getElementById('mobileContent').style.display='block';
     //La clef a été saisie et vérifiée, choisir quoi afficher de la partie
     cssRoot.style.setProperty('--main-border','darkolivegreen');
@@ -156,12 +163,11 @@ function handleGesture() {
     let swiped = 'witness, touchstartX = ' + touchstartX + ', touchstartY = ' + touchstartY + ', touchendX = ' + touchendX + ', touchendY = ' + touchendY + '; event : ';
     if (touchstartY - touchendY > screen.availHeight * .33) {
         //Swipe up = retour à la sélection initiale
-        if (document.getElementById('mobileSettings').style.display != 'none') document.getElementById('mobileSettings').style.display = 'none';
+        if (document.getElementById('mobileSettings').style.height[0] != '0') document.getElementById('mobileSettings').style.height = '0';
         else if (document.querySelectorAll('div.villain')[0] || document.querySelectorAll('div.player')[0]) sendReq('{"operation":"join","gameKey":"' + sessionStorage.getItem('rChampions-gameKey') + '"}');}
     if (touchendY - touchstartY > screen.availHeight * .33) {
         //swipe down = settings
-        settingScreen();
-    }
+        settingScreen();}
     if (touchstartX - touchendX > screen.availWidth *.25) {
         //Swipe gauche : diminuer la vie
         if (document.querySelectorAll('div.villain')[0]) {
@@ -186,7 +192,7 @@ function handleGesture() {
 function displayVillain(id) {
     cssRoot.style.setProperty('--main-border','white');
     document.getElementById('mobileContent').style.display = 'none';
-    document.getElementById('mobileSettings').style.display = 'none';
+    document.getElementById('mobileSettings').style.height = '0';
     if (document.getElementsByClassName('villain')[0]) document.getElementsByClassName('villain')[0].remove();
     let villainDiv = document.createElement('div');
     villainDiv.className = 'villain';
@@ -236,7 +242,7 @@ function displayVillain(id) {
 function displayPlayer(id) {
     cssRoot.style.setProperty('--main-border','white');
     document.getElementById('mobileContent').style.display = 'none';
-    document.getElementById('mobileSettings').style.display = 'none';
+    document.getElementById('mobileSettings').style.height = '0';
     if (document.getElementsByClassName('player')[0]) document.getElementsByClassName('player')[0].remove();
     let playerDiv = document.createElement('div');
     playerDiv.className = 'player';
@@ -304,5 +310,44 @@ function isElem (element) {
         if (typeof(targetElem) != 'undefined' && targetElem != null) return targetElem; else return nullElement;}
 
 function settingScreen() {
-    document.getElementById('mobileSettings').style.display='block';
+    let setDiv = document.getElementById('mobileSettings');
+    setDiv.style.height='90%';
+    setDiv.innerHTML = '';
+    let setTitle = document.createElement('h1');
+    setTitle.textContent = lang.MENUsettings
+    setDiv.append(setTitle);
+
+    let setHome = document.createElement('button');
+    setHome.textContent = lang.MENUhome;
+    setHome.onclick = function () {
+        sessionStorage.removeItem('rChampions-gameKey');
+        if (document.querySelectorAll('div.villain')[0]) document.querySelectorAll('div.villain')[0].remove();
+        if (document.querySelectorAll('div.player')[0]) document.querySelectorAll('div.player')[0].remove();
+        setDiv.style.height='0';
+        document.getElementById('mobileContent').getElementsByTagName('input')[0].value='';
+        initScreen();}
+    setDiv.append(setHome);
+
+    let setRefresh = document.createElement('button');
+    setRefresh.textContent = lang.MENUrefresh;
+    setRefresh.onclick = function () {
+        sessionStorage.removeItem('rChampions-gameKey');
+        localStorage.clear();location.reload();}
+    setDiv.append(setRefresh);
+
+    let setLang = document.createElement('button');
+    setLang.textContent = lang.MENUlang;
+    setLang.disabled = true;
+    setDiv.append(setLang);
+
+    let setMusic = document.createElement('button');
+    setMusic.textContent = lang.MENUmelodice;
+    setMusic.disabled = true;
+    setDiv.append(setMusic);
+
+    let setClose = document.createElement('button');
+    setClose.textContent = lang.BUTTONclose;
+    setClose.onclick = function () {setDiv.style.height='0';};
+    setDiv.append(setClose);
+
 }
