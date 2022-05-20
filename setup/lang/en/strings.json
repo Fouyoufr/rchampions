@@ -209,8 +209,7 @@
 
     "MOBfullScreen":"Please click to set this website to fullscreen.",
     "MOBlandscape":"This website was designed to be displayed in landscape mode.",
-    "MOBjoinIntro0":"Please click above to input the key of the game you wanna join.",
-    "MOBjoinIntro1":"Please input the key of the game you wanna join.",
+    "MOBjoinIntro":"Please input the key of the game you wanna join.",
     "MOBjoinIntroButton":"Join",
     "MOBSelect":"Please select what you wanna display :",
     "MOBMusicOn":"Music : ON",

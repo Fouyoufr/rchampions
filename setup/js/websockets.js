@@ -37,7 +37,7 @@ function openSocket(clientId=null) {
 
     websocket.onmessage = function(event) {
         message=JSON.parse(event.data);
-        console.log(message);
+        if (debugMode) console.log(message);
         if (message.clientId !== undefined) {
             //Informations récupérées à l'ouverture de la websocket
             webSocketId=message.clientId;
@@ -269,14 +269,6 @@ function openSocket(clientId=null) {
                 document.getElementById('adminMessages').getElementsByClassName('total')[0].textContent = message.total;
                 document.getElementById('adminMessages').getElementsByClassName('admins')[0].textContent = message.admins;
                 break;
-                
-            case 'langList' :
-                if (Object.keys(message.langList).length == 1) {
-                    //Une seule langue disponible sur le serveur
-                    document.getElementById('languageSelection').textContent = lang.langOnlyOne0 + Object.values(message.langList)[0] + lang.langOnlyOne1;
-                    document.getElementById('adminLangConfirm').style.display = 'none';}
-                else Object.keys(message.langList).forEach(function(lId) { document.getElementById('languageSelection').innerHTML += '<div><input type="radio" name="languageSelect" value="' + lId + '"'+ (lId == rcConfig.lang ? ' checked' : '') + '>'+ message.langList[lId] + '</div>'; })
-                break;
         
             case 'console' :
                 let logFile = message.logFile !== undefined ? message.logFile : [{'date':message.date,'message':message.message,'color':message.color}];
@@ -336,6 +328,12 @@ function openSocket(clientId=null) {
             
             case 'restore' :
                 if (message.result == 'ok') greenCheck('adminSave-greenCheck'); else document.getElementById('saveTile-content').getElementsByClassName('error').textContent = message.result;
+            break;
+
+            case 'debugMode' :
+                debugMode = message.debug;
+                if (message.debug != 'false') rcConfig.debug = 'on'; else delete (rcConfig.debug);
+                localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
             break;
 
             default:

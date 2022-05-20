@@ -17,11 +17,10 @@
  - Gestion des mots clef
  - Modification de la partie
  - InfoPartie (réunion, url etc)
- - Retravailler le contenu des popups...
- - Retravailler la sélection de langue
- - Ajout du switch "debugMode" dans la configuration des clients...
  - Purger les parties non accédées depuis plus d'un mois...
  - wsClientSend ==> webSocket.send
+ - Sauvegarde de la partie accessible à l'utilisateur
+ - Messagerie administrative basée sur la langue des utilisateurs connectés ?
 
 ## boxes.json
  - fr : ok

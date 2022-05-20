@@ -8,7 +8,7 @@ let pageName = pageNames[window.location.pathname.split("/").pop()] === undefine
 const urlParams = new URLSearchParams(location.search)
 if (urlParams.has('g') && pageName != 'index') location.href = 'index.html' + location.search; 
 let rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, nullElement={}, loaded={"config":false,"lang":false,"boxes":false,"page":false},ytPlayer,
-webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,publicHash,serverBoot,publicMode = true,availableLangsList;
+webSocketId='', webSocketSalt='', popupDiv=addElement('div','','popup'), adminMessageDiv = addElement('div','','adminMessagePopup'),adminHash,publicHash,serverBoot,publicMode = true,availableLangsList,debugMode=false;
 //Mise en place du favicon et de l'écran de chargement
 addHeadLink('icon','image/x-icon','favicon.ico');
 metaViewport = document.createElement('meta');
@@ -65,10 +65,10 @@ if (localStorage.getItem('rChampions-gameKey')) {
     load ('./games/' + gameKey + '.json',mainLoad);}
 else mainLoad();
 
-
 function configLoad(configJson) {
     //Gestion de la configration locale du site.
     rcConfig=JSON.parse(configJson);
+    if (rcConfig.debug !== undefined) debugMode = true;
     if (localStorage.rChampionsConfig !== undefined) {
         let oldConfig = JSON.parse(localStorage.rChampionsConfig);
         rcConfig.skin = oldConfig.skin;
@@ -155,8 +155,7 @@ function mainLoad(gameJson='') {
         addMenu();
         addPopup();
         if (pageName == 'villain' || pageName =='player' ||pageName =='villains' || pageName == 'players' || pageName == 'game') loaded.page = true;
-        }},100);}
-    
+        }},100);}  
 
 function load(fileLoad,functionLoad) {
       // Chargement de fichier distant (AJAX)
@@ -201,13 +200,14 @@ function addMenu() {
     //Ajout des actions disponibles dans le menu des paramètres
     let settingsInside = addElement('div','inside','settingsMenu');
     if (pageName !== 'index') settingsInside.append(setMenu('home',function () {location.href = "/";}));
-    settingsInside.append(setMenu('lang',selecLang));
+    let langMenu = setMenu('lang',selecLang);
+    langMenu.id = 'langMenu';
+    settingsInside.append(langMenu);
     let refreshMenu = setMenu('refresh',function () {localStorage.clear();location.href = "/";})
     refreshMenu.style.marginTop = '4px';
     settingsInside.append(refreshMenu);
     //Menu Administration
     if (pageName != 'admin') settingsInside.append(setMenu('admin',adminPopup,'adminMenu'));
-
     settingsMenu.append(settingsInside);
     document.getElementsByTagName('body')[0].append(settingsMenu);}
 function setMenu (lib, onclick, menuClass='setting') {
@@ -261,7 +261,8 @@ function popupDisplay(title,intro,content,buttons,outro='',height='17%') {
     popup.getElementsByClassName('buttons')[0].innerHTML='';
     popup.getElementsByClassName('buttons')[0].innerHTML=buttons;
     popup.getElementsByClassName('outro')[0].innerHTML=outro;
-    popup.getElementsByClassName('background')[0].style.height=height;}
+    //popup.getElementsByClassName('background')[0].style.height=height;
+}
 
 function adminPopup() {
     //Popup de saisie du mot de passe pour accès administratif
@@ -336,22 +337,26 @@ function textFocus(elementId,buttonId='') {
 
 function selecLang() {
     //Changement de la langue d'affichage
-    document.getElementById('settingsMenu').style.display = 'none';
-    let content = '<div id="languageSelection"></div>';
-    let buttons='<button title="' + lang.BUTTONconfirm + '" id="adminLangConfirm" onclick="selecLangValid(document.getElementById(\'languageSelection\').querySelector(\'input[type=radio]:checked\').value);">' + lang.BUTTONconfirm + '</button><button title="' + lang.BUTTONcancel + '" onclick="document.getElementById(\'popup\').style.display=\'none\';">' + lang.BUTTONcancel + '</button>';
-    popupDisplay(lang.MENUlang_,lang.langSelectIntro,content,buttons,lang.langSelectOutro);
-    sendReq('{"operation":"langList"}');}
-function selecLangValid(lId) {
-    document.getElementById('popup').style.display = 'none';
-    if (lId != rcConfig.lang) {
-        //Changement de la langue d'affichage
-        localStorage.removeItem('rChampionsLangStrings');
-        localStorage.removeItem('rChampionsBoxes');
-        rcConfig.lang = lId;
-        //restockage de la configuration en local.
-        rcConfig.refreshDate=refreshToday;
-        localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
-        location.reload();}}
+    let langButton = document.getElementById('langMenu');
+    let langMenu = document.createElement('select');
+        langMenu.id = 'langMenuOn';
+        langMenu.onchange = function () {
+            let langButton = document.getElementById('langMenu');
+            langButton.style.display = 'block';
+            let langMenu = document.getElementById('langMenuOn');
+            //Changement de la langue d'affichage
+            localStorage.removeItem('rChampionsLangStrings');
+            localStorage.removeItem('rChampionsBoxes');
+            rcConfig.lang = langMenu.value;
+            //restockage de la configuration en local.
+            rcConfig.refreshDate=refreshToday-1;
+            localStorage.setItem('rChampionsConfig',JSON.stringify(rcConfig));
+            location.reload(true);}
+        Object.keys(availableLangsList).forEach(key => {
+            langMenu.innerHTML += '<option value = "' + key + '"' + (key == rcConfig.lang ? ' selected':'')+ '>' + availableLangsList[key] + '</option>';
+        });
+        langButton.parentNode.insertBefore(langMenu,langButton.nextSibling);
+        langButton.style.display = 'none';}
 
 function greenCheck(id) {
     //Affichage d'une coche verte d'action effectuée pendant 20 secondes

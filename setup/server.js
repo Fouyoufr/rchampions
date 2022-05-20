@@ -264,7 +264,9 @@ function adminOP(message,webSocket) {
                         if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else wsGameSend(message.game,textMessage);}
                     else if (message.all !== undefined) {
                         let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"all":message.all});
-                        if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else wss.clients.forEach(element => { element.send(textMessage); });}
+                        if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else {
+                            ws.clients.forEach(element => { element.send(textMessage);});
+                            wss.clients.forEach(element => { element.send(textMessage); });}}
                     else if (message.admins !== undefined) {
                         let textMessage = JSON.stringify({"operation":"adminMessage","message":message.message,"admins":message.admins});
                         if (message.test !== undefined) wsclientSend(webSocket.clientId,textMessage); else wsAdminSend(textMessage);}
@@ -292,7 +294,10 @@ function adminOP(message,webSocket) {
                 case 'debugMode' :
                     if (message.debugMode != 'false') config.debug = 'on'; else delete (config.debug);
                     fs.writeFileSync(__dirname + '/serverConfig.json',JSON.stringify(config));
+                    ws.clients.forEach(element => {element.send('{"operation":"debugMode","debug":"' + message.debugMode + '"}');});
+                    wss.clients.forEach(element => {element.send('{"operation":"debugMode","debug":"' + message.debugMode + '"}');});
                     wsAdminSend('{"operation":"adminOK","meloList":"' + config.meloList + '","melodice":"' + (config.melodice === undefined ? 'off' : 'on') + '","publicMode":"' + (config.public === undefined ? 'off' : 'on') + '","debugMode":"' + (config.debug === undefined ? 'off' : 'on') + '","warningAdminPass":"' + (config.adminPassword == config.defaultAdminPassword ? 'KO':'ok') + '","warningPublicPass":"' + (config.publicPassword == config.defaultAdminPassword ? 'KO':'ok') + '","tlsCert":"' + config.tls + (config.tls != 'off' ? ' (port ' + config.tlsPort + ')':'') + '"}');
+                    wsclientSend
                     break;
 
                 case 'melodice' :
@@ -736,11 +741,6 @@ function operation(message,gameKey,clientId,webSocket) {
                     wsGameSend(gameKey,'{"operation":"counter","player":"' + message.player + '","id":"' + message.id + '","value":"' + games[gameKey].players[message.player].counters[message.id].value + '"}');
                     fs.writeFileSync(__dirname + '/games/' + gameKey + '.json',JSON.stringify(games[gameKey]));
                     }}}
-            break;
-        
-        case 'langList' :
-            //Construction de la liste des langues disponibles sur le serveur
-            wsclientSend(clientId,JSON.stringify({"operation":"langList","langList":langList}));
             break;
 
         case 'keyJoin' :

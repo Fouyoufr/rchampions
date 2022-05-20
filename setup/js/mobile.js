@@ -89,28 +89,24 @@ function initScreen() {
     if (localStorage.getItem('rChampions-gameKey')) sendReq('{"operation":"join","gameKey":"' + localStorage.getItem('rChampions-gameKey') + '"}');
     else {
         //La clef de partie n'a pas été saisie
-        line2.innerHTML = lang.MOBjoinIntro0;
+        line2.innerHTML = lang.MOBjoinIntro;
         let input = line1.getElementsByTagName('input')[0];
-        line1.onclick = function () {
-            line1.onclick = undefined;
-            input = line1.getElementsByTagName('input')[0];
-            input.disabled = false;
-            line2.innerHTML = lang.MOBjoinIntro1;
-            let goButton = document.createElement('button');
-            goButton.textContent = lang.MOBjoinIntroButton;
-            goButton.title = lang.MOBjoinIntroButton;
-            goButton.onclick = function () {
-                //Vérification (locale puis distante) de la clef saisie
-                line3.className = '';
-                line3.innerHTML = '';
-                newKey = input.value.toUpperCase();
-                input.value = newKey;
-                if (newKey.length != 8) {
-                    line3.innerHTML = lang.indexNewKeyLength;
-                    line3.className = 'error';}
-                else sendReq('{"operation":"join","gameKey":"' + newKey + '"}');}
-            line1.append(goButton);
-            input.focus();}}}
+        let goButton = document.createElement('button');
+        goButton.textContent = lang.MOBjoinIntroButton;
+        goButton.title = lang.MOBjoinIntroButton;
+        goButton.onclick = function () {
+            //Vérification (locale puis distante) de la clef saisie
+            line3.className = '';
+            line3.innerHTML = '';
+            newKey = input.value.toUpperCase();
+            input.value = newKey;
+            if (newKey.length != 8) {
+                line3.innerHTML = lang.indexNewKeyLength;
+                line3.className = 'error';}
+            else sendReq('{"operation":"join","gameKey":"' + newKey + '"}');}
+        line1.append(goButton);
+        input.focus();}
+        }
 
 function selectScreen() {
     if (document.querySelectorAll('div.villain')[0]) document.querySelectorAll('div.villain')[0].remove();
@@ -345,7 +341,6 @@ function settingScreen() {
     setRefresh.onclick = function () {
         sessionStorage.removeItem('rChampions-gameKey');
         localStorage.clear();location.reload(true);}
-
     let setLang = document.getElementById('mobSetLang');
     setLang.textContent = lang.MENUlang;
     setLang.onclick = function () {
@@ -368,8 +363,7 @@ function settingScreen() {
             langMenu.innerHTML += '<option value = "' + key + '"' + (key == rcConfig.lang ? ' selected':'')+ '>' + availableLangsList[key] + '</option>';
         });
         setLang.parentNode.insertBefore(langMenu,setLang.nextSibling);
-        setLang.style.display = 'none';
-    }
+        setLang.style.display = 'none';}
 
     //Musique en jeu
     let setMusic = document.getElementById('meloButton');
