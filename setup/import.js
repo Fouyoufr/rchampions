@@ -1,0 +1,11 @@
+const fs = require('fs');
+inputFile = JSON.parse(fs.readFileSync(__dirname + '/lang/fr/import.json'));
+let boxes = [], villains = [], mainSchemes = [], heros = [], decks = [], sideSchemes =[];
+Object.keys(inputFile.boxes).forEach(key => {boxes.push({"old":inputFile.boxes[key].old,"new":key,"name":inputFile.boxes[key].name})});
+Object.keys(inputFile.villains).forEach(key => {villains.push({"old":inputFile.villains[key].old,"new":key,"name":inputFile.villains[key].name})});
+Object.keys(inputFile.mainSchemes).forEach(key => {mainSchemes.push({"old":inputFile.mainSchemes[key].old,"new":key,"name":inputFile.mainSchemes[key].name})});
+Object.keys(inputFile.heros).forEach(key => {heros.push({"old":inputFile.heros[key].old,"new":key,"name":inputFile.heros[key].name})});
+Object.keys(inputFile.decks).forEach(key => {decks.push({"old":inputFile.decks[key].old,"new":key,"name":inputFile.decks[key].name})});
+Object.keys(inputFile.sideSchemes).forEach(key => {sideSchemes.push({"old":inputFile.sideSchemes[key].old,"new":key,"name":inputFile.sideSchemes[key].name})});
+exportFile = JSON.stringify({"boxes":boxes,"villains":villains,"mainSchemes":mainSchemes,"heros":heros,"decks":decks,"sideSchemes":sideSchemes},'',4);
+fs.writeFileSync(__dirname + '/import.json',exportFile);

@@ -5,7 +5,6 @@
  - Gestion du certificat de serveur dans la tuile "serveur et sécurité"  
    ```Options possible : 'off' (http uniquement),'test' (permet http + https), 'self' (autosigné), 'auto' (lestencrypt)```
  - Indiquer dans la config du serveur les ports d'écoute (http et https)
- - (Nouvelle partie depuis la page admin ?)
 
 ## Page d'accueil
 >    ### Création d'une partie ==> Sélection aléatoire ?
@@ -14,24 +13,24 @@
 
 ## Génériques
  - Feedback utilisateur (email possible)
- - Gestion des mots clef
+ - Gestion des mots clef : json construits
  - Modification de la partie
- - InfoPartie (réunion, url etc)
+ - InfoPartie (réunion, url etc) ?
  - Purger les parties non accédées depuis plus d'un mois...
  - wsClientSend ==> webSocket.send
  - Sauvegarde de la partie accessible à l'utilisateur
  - Messagerie administrative basée sur la langue des utilisateurs connectés ?
+ - Editeur de boites...
 
 ## boxes.json
  - fr : ok
  - en : tout à faire
  - Ajout Sinistres motivations
- - fichier de translation de "Remote Champions" vers "rChampions" ?
+ - fichier de translation de "Remote Champions" vers "rChampions" ? json prèt
 
 ## Greenlock ?
  
-## Setup ?
- - probablement pas : le nouveau site est immédiatement exploitable après démarrage
+## Documentation
 
 ---
 
