@@ -220,7 +220,8 @@
         "54":{"name":"Sinistre syndicat","box":"7"},
         "55":{"name":"Etat d'urgence","box":"7"},
         "56":{"name":"Les Démolisseurs","box":"7"},
-        "57":{"name":"ZZZAX"}
+        "57":{"name":"ZZZAX","box":"29"},
+        "58":{"name":"Le Tatou","box":"30"}
     },
     "sideSchemes":{
         "0":{"name":"Choisir manigance","deck":"0","hero":"0","card":""},
@@ -388,7 +389,9 @@
         "162": {"name":"Course poursuite","deck":"55","card":"4","init":"3","initX":"1","acceleration":"1","reveal":"93"},
         "163": {"name":"Les meilleurs talents","deck":"56","card":"1","init":"3","hinder":"2","info":"131"},
         "164": {"name":"Diriger par la force","hero":"32","card":"1","init":"4","info":"132"},
-        "165": {"name":"Boucle de Rétroaction","deck":"57","card":"1","init":"2","acceleration":"1","reveal":"133"}
+        "165": {"name":"Boucle de Rétroaction","deck":"57","card":"1","init":"2","acceleration":"1","reveal":"133"},
+        "166": {"name":"Apporter la guerre!","hero":"33","card":"1","init":"2","encounter":"1","reveal":"134"},
+        "167": {"name":"Attaque Blindée","deck":"58","card":"1","init":"3","initx":"1","info":"135"}
     },
     "schemeTexts":{
         "0":"Les texte informatifs sur les manigances annexes.",
@@ -524,6 +527,8 @@
         "130":"Défaussez la carte que vous Contrôlez ayant le coût le moins élevé.",
         "131":"Le méchant et chaque sbire ELITE gagnent Riposte 1.",
         "132":"Tant que Lucia von Bardas est en jeu, cette manigance gagne une icône d'aléas (+Rencontre).<br/>Tant que Lucia von Bardas n'est pas en jeu, cette manigance gagne une icône d'accélération.",
-        "133":"Chaque joueur doit placer sur cette manigance un nombre de menaces égal au nombre total de ressources ENERGIE dans sa main et sur les cartes qu'il contrôle."
+        "133":"Chaque joueur doit placer sur cette manigance un nombre de menaces égal au nombre total de ressources ENERGIE dans sa main et sur les cartes qu'il contrôle.",
+        "134":"Chaque joueur défausse 1 carte qu'il contrôle ayant une ressource BONUS imprimée. Pour chaque carte ainsi défaussée, placez 1 menace sur cette manigance",
+        "135":"Chaque ennemi ayant une carte d'état Tenace gagne +3 ATQ"
     }
 }

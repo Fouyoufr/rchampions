@@ -47,7 +47,7 @@ process.on('uncaughtException', function(err) {
 
 //Génération du certifcat autosigné
 let certAttr = [{ name: 'commonName', value: '127.0.0.1' }];
-let selfCert = selfsigned.generate(certAttr, { days: 365 });
+let selfCert = selfsigned.generate(certAttr, {keySize: 2048, days: 365 });
 //Mise en place du bot LetsEncrypt (version greenlock)
 gl = greenlock.create({ packageRoot: __dirname, configDir : './letsEncrypt/', packageAgent: pkg.name + '/' + pkg.version,
     //staging = test//
