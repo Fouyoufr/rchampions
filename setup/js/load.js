@@ -192,7 +192,7 @@ function addMenu() {
         melodiceMenu.title=lang.MENUmelodice;
         melodiceMenu.onclick = function () {document.getElementById('meloDisplay').style.display = document.getElementById('meloDisplay').style.display != 'flex' ? 'flex':'none';}}
     let settingsMenu = addElement('div','','settings');
-    //Ajouter ici : aide(s), Chwazy, bug report, doc, box/decks de la partie
+    //Ajouter ici : Chwazy, bug report, doc, box/decks de la partie
     let settingsButton = addElement('button','open');
     settingsButton.title=lang.MENUsettings;
     settingsButton.onclick = function () { document.getElementById('settingsMenu').style.display = document.getElementById('settingsMenu').style.display == 'flex' ? 'none' : 'flex'; }
@@ -206,6 +206,8 @@ function addMenu() {
     let refreshMenu = setMenu('refresh',function () {localStorage.clear();location.href = "/";})
     refreshMenu.style.marginTop = '4px';
     settingsInside.append(refreshMenu);
+    let helpMenu = setMenu('help',function() {window.open('help.html',lang.MENUhelp,'titlebar=no,toolbar=no,status=no,menubar=no,scrollbars=no,height=' + screen.availHeight + ',width=' + (screen.availWidth / 2))});
+    settingsInside.append(helpMenu);
     //Menu Administration
     if (pageName != 'admin') settingsInside.append(setMenu('admin',adminPopup,'adminMenu'));
     settingsMenu.append(settingsInside);
@@ -384,8 +386,8 @@ function loadInterface(id,title,funcToload) {
     return returnDiv;}
 
 function onYouTubeIframeAPIReady() {
-    ytPlayer = new YT.Player('ytPlayer',{videoId:rcConfig.meloList[0],events: {'onReady': ytPlayerStateChange,'onStateChange': ytPlayerStateChange}});}
-function ytPlayerStateChange(event) {
+    ytPlayer = new YT.Player('ytPlayer',{videoId:rcConfig.meloList[0],events: {'onReady': ytPlayerStateChange,'onStateChange': ytPlayerStateChange},'origin':window.location});}
+function ytPlayerStateChange() {
     if (ytPlayer.getPlayerState() == YT.PlayerState.PLAYING) {
         document.getElementById('melodiceMenu').title = lang.MENUmelodice + ' - ' + ytPlayer.getVideoData().title;
         document.getElementById('meloPlay').style.display='none';

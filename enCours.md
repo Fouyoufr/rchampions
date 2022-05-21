@@ -13,14 +13,14 @@
 
 ## Génériques
  - Feedback utilisateur (email possible)
- - Gestion des mots clef : json construits
  - Modification de la partie
  - InfoPartie (réunion, url etc) ?
  - Purger les parties non accédées depuis plus d'un mois...
  - wsClientSend ==> webSocket.send
  - Sauvegarde de la partie accessible à l'utilisateur
- - Messagerie administrative basée sur la langue des utilisateurs connectés ?
+ - Messagerie administrative => baser sur la langue des utilisateurs connectés ?
  - Editeur de boites...
+ - Trier l'affichage des boites pour la sélection des decks
 
 ## boxes.json
  - en : tout à faire

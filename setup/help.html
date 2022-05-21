@@ -4,16 +4,18 @@
     <META HTTP-EQUIV='CACHE-CONTROL' CONTENT='NO-CACHE'>
     <META HTTP-EQUIV='PRAGMA' CONTENT='NO-CACHE'>
     <meta charset='UTF-8'>
-     <script type='application/javascript' defer src='js/load.js'></script>
-    <link rel="stylesheet" type="text/css; charset=utf-8" href="./skins/loading.css">
+     <script type='application/javascript' defer src='js/help.js'></script>
 </head>
 <body>
     <!-- noScript / loading DIV -->
-    <div id="loading">
+    <div id="helpContent">
         <noscript>
             rChampions utilise du javaScript. Merci de l'activer sur votre navigateur.<br/><br/>
             rChampions needs javaScript. Please make sure it's enabled in your web brower.
         </noscript>
     </div>
+    <div id='TDMDown'></div>
+<a href='#' id='collapse' onclick='Array.from(document.getElementsByClassName("content")).forEach(content => content.style.display="block");'>+</a>
+<a href='#' id='moveUp'>&#10148;</a>
 </body>
 </html>

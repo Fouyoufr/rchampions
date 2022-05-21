@@ -63,6 +63,8 @@
     "MENUhome_":"Go back to homepage",
     "MENUlang":"Language",
     "MENUlang_":"Choose display language",
+    "MENUhelp":"Keywords",
+    "MENUhelp_":"Game help and keywords.",
 
     "BUTTONminus" : "Decrement",
     "BUTTONplus" : "increment",

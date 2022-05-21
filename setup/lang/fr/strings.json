@@ -63,6 +63,8 @@
     "MENUhome_":"Retour à la page d'accueil",
     "MENUlang":"Langue",
     "MENUlang_":"Choisir la langue d'affichage",
+    "MENUhelp":"Mots clefs",
+    "MENUhelp_":"Aide de jeu et mots clefs.",
 
     "BUTTONminus" : "Décrémenter",
     "BUTTONplus" : "incrémenter",

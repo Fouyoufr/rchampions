@@ -385,7 +385,7 @@ function shuffle(array) {
 
 function onYouTubeIframeAPIReady() {
     ytPlayer = new YT.Player('ytPlayerFrame',{videoId:'blank',events: {'onReady': ytPlayerStateChange,'onStateChange': ytPlayerStateChange}});}
-function ytPlayerStateChange(event) {
+function ytPlayerStateChange() {
     ytButton = document.getElementById('meloButton');
     if (ytPlayer.getPlayerState() == YT.PlayerState.PLAYING) {
         ytButton.textContent = lang.MOBMusicOn;

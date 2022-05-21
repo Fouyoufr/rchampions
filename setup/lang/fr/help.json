@@ -41,7 +41,7 @@
    {"name":"Propriété et Contrôle des cartes",
    "text":"<ul><li>Propriétaire = joueur dont le Deck de départ contenait la carte.</li><li>Contrôleur = joueur qui utilise la carte.</li><li>Quand une carte qui a changé de contrôle quitte le jeu, elle n'est pas restituée à son propriétaire mais plaçée dans la zone hors-jeu (main, deck, défausse) du joueur la contrôlant.</li><li>Un personnage qui change de contrôleur reste dans le même état (incliné, blessé...)<Li><li>Les améliorations et attachements sur une carte qui change de contrôleur suivent la carte.</li></ul>"},
    {"name":"Renfort","text":"Après qu'une carte Rencontre avec ce mot-clé est révélée et résolue, le joueur révèle une carte Rencontre supplémentaire et la résout."},
-   {"name":"Ressourcew","text":"Il y a 3 types de ressource (Force, Mental et Energie)  $La ressource libre peut être utilisée comme n'importe lequel des 3 types de ressource."},
+   {"name":"Ressources","text":"Il y a 3 types de ressource (Force, Mental et Energie)  $La ressource libre peut être utilisée comme n'importe lequel des 3 types de ressource."},
    {"name":"Restreint","text":"Un joueur ne peut pas contrôler plus de 2 cartes avec ce mot-clé simultanément (défausse possible)."},
    {"name":"Riposte X","text":"S’il a survécu, le personnage attaqué (et uniquement lui) inflige X dégâts en retour à son attaquant."},
    {"name":"Robuste","text":"Le personnage ne peut être ni sonné, ni désorienté."},
