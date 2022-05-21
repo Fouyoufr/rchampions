@@ -1,4 +1,4 @@
-let loaded={"config":false,"lang":false,"boxes":false,"page":false}, rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, webSocketId='', serverBoot,nullElement={},availableLangsList;
+let loaded={"config":false,"lang":false,"boxes":false,"page":false}, rcConfig={}, lang={}, game={}, boxes={}, villains={}, mainSchemes={}, heros={}, decks={}, sideSchemes={}, schemeTexts={}, webSocketId='', serverBoot,nullElement={},availableLangsList,debugMode=false;
 let touchstartX = 0, touchstartY = touchendX = touchendY = 0, cssRoot = document.querySelector(':root'),ytList,ytFrame = document.createElement('iframe');
 const refreshToday = Math.round((new Date()).getTime()/86400000),
 urlParams = new URLSearchParams(location.search);

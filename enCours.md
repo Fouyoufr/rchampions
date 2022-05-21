@@ -23,9 +23,8 @@
  - Editeur de boites...
 
 ## boxes.json
- - fr : ok
  - en : tout à faire
- - Ajout Sinistres motivations
+ - Ajout Sinistres motivations (Ironheart et Nova ok)
  - fichier de translation de "Remote Champions" vers "rChampions" ? json prèt
 
 ## Greenlock ?
