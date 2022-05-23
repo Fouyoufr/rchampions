@@ -73,7 +73,13 @@
         "24":{"name":"Thanos","box":"7","life1":"16","life2":"23","life3":"28"},
         "25":{"name":"Loki","box":"7","life1":"20","life2":"20","life3":"20"},
         "26":{"name":"Hela","box":"7","life1":"8","life2":"9"},
-        "27":{"name":"The Hood","box":"8","life1":"14","life2":"16","life3":"18"}
+        "27":{"name":"The Hood","box":"8","life1":"14","life2":"16","life3":"18"},
+        "28":{"name":"Docteur Octopus","box":"28"},
+        "29":{"name":"Kraven le chasseur","box":"28"},
+        "30":{"name":"Electro","box":"28"},
+        "31":{"name":"Scorpion","box":"28"},
+        "32":{"name":"Le Vautour","box":"28"},
+        "33":{"name":"Le Super Bouffon","box":"28"}
 
     },
     "mainSchemes":{
@@ -155,13 +161,15 @@
         "24":{"name":"Nebula","box":"24","life":"9"},
         "25":{"name":"Adam Warlock","box":"7","life":"11"},
         "26":{"name":"Spectrum","box":"7","life":"11"},
-        "27":{"name":"Miles Morales","box":"9","life":"9"},
+        "27":{"name":"Miles Morales (Fan)","box":"9","life":"9"},
         "28":{"name":"Deadpool","box":"9","life":"10"},
         "29":{"name":"War Machine","box":"25","life":"10"},
         "30":{"name":"Valkyrie","box":"26","life":"12"},
         "31":{"name":"Vision","box":"27","life":"11"},
         "32":{"name":"Ironheart","box":"29","life":"10"},
-        "33":{"name":"Nova","box":"30","life":"10"}
+        "33":{"name":"Nova","box":"30","life":"10"},
+        "34":{"name":"Miles Morales","box":"28","life":"9"},
+        "35":{"name":"Ghost Spider","box":"28","life":"10"}
     },
     "decks":{
         "0":{"name":"Sélectionner deck","box":"0"},
