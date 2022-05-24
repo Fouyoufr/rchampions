@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'rchampions'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7B7F228691FA4E128014087EED1B810E }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6EC9D18D99184B098BC35CDC75C28127 }}
           package: .
