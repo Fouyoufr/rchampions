@@ -1,5 +1,5 @@
 /* Diplay of a Villain's box */
-#villains, #villain {text-align:center;display: flex;justify-content: center;flex-wrap:wrap;}
+#villains, #villain {text-align:center;display: flex;justify-content:space-evenly;flex-wrap:wrap;}
 .villain {font-variant: small-caps; text-transform: capitalize;display:inline-block;margin-right: 5px;margin-left: 5px;min-width: 320px;border-radius: 10px;}
 .villain div.villain-frame {background:radial-gradient(black,gray);border-radius: 4px;margin-bottom: 2px;position: relative;padding-bottom: 20px;}
     .villain button.picture {border:solid 1px black;position:absolute;left:3px;top:3px;background-image:none;width:40px;height:40px;}

@@ -1,4 +1,4 @@
-#players {text-align:center;display: flex;justify-content: center;flex-wrap:wrap;margin-top:10px;}
+#players {text-align:center;display: flex;justify-content:space-evenly;flex-wrap:wrap;margin-top:10px;}
 /* Diplay of user box */
 .player {font-variant: small-caps; text-transform: capitalize;display:inline-block;margin-right: 5px;margin-left: 5px;min-width: 320px;border-radius: 10px;}
 .player .player-frame {background:radial-gradient(black,red);border-radius: 4px;margin-bottom: 2px;position: relative;padding-bottom: 10px;}
