@@ -24,7 +24,7 @@
 
 ## boxes.json
  - en : tout à faire
- - Ajout Sinistres motivations (Ironheart et Nova ok)
+ - Ajout Sinistres motivations (héros ok)
  - fichier de translation de "Remote Champions" vers "rChampions" ? json prèt
 
 ## Greenlock ?
