@@ -10,6 +10,7 @@
 >    ### Création d'une partie ==> Sélection aléatoire ?
 >    ### Création d'un journal de campagne  
 >    ### Message du jour/du moment/astuce aléatoire ?
+ - Trier les boits et decks à l'affichage de la création de la partie
 
 ## Génériques
  - Feedback utilisateur (email possible)
@@ -24,7 +25,6 @@
 
 ## boxes.json
  - en : tout à faire
- - Ajout Sinistres motivations (héros ok)
  - fichier de translation de "Remote Champions" vers "rChampions" ? json prèt
 
 ## Greenlock ?
