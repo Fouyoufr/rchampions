@@ -1,8 +1,7 @@
 # **rChampions**
+![Etat Docker](https://github.com/Fouyoufr/rchampions/actions/workflows/dockerHub-build-n-push.yml/badge.svg) : [Image Docker](https://hub.docker.com/r/fouyou/rchampions)  
 Moteur fan-made, pour faciliter les parties distantes de Marvel champions.  
-<p align = "center">
-<img src="partie-preview.png" alt="Ecran de partie en Français">
-Exemple d'écran en partie
-</p>
+  ![Ecran de partie en Français](partie-preview.png)
 ___  
-Fan-made engine to ease Marvel Champions remote games.
+![Etat Docker](https://github.com/Fouyoufr/rchampions/actions/workflows/dockerHub-build-n-push.yml/badge.svg) : [Docker image](https://hub.docker.com/r/fouyou/rchampions)  
+Fan-made engine to ease Marvel Champions remote games.  
